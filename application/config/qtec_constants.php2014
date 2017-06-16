@@ -1,0 +1,19 @@
+<?php 
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "http://" : "http://";
+    $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? true : false;
+    define('HTTP_HOST', $protocol. $_SERVER['HTTP_HOST'].'/php/indiabiz/');
+    define('SITE_URL', HTTP_HOST);
+    define('isSecure', $isSecure);
+    define('HTTP_HOST_LINK',SITE_URL.'index.php');
+    define('COMPANY_NAME', 'QuailTec Pvt. Ltd.');
+    define('COMPANY_SIGNATURE', 'IndiaBizSaath');    
+    define('SITE_DIRECTORY',$_SERVER['DOCUMENT_ROOT'].'/');
+    define('ADMIN_EMAIL','');
+    define('ADMIN_EMAIL_NAME','IndiaBizSaath Support');
+    define('WEBROOT_PATH_IMAGES', SITE_URL.'assets/img/');
+    define('WEBROOT_PATH_CSS', SITE_URL.'assets/css/');
+    define('WEBROOT_PATH_JS', SITE_URL.'assets/js/');
+	define('WEBROOT_PATH_sell', SITE_URL.'upload/Document/');
+    define('SITE_DEFAULT_TITLE', 'IndiaBizSaath');
+	
+?>

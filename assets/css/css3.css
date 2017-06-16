@@ -1,0 +1,186 @@
+@import url("css3.css");
+/*  CSS definations for displa.io  */
+/*-------------------------------------------------------------------------------------------
+
+INDEX:
+
+0. RESET
+
+1. SETUP
+1.1 Defaults
+1.2 Common Tages
+
+2. SITE STRUCTURE & APPEARANCE
+2.1 Header
+	2.1 Logo
+2.2 Container
+  	2.2.1 Showacase
+2.3 Footer
+
+-------------------------------------------------------------------------------------------*/
+
+/*-------------------------------------------------------------------------------------------*/
+/* 0. RESET */
+/*-------------------------------------------------------------------------------------------*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after, q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+* {
+	outline:none;
+}
+
+/*-------------------------------------------------------------------------------------------*/
+/* 1. SETUP */
+/*-------------------------------------------------------------------------------------------*/
+
+/* 1.1 Defaults */
+h1, h2, h3, h4, h5, h6, strong {
+	font-weight:bold;
+}
+i, em {
+	font-style:italic;
+}
+.left {
+	float:left;
+}
+.right {
+	float:right;
+}
+.alignleft {
+	text-align:left;
+}
+.alignright {
+	text-align:right;
+}
+.aligncenter {
+	text-align:center;
+}
+.clear {
+	clear:both;
+	line-height:1px;
+	height:1px;
+}
+textarea {
+	overflow:auto;
+	font-family:Arial, Helvetica, sans-serif; /* Body Font Family Will Come Here */
+}
+a {
+	color:#333;
+	text-decoration:none;
+}
+a:hover {
+	color:#000;
+}
+address {
+	font-style:normal;
+}
+{
+	box-shadow:rgba(0, 0, 0, 0.30) 0px 1px 0px;
+	box-shadow:rgba(0, 0, 0, 0.30) 0px 1px 0px inset;
+	text-shadow:rgba(0, 0, 0, 0.30) 0px 1px 0px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	behavior:url(PIE.htc);
+	position:relative;
+}
+@media only screen and (max-width: 960px) {
+
+.box{
+	width:960px;
+}
+
+}
+/* For iPad Portrait Mode */
+
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+
+.box{
+	width:630px;
+}
+	
+}
+
+/* For iPhone Portrait Mode */
+
+@media only screen and (max-width: 767px) {
+	
+.box {
+	width:280px;
+}
+
+}
+
+@media only screen and (max-width:320px) and (max-width:480px){
+}
+
+/* For iPhone Landscape Mode */
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+	
+.box{
+	width:420px;
+}
+
+}
+-webkit-background-size:cover;
+-moz-background-size:cover;
+-o-background-size:cover;
+-khtml-background-size:cover;
+background-size:cover;
+
+opacity:0.6;
+filter:alpha(opacity=50);
+
+-webkit-transition: all 0.5s ease-in-out;
+-moz-transition: all 0.5s ease-in-out;
+-ms-transition: all 0.5s ease-in-out;
+-o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+
+/* 1.2 Common Tags */
+
+/*-------------------------------------------------------------------------------------------*/
+/* 2. SITE STRUCTURE & APPEARANCE */
+/*-------------------------------------------------------------------------------------------*/
+body {
+	background:#fff;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#333;
+}
+.box {
+	width:960px;
+	margin:0 auto;
+}
+

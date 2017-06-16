@@ -1,0 +1,291 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+
+
+class SellProduct extends MY_AppController {
+
+	function __construct() {
+
+    	parent::__construct();
+
+	}	
+	        public function SellProduct($type = false,$type1 = false)
+			{
+				if($this->input->post('submit')){
+					
+			 		$this->sellProductHere();
+				}
+				$this->data['userId']=$this->session->userdata('UserId');
+				$this->data['sellcategory']=$this->common->sellproductcategory();
+				$this->data['stateData']= $this->common->selectAllState('state');
+				$this->data['view_file'] = 'usedproduct/productsell';
+				$this->load->view('layouts/sellproduct_default', $this->data); 
+
+	        }
+
+			
+
+			public function Listall($type = false,$type1 = false)
+			{
+	   		$this->data['view_file'] = 'usedproduct/productlistall';
+		    $this->load->view('layouts/sellproduct_default', $this->data);
+	        }
+			public function sellProductHere()
+		 	{
+		  		$userData = $this->input->post();
+				@extract($userData);
+		  	if($this->session->userdata('logged_in')== true)
+			  {
+			  $this->db->trans_begin();
+			  $this->form_validation->set_rules('title', 'Title', 'required');
+			  $this->form_validation->set_rules('product_description', 'Description', 'required');
+			  $this->form_validation->set_rules('Address', 'Address', 'required');
+             if ($this->form_validation->run())
+			 {
+			    $image=array_filter($_FILES['fileField']['name']);
+	         	$this->load->model('User');
+			    $sellCatId = $userData['categorylistsell'];
+				$sellConditionArray = array('18','19');
+				if(!in_array($sellCatId,$sellConditionArray )){
+
+		           $productData = array('user_id' => $this->session->userdata('UserId'),
+										   'title' => $title,
+										   'contect_person'=> $this->session->userdata('DisplayName'),
+										   'price'=>$price,
+										   'product_description'=>$product_description,
+										   'state'=>$state,
+										   'district'=>$districList,
+										   'city'=>$CityList,
+										   'sellertype'=>$radio,
+										   'address'=>$Address,
+										   'category'=>$categorylistsell,
+										   'subcategory'=>$subcategorysell,
+										   'brand_id'=>$productbrand,
+
+										   "date"=>date('Y-m-d h:i:s'));
+
+		  			}elseif($sellCatId=='18'){
+
+				       $productData = array('user_id' => $this->session->userdata('UserId'),
+
+											'title' => $title,
+											'position'=>$radio,
+											'experience'=>$expyear,
+											'brand_id'=>$jobtype,
+											'price'=>$Sallery,
+											'salary_type'=>$Sallerytype.'-'.$expMonth,
+											'product_description'=>$product_description,
+											'category'=>$categorylistsell,
+											'subcategory'=>$subcategorysell,
+											'contect_person'=> $this->session->userdata('DisplayName'),
+											'state'=>$state,
+											'district'=>$districList,
+											'city'=>$CityList,
+
+											"date"=>date('Y-m-d h:i:s'));
+					 }else{
+				       $productData = array('user_id' => $this->session->userdata('UserId'),
+											'title' => $title,
+											'furnished'=>$Furnished,
+											'Bedrooms'=>$Bedrooms,
+											'Bathrooms'=>$Bathrooms,
+											'price'=>$Price,
+											'broker_free'=>$Broker,
+											'area'=>$Area,
+											'product_description'=>$product_description,
+											'category'=>$categorylistsell,
+											'subcategory'=>$subcategorysell,
+											'contect_person'=> $this->session->userdata('DisplayName'),
+											'state'=>$state,
+											'district'=>$districList,
+											'city'=>$CityList,
+											"date"=>date('Y-m-d h:i:s'));
+
+			}
+
+				    $Insert = $this->User->AdduserData('sell_product',$productData);
+					if($this->db->trans_status() === FALSE){
+                    	$this->db->trans_rollback();
+						$this->data['err_msg'] = 'There is some technical issue. Please try later.';
+
+                    }else{
+
+                        $this->db->trans_commit();
+						$this->uploadSellProductImages($image , 'fileField' , $Insert);
+						$this->data['succ_msg'] = 'Your product will display after 3-4 hrs. Thank you.';
+					}
+			}
+	 }
+			  else
+			  {
+			  $this->form_validation->set_rules('email', 'Email', 'required');
+			  $this->form_validation->set_rules('name', 'Name', 'required');
+			  $this->form_validation->set_rules('title', 'Title', 'required');
+			  $this->form_validation->set_rules('product_description', 'Description', 'required');
+			  $this->form_validation->set_rules('Address', 'Address', 'required');
+
+             if ($this->form_validation->run())
+			 {
+			 	$this->db->trans_begin();
+			 	$image=array_filter($_FILES['fileField']['name']);
+		    	$password=md5(rand(10000,99999999));	  
+	        	$Data = array('email_id' => $email,
+				'mobile_no' => $mobile,
+				"password"=> $password,
+				"enroll_date"=>date('Y-m-d h:i:s'));
+		    	$this->load->model('User');
+		    	$Insert = $this->User->AdduserData('user_signup',$Data);
+				$sellCatId = $userData['categorylistsell'];
+				$sellConditionArray = array('18','19');
+				if(!in_array($sellCatId,$sellConditionArray )){
+		  			$productData = array( 'user_id' => $Insert ,
+											'title' => $title,
+											'contect_person' => $name,
+											'price' => $price,
+											'product_description' => $product_description,
+											'state' => $state,
+											'district' => $districList,
+											'city' => $CityList,
+											'sellertype' => $radio,
+											'address' => $Address,
+											'category' => $categorylistsell,
+											'subcategory' => $subcategorysell,
+											'brand_id' => $productbrand,
+											"date" => date('Y-m-d h:i:s'));
+
+		  			}else if($sellCatId=='18')
+
+						{
+
+				      $productData = array('user_id' => $Insert,
+											  'title' => $title,
+											  'position'=>$radio,
+											  'experience'=>$expyear,
+
+											  'brand_id'=>$jobtype,
+
+											  'price'=>$Sallery,
+
+											  'salary_type'=>$Sallerytype.'-'.$expMonth,
+
+											  'image_name'=>$image_name,
+
+											  'product_description'=>$product_description,
+
+											  'category'=>$categorylistsell,
+
+											  'subcategory'=>$subcategorysell,
+
+											  'contect_person'=> $name,
+
+											  'state'=>$state,
+
+											  'district'=>$districList,
+
+											  'city'=>$CityList,
+
+											  "date"=>date('Y-m-d h:i:s'));
+
+						 }else
+
+			{
+
+				 $productData = array('user_id' => $Insert,
+
+											  'title' => $title,
+
+											  'furnished'=>$Furnished,
+
+											  'Bedrooms'=>$Bedrooms,
+
+											  'Bathrooms'=>$Bathrooms,
+
+											  'price'=>$Price,
+
+											  'broker_free'=>$Broker,
+
+											  'area'=>$Area,
+
+											  'image_name'=>$image_name,
+
+											  'product_description'=>$product_description,
+
+											  'category'=>$categorylistsell,
+
+											  'subcategory'=>$subcategorysell,
+
+											  'contect_person'=> $name,
+
+											  'state'=>$state,
+
+											  'district'=>$districList,
+
+											  'city'=>$CityList,
+
+											  "date"=>date('Y-m-d h:i:s'));
+
+			}
+
+					$Insert1 = $this->User->AdduserData('sell_product',$productData);
+
+					//echo $this->db->last_query();
+
+					if($this->db->trans_status() === FALSE){
+
+                    	$this->db->trans_rollback();
+
+						$this->data['err_msg'] = 'There is some technical issue. Please try later.';
+
+                    }else{
+
+                        $this->db->trans_commit();
+
+						$this->uploadSellProductImages($image , 'fileField' , $Insert1);
+
+						$this->data['succ_msg'] = 'Your product will display after 3-4 hrs. Thank you.';
+
+					}
+
+								
+
+			  }
+
+			 
+
+		 } 
+
+	}
+
+	
+
+
+
+
+
+
+
+	public function uploadSellProductImages($data = array() , $fieldName = 'fileField' , $productId){
+
+		if(count($data) > 0){		 
+
+			foreach($data as $key => $insertimage){					
+
+				$_FILES['fileField'.$key]['name']= $_FILES[$fieldName]['name'][$key];
+				$_FILES['fileField'.$key]['type']= $_FILES[$fieldName]['type'][$key];
+				$_FILES['fileField'.$key]['tmp_name']= $_FILES[$fieldName]['tmp_name'][$key];
+				$_FILES['fileField'.$key]['error']= $_FILES[$fieldName]['error'][$key];
+				$_FILES['fileField'.$key]['size']= $_FILES[$fieldName]['size'][$key];
+				//pr($_FILES['fileField'.$key]);	
+				$name = $insertimage;
+				$up_path = 'Document';
+				$input_name ='fileField'.$key;
+				$image_name = $this->upload_image($up_path,$input_name,$insertimage);
+				$insertimagesData = array("product_id" => $productId,"images_name" => $image_name);
+				$Insertimages = $this->User->AdduserData('sellproduc_images',$insertimagesData);					
+			}
+		}
+	}
+
+
+
+}
