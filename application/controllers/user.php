@@ -116,7 +116,7 @@ class User extends MY_AppController {
                     	<h3><?php echo $getproducts->temlete_name;?></h3>
                         <p><?php echo $getproducts->tag_line;?></p>
                         <a href="#" class="sign-in" style="background: <?php echo $getproducts->color_code; ?>!important">Sign In</a>
-                        <a href="#" class="sign-up">Sign Up</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $getproducts->color_code; ?>!important">Sign Up</a>
                     </div>
                 </div>
                 
@@ -342,10 +342,10 @@ class User extends MY_AppController {
 		$condition = array('id'=>$updateid);
 		if($upadtefor=='image')
 		{
-			$name = $fileField;
+			$name = @$fileField;
 			$up_path = 'upload';
 			$input_name ='fileField';
-			$image_name = $this->uploadimage($up_path,$input_name,$fileField);
+			$image_name = $this->uploadimage($up_path,$input_name,$name);
 			if($image_name['error']==true)
 			{
 				$status['error_message']= $image_name['error_type'];
@@ -358,6 +358,7 @@ class User extends MY_AppController {
 				$upadte = $this->templetes->updateDetails($condition,$updateArray);
 				if($upadte)
 				{
+					$status['imagename']=$imagename;
 					$status['imagelink']=WEBROOT_PATH_UPLOAD_IMAGES.$imagename;
 					$status['status']='success';
 
@@ -398,6 +399,74 @@ class User extends MY_AppController {
 		echo json_encode($status);
 
 	}
+
+	// public function upload_thumbnail()
+ //    {
+ //    	$this->load->model("templetes");
+	// 	$this->load->helper('string');
+	// 	$rand = random_string('alnum',4);
+	// 	$w=$this->input->post('thumb_width');
+	// 	$h=$this->input->post('thumb_height');
+	// 	$x1=$this->input->post('x_axis');
+	// 	$y1=$this->input->post('y_axis');
+	// 	$img=$this->input->post('img');
+	// 	$new_name =time()."updated".$img; // Thumbnail image name
+	// 	$path = "./upload/";
+	// 	list($joe, $alto) = getimagesize($path.$img);
+	// 	$ratio = $joe / 500;
+	// 	$x1 = ceil($x1 * $ratio);
+	// 	$y1 = ceil($y1 * $ratio);
+	// 	$wd = ceil($w * $ratio);
+	// 	$ht = ceil($h * $ratio);
+	// 	$nw = 400;// Maximum thumbnail width
+	// 	$nh = 300;//Maximum thumbnail height
+	// 	$nimg = imagecreatetruecolor($nw,$nh);
+	// 	$im_src = imagecreatefromjpeg($path.$img);
+	// 	imagecopyresampled($nimg,$im_src,0,0,$x1,$y1,$nw,$nh,$wd,$ht);
+	// 	imagejpeg($nimg,$path.$new_name,90);
+	// 	$templeteid=$this->input->post('templeteid');
+	// 	$result= array('background_image' =>$new_name);
+	// 	$condition = $this->db->where('id', $templeteid);
+	// 	$insertstatus=$this->templetes->updateDetails($condition,$result);
+	// 	echo  $new_name;
+ //      }
+
+	//////////// for croping image/////////////
+
+      public function upload_thumbnail()
+      {
+      	if (!$this->input->is_ajax_request()) 
+		{
+		   exit('No direct script access allowed');
+		}
+      	$targ_w = 271;
+		$targ_h = 391;
+		$jpeg_quality = 90;
+		$src=$this->input->post('img');
+		$new_name =rand(0,99999)."updated".$src; // Thumbnail image name
+		//echo $new_name;
+		//echo $src;
+		$path = "./upload/";
+        $this->load->model("templetes");
+		// $src = 'demo_files/pool.jpg';
+		echo $src;
+		$w=$this->input->post('thumb_width');
+		$h=$this->input->post('thumb_height');
+		$x1=$this->input->post('x_axis');
+		$y1=$this->input->post('y_axis');
+		$img_r = imagecreatefromjpeg($path.$src);
+		$dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+		imagecopyresampled($dst_r,$img_r,0,0,$x1,$y1,
+		$targ_w,$targ_h,$w,$h);
+
+		// header('Content-type: image/jpeg');
+		imagejpeg($dst_r,$path.$new_name,$jpeg_quality);
+		$templeteid=$this->input->post('templeteid');
+		$result= array('background_image' =>$new_name);
+		$condition = $this->db->where('id', $templeteid);
+		$insertstatus=$this->templetes->updateDetails($condition,$result);
+		echo  $new_name;
+      }
 		
 
 }

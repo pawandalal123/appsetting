@@ -12,15 +12,7 @@ $('.tab-content').hide().fadeIn();
         $(this.hash).hide().fadeIn().addClass('active');
 	})
 });
-	$(document).ready(function(){
-    $(document).on('click','.close',function()
-    {
-        // $(".web-overlay2").fadeOut();
-        $(".web-overlay2").remove()
 
-    });
-    
-});
 function maketempletelist(subcatid)
 {
   $('#page_hide').show()
@@ -67,16 +59,7 @@ function settemplete(templeteid)
 }
 
 
-function modelbox(body)
-{
-    var template = '<div class="web-overlay2"><div class="inner-web"><div class="close"></div>'+
-                   '<div class="content">'+body+'</div>'+
-                '</div></div>';
-                $(".web-overlay2").fadeIn();
-                $(".web-overlay2").show();
-                 $('body').append(template);
-           
-}
+
 </script>	
 
 

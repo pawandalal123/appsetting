@@ -220,6 +220,7 @@
             $colorInner.style.backgroundColor = self.colorHex;
             $colorInput.value = self.colorHex;
             $('.sign-in').css('background',self.colorHex);
+             $('.sign-up').css('background',self.colorHex);
         };
 
         /**

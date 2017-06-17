@@ -68,12 +68,12 @@
                     </ul>
                     <div class="imgbox">
                           <div class="item">
-                    <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="">
+                    <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="" style="height: 391px; width: 291px;">
                     <div class="overlay-chuch">
                         <h3><?php echo $gettempData->temlete_name;?></h3>
                         <p><?php echo $gettempData->tag_line;?></p>
                         <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
-                        <a href="#" class="sign-up">Sign In</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
                         
                     </div>
                 </div>

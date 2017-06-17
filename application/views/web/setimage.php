@@ -1,44 +1,4 @@
-
-<script>
-    $(document).ready(function() {
-	  var owl = $("#owl-demo3");
-
-      owl.owlCarousel({
-
-      items :1, //10 items above 1000px browser width
-      itemsDesktop : [1000,1], //5 items between 1000px and 901px
-      itemsDesktopSmall : [900,1], // 3 items betweem 900px and 601px
-      itemsTablet: [600,1], //2 items between 600 and 0;
-      itemsMobile : false // itemsMobile disabled - inherit from itemsTablet option
-      
-      });
-	  
-	   var owl = $("#owl-demo4");
-
-      owl.owlCarousel({
-
-      items :4, //10 items above 1000px browser width
-      itemsDesktop : [1000,5], //5 items between 1000px and 901px
-      itemsDesktopSmall : [900,3], // 3 items betweem 900px and 601px
-      itemsTablet: [600,2], //2 items between 600 and 0;
-      itemsMobile : false // itemsMobile disabled - inherit from itemsTablet option
-      
-      });
-	
-	  
-      // Custom Navigation Events
-      $(".next").click(function(){
-        owl.trigger('owl.next');
-      })
-      $(".prev").click(function(){
-        owl.trigger('owl.prev');
-      })
-      
-
-
-    });
-    </script> 
-    
+   
     
 <script>
 $(document).ready(function(){
@@ -74,57 +34,91 @@ $(document).ready(function()
     $(".app-template").click(function(){
         $(".web-overlay2").fadeIn();
     });
+    var _URL = window.URL || window.webkitURL;
 
     $('input[name=background_image]').change(function()
     {
-      alert();
+      var file, img;
       var fileField  = this.files[0];
+
       var name = fileField.name;
       var size = fileField.size;
-      var id = $('input[name=updateid]').val();
-      var formerr = 0;
-      var fileExt =  name.split('.').pop().toLowerCase();
-      if($.inArray(fileExt, ['gif','png','jpg','jpeg','svg','PNG','GIF']) == -1)
-      {
-          alert('invalid file !');
-          formerr++;
-          return false;
-      }
-      else
-      {
-        var form_data = new FormData();
-        form_data.append('fileField',fileField);
-        form_data.append('updateid',id);
-        form_data.append('upadtefor','image');
-        $.ajax({
-              type: "POST",
-              url: WEBROOT_PATH+'user/upatdeimge',
-              data: form_data,
-              cache: false,
-              contentType: false,
-              processData: false,
-              dataType: 'json',
-                success: function (response) {
-                    //alert(response.detailsubmit);
-                    if(response.status=='success')
-                    {
-                      $('.templeteimgclass').attr('src',response.imagelink);
+      img = new Image();
+      var imgwidth = 0;
+      var imgheight = 0;
+      var maxwidth = 232;
+      var maxheight = 391;
 
-                    }
-                    else
-                    {
-                      alert('some thing wrong with your input');
+      if ((file = this.files[0])) 
+      {
+          img = new Image();
+          img.onload = function() 
+          {
+            imgwidth=this.width ;
+            imgheight=this.height;
+            var id = $('input[name=updateid]').val();
+            var formerr = 0;
+            var fileExt =  name.split('.').pop().toLowerCase();
+            if($.inArray(fileExt, ['gif','png','jpg','jpeg','svg','PNG','GIF']) == -1)
+            {
+                alert('invalid file !');
+                formerr++;
+                return false;
+            }
+            else
+            {
+              var form_data = new FormData();
+              form_data.append('fileField',fileField);
+              form_data.append('updateid',id);
+              form_data.append('upadtefor','image');
+              $.ajax({
+                    type: "POST",
+                    url: WEBROOT_PATH+'user/upatdeimge',
+                    data: form_data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                      success: function (response) {
+                          //alert(response.detailsubmit);
+                          if(response.status=='success')
+                          {
+                            $('.templeteimgclass').attr('src',response.imagelink);
+                            if(imgwidth > maxwidth && imgheight > maxheight)
+                            {
+                                modelbox('');
+                               $('.content').html('<h3>You Have Previewing <span> Crop Image</span></h3><div class="imgbox"><div class="item"><img src="'+response.imagelink+'" alt="" id="photo"><input type="hidden" name="image_name" id="image_name" value="'+response.imagename+'"  /></div></div>');
+                               $('img#photo').imgAreaSelect(
+                                    { maxWidth: 300, maxHeight: 600, handles: true,
+                                    onSelectEnd: getSizes
+                                });
+                            }
 
-                    }
-                },
-                error: function (response) {
-                   alert('some technical issue.');
-                    
-                }
-                });
+                          }
+                          else
+                          {
+                            alert('some thing wrong with your input');
+
+                          }
+                      },
+                      error: function (response) {
+                         alert('some technical issue.');
+                          
+                      }
+                      });
+            }
+          };
+          img.onerror = function() 
+          {
+              alert( "not a valid file: ");
+          };
+          img.src = _URL.createObjectURL(file);
       }
+     
+
 
     });
+
 
     $(document).on('click','.imagefromgel',function()
     {
@@ -155,6 +149,51 @@ $(document).ready(function()
         })
 
 });
+
+</script>
+<link rel="stylesheet" type="text/css" href="http://www.shaadisaath.com/assets/css/imgareaselect-animated.css" />
+<script type="text/javascript" src="http://www.shaadisaath.com/assets/js/jquery.imgareaselect.js"></script>
+<script type="text/javascript">
+function getSizes(im,obj)
+  {
+    var x1 = obj.x1;
+    var x2_axis = obj.x2;
+    var y1 = obj.y1;
+    var y2_axis = obj.y2;
+    var thumb_width = obj.width;
+    var thumb_height = obj.height;
+    var id = $('input[name=updateid]').val();
+    
+    if(thumb_width> 0)
+      {
+        if(confirm("Do you want to save image..!"))
+          {
+            var img = $("#image_name").val();
+            var t= 'ajax';
+                 $.post(WEBROOT_PATH+'user/upload_thumbnail',{"templeteid":id,"img":img,"t":t,"x1":x1,"y1":y1,"thumb_width":thumb_width,"thumb_height":thumb_height},function(data,status)
+         {
+                           //$("#cropimage").hide();
+                  //  var imgSrc = SITE_URL+"upload/Document/"+userId+"/"+data;
+                  //   $("#thumbs").html("");
+                  // $("#thumbs").html("<img src="+imgSrc+" />");
+                  // $("#finalimage").html("");
+                  // $("#finalimage").html("<img src="+imgSrc+" />");
+                  // $('.button').show();
+        });
+            
+       
+      
+    };
+            
+          }
+      
+    else
+      alert("Please select portion..!");
+  }
+
+$(document).ready(function () {
+    
+});
 </script>
 <!--------------- js ---------------->
 
@@ -178,33 +217,18 @@ $(document).ready(function()
         </div>
          <div class="column">
          		<div class="customize">
-                	<div class="crousal1">
-                    	
-                    	  
-          <div class="owl-carousel owl-theme">
+                	<div class="crousal1">         
                   <div class="item">
-                  <img class="templeteimgclass" src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="">
+                  <img class="templeteimgclass" src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="" style="height: 391px; width: 291px;">
                     <div class="overlay-chuch">
                       <h3><?php echo $gettempData->temlete_name;?></h3>
                         <p><?php echo $gettempData->tag_line;?></p>
                         <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
-                        <a href="#" class="sign-up">Sign Up</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign Up</a>
                     </div>
                 </div>
-              </div>
-                       
-                     <!--    <div class="landing-box">
-                        	<div class="select-box">
-                        	<select class="select">
-                            	<option>Landing</option>
-                                <option>Landing-1</option>
-                                <option>Landing-2</option>
-                                <option>Landing-3</option>
-                                <option>Landing-4</option>
-                            </select>
-                            </div>
-                        	<h4>Edited Elemants : 0/4 </h4>
-                        </div> -->
+             
+
                     </div>
                     <div class="customize-detail">
                     	<h3>Current Selection : <span>Church Name and Tag Line</span></h3>

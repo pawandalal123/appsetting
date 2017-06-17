@@ -95,7 +95,7 @@ class AddUser extends MY_AppController {
 			$this->db->where('email_id', $email);
 		 }
 		
-		$categoryListingdata =$this->db->get('user_signup');
+		$categoryListingdata =$this->db->get('users');
 	//	echo $this->db->last_query();
 		if($categoryListingdata->num_rows() > 0)
 		{

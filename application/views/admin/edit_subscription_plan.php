@@ -18,7 +18,7 @@
 
 <div class="block">
 
-<form action="<?php echo SITE_URL.'admin/updatePage';?>" method="post" class="form-horizontal form-bordered"  />
+<form action="<?php echo SITE_URL.'admin/updateplan';?>" method="post" class="form-horizontal form-bordered"  />
 <div class="form-group">
 <label class="col-md-3 col-lg-2 control-label" for="compose-to">Plan Name<span class="err">*</span></label>
 <div class="col-md-9 col-lg-10">

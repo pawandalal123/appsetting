@@ -29,7 +29,8 @@ public function validateAdmin()
 public function login()
 {
      //if session is set then it redirect to dashboard
-	 if($this->session->userdata('isLoggedIn') ) {     
+	 if($this->session->userdata('isLoggedIn') ) 
+	 {     
         redirect('/admin/dashboard');
      }	
 		$this->form_validation->set_rules('login_id', 'Login Id', 'trim|required|xss_clean');
@@ -562,9 +563,9 @@ public function updatePage()
 		'page_content' => $content,
 		'status'=>$status,
 		'created_at'=>date('Y-m-d H:i:s'));
-		  $where=array("page_id"=>$page_id);
+		  $where=array("id"=>$page_id);
 		  // print_r($insData);
-		 $update_status=$this->static_pages->updateDetails($upadteData,$where);
+		 $update_status=$this->static_pages->updateDetails($where,$upadteData);
 		if($update_status)
 		{
 				  $msg=" Updated successfully";
@@ -717,7 +718,7 @@ public function updateplan()
 		 
 		 // $menu_label = $this->input->post('menu_label');
 		 
-		 // $position = $this->input->post('position');
+		 $planame = $this->input->post('planame');
 		 $content = $this->input->post('content');
 		 $planid = $this->input->post('page_id'); 
 		 $upadteData=array('plan_name' => $planame,
@@ -732,13 +733,13 @@ public function updateplan()
 		{
 				  $msg=" Updated successfully";
 				  $this->session->set_userdata( array('msg'=>$msg,'class'=>'suc'));
-				  redirect('/admin/pageContent','refresh');
+				  redirect('/admin/subscriptionlist','refresh');
 		}
 		else
 		{	
 				  $msg="Updation error";
 				  $this->session->set_userdata( array('msg'=>$msg,'class'=>'err'));
-				  redirect('/admin/pageContent','refresh');	  
+				  redirect('/admin/subscriptionlist','refresh');	  
 		 }
 				 
 	}
