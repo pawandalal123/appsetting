@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>landing page</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+
+<!--------------- style css ---------------->
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<!--------------- style css ---------------->
+
+<!--------------- google font Lato ---------------->
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700" rel="stylesheet">
+<!--------------- google font Lato ---------------->
+
+<!--------------- js ---------------->
+<script src="js/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("select.select").each(function() {
+        var e = $(this).attr("title");
+        if ($("option:selected", this).val() != "") e = $("option:selected", this).text();
+        $(this).css({
+            "z-index": 10,
+            opacity: 0,
+            "-khtml-appearance": "none"
+        }).after('<span class="select">' + e + "</span>").change(function() {
+            val = $("option:selected", this).text();
+            $(this).next().text(val)
+        })
+    })
+});
+</script>
+<!--------------- js ---------------->
+
+</head>
+<body>
+
+<div class="main-header">
+
+<div class="header-top">
+	<div class="main-logo"><a href="#"><img src="images/[image_tag]"></a></div>
+    <div class="header-right">
+    	<div class="navigation">
+        	<ul>
+            	<li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#" class="donate">Donate</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="showcase">
+<img class="homebanner" src="images/[banner_image]" alt="god">
+	<div class="showcase-text">
+    	<h3>[banner_heading]</h3>
+        <p>[banner_text]</p>
+        <a href="#">Google.Play</a>
+    </div>
+</div>
+
+<div class="container">
+	<div class="category">
+    	<div class="box">
+        	<div class="col1">
+            	<img src="images/[keypoint_first_image]" alt="god">
+                <h2>God  first</h2>
+                <p>Doctus temporibus ius no, nec tollit conceptam definiebas te. Alii appetere dissentias. Doctus temporibus</p>
+            </div>
+            <div class="col1">
+            	<img src="images/[keypoint_second_image]" alt="burn">
+                <h2>Burn Candles</h2>
+                <p>Vel et munere expetenda honestatis. Ex sonet audiam Vel et munere expetenda honestatis. Ex sonet audiam set amet</p>
+            </div>
+            <div class="col1">
+            	<img src="images/[keypoint_third_image]" alt="follow">
+                <h2>Follow the Path</h2>
+                <p>Graeco aperiri nec no. Mea iusto detraxit an. Essent patrioque id. Graeco aperiri nec no. At ancillae dissentias eos</p>
+            </div>
+        </div>
+    </div>
+    <div class="testimonial">
+    	<div class="textbox">
+        	<p>[testomonial_text]</p>
+            <h5 class="client-name">[testomonial_by]</h5>
+        </div>
+        <div class="imgbox"><img src="images/[side_image]" alt="god"></div>
+    </div>
+    <div class="newsletter">
+    <img class="homebottomimage" src="images/[home_bootom_image]" />
+    	<div class="newsletter-form">
+        	<h3>Get Our Newsletter</h3>
+            <div class="row">
+            	<div class="col">
+                	<label>First name</label>
+                    <input type="text" class="input">
+                </div>
+                <div class="col col2">
+                	<label>last name</label>
+                    <input type="text" class="input">
+                </div>
+            </div>
+            <div class="row">
+                <label>E-mail</label>
+                <input type="text" class="input">
+             </div>
+             <div class="row btn">
+                <input type="submit" class="signup-btn" value="Sign Up">
+             </div>
+             <div class="terms">By Sign Up, you agree to our Terms and Data Policy</div>
+        </div>
+    </div>
+    <div class="bottom-text">
+    	<div class="textbox"><p>[footer_text]</p></div>
+    </div>
+</div>
+
+<div class="footer">
+	<div class="box">
+    	<div class="social">
+        	<ul>
+            	<li class="facebook"><a href="#">facebook</a></li>
+                <li class="twitter"><a href="#">twitter</a></li>
+                <li class="instagram"><a href="#">instagram</a></li>
+            </ul>
+        </div>
+    	<div class="footer-logo"><a href="#"><img src="images/footer-logo.jpg"></a></div>
+        <div class="footer-menu">
+        	<ul>
+            	<li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Donate</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+

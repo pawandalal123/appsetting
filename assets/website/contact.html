@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>landing page</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+
+<!--------------- style css ---------------->
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<!--------------- style css ---------------->
+
+<!--------------- google font Lato ---------------->
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700" rel="stylesheet">
+<!--------------- google font Lato ---------------->
+
+<!--------------- js ---------------->
+<script src="js/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("select.select").each(function() {
+        var e = $(this).attr("title");
+        if ($("option:selected", this).val() != "") e = $("option:selected", this).text();
+        $(this).css({
+            "z-index": 10,
+            opacity: 0,
+            "-khtml-appearance": "none"
+        }).after('<span class="select">' + e + "</span>").change(function() {
+            val = $("option:selected", this).text();
+            $(this).next().text(val)
+        })
+    })
+});
+</script>
+<!--------------- js ---------------->
+
+</head>
+<body>
+
+<div class="main-header">
+<div class="header-top inner">
+	<div class="main-logo"><a href="#"><img src="images/[image_tag]"></a></div>
+    <div class="header-right">
+    	<div class="navigation">
+        	<ul>
+            	<li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="container">
+	<div class="box">
+        <div class="contact">
+            <div class="col">
+            	<h3>[tag_main_heading]</h3>
+                <div class="row">
+                    <div class="col3">
+                        <input type="text" class="input" placeholder="Your name">
+                    </div>
+                    <div class="col4">
+                        <input type="text" class="input" placeholder="Company">
+                    </div>
+            	</div>
+                <div class="row">
+                	<textarea name="" cols="" rows="" class="textarea" placeholder="Write your message here..."></textarea>
+                </div>
+                <div class="row">
+                	<span class="right"><a href="mailto:hello@getreplacer.com">hello@getreplacer.com</a></span>
+                	<input type="submit" class="submit-btn" value="Submit">
+                </div>
+            </div>
+            <div class="col2">
+            	<h3>[tag_right_heading]</h3>
+                <p>[tag_right_text]</p>
+                <div class="social">
+                    <ul>
+                        <li class="facebook"><a href="#">facebook</a></li>
+                        <li class="twitter"><a href="#">twitter</a></li>
+                        <li class="instagram"><a href="#">instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bottom-text">
+    <div class="textbox"><p>[footer_text]</p></div>
+</div>
+<div class="footer">
+	<div class="box">
+    	<div class="social">
+        	<ul>
+            	<li class="facebook"><a href="#">facebook</a></li>
+                <li class="twitter"><a href="#">twitter</a></li>
+                <li class="instagram"><a href="#">instagram</a></li>
+            </ul>
+        </div>
+    	<div class="footer-logo"><a href="#"><img src="images/[image_tag]"></a></div>
+        <div class="footer-menu">
+        	<ul>
+            	<li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Donate</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+

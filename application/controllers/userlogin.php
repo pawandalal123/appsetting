@@ -20,7 +20,7 @@ class UserLogin extends MY_AppController {
 					$this->registerwithus();
 				}
 				$this->data['view_file'] = 'web/login';
-				$this->load->view('layouts/seconddefault', $this->data); 
+				$this->load->view('layouts/testDefault', $this->data); 
 			}
 			 public function CheckUserLogin()
 		     {
@@ -94,7 +94,7 @@ class UserLogin extends MY_AppController {
 					'logged_in' => TRUE
 					);
 					$this->session->set_userdata($newdata);
-					if($this->session->userdata('templete_id') && !empty($this->session->userdata('templete_id')))
+					if($this->session->userdata('templete_id'))
 					{
 						$this->load->model("templetes");
 						$condition = array('id'=>$this->session->userdata('templete_id'));

@@ -115,8 +115,11 @@ class User extends MY_AppController {
                     <div class="overlay-chuch">
                     	<h3><?php echo $getproducts->temlete_name;?></h3>
                         <p><?php echo $getproducts->tag_line;?></p>
-                        <a href="#" class="sign-in" style="background: <?php echo $getproducts->color_code; ?>!important">Sign In</a>
-                        <a href="#" class="sign-in" style="background: <?php echo $getproducts->color_code; ?>!important">Sign Up</a>
+                        
+                        <div class="btn-bott">
+                            <a href="#" class="sign-in" style="background: <?php echo $getproducts->color_code; ?>!important">Sign In</a>
+                            <a href="#" class="sign-up" style="background: <?php echo $getproducts->color_code; ?>!important">Sign In</a>
+                        </div>
                     </div>
                 </div>
                 
@@ -134,8 +137,9 @@ class User extends MY_AppController {
             }
             ?>
         </div>
+        <h4>ABOUT</h4>
         <p>Forget Ebay and other forms of advertising for your property that costs you hard earned money. Why not do it all for free? Investment Assets Properties have ready several locations around the world to take your free listings for any luxury property.</p>
-        <div class="row"><a href="#" class="active">Start</a></div>
+        <div class="row"><a href="#" class="active mor-detil">More Details</a><a href="#" class="active">Start</a></div>
         <div class="social-popup social-popup2">
           <h5>LIKE WHAT YOU SEE ? SHARE IT</h5>
             <ul>
@@ -171,6 +175,7 @@ class User extends MY_AppController {
 				$insertData = array('temlete_name'=>$gettempData->temlete_name,
 					                'background_image'=>$gettempData->background_image,
 					                'color_code'=>$gettempData->color_code,
+					                'color_code_hover'=>$gettempData->color_code_hover,
 					                'tag_line'=>$gettempData->tag_line,
 					                'user_id'=>$this->session->userdata('UserId'),
 					                'is_default'=>1,
@@ -206,7 +211,8 @@ class User extends MY_AppController {
 				////////upadte color code/////
 				if($this->input->post('savecolor'))
 				{
-					$upadteData = array('color_code'=>$this->input->post('colorInput'));
+					$upadteData = array('color_code'=>$this->input->post('colorInput'),
+						                'color_code_hover'=>$this->input->post('colorhover'));
 					$upadte = $this->templetes->updateDetails($condition,$upadteData);
 					if($upadte)
 					{
@@ -467,6 +473,38 @@ class User extends MY_AppController {
 		$insertstatus=$this->templetes->updateDetails($condition,$result);
 		echo  $new_name;
       }
+
+      /////////preview./////
+      public function preview($value)
+	{
+		if(!$this->session->userdata('logged_in'))
+		{
+			redirect(SITE_URL);
+		}
+		if($value)
+		{
+			
+			$this->load->model("templetes");
+			$condition = array('id'=>$value);
+			$gettempData = $this->templetes->getBy($condition);
+			if($gettempData)
+			{
+		
+				$this->data['gettempData'] = $gettempData;
+				$this->data['view_file'] = 'web/checkpreview';
+				$this->data['templete_id'] = $value;
+				$this->load->view('layouts/testDefault', $this->data); 
+			}
+			else
+			{
+
+		   }
+	    }
+		else
+		{
+
+		}
+	}
 		
 
 }

@@ -51,17 +51,22 @@ $(document).ready(function(){
        <div class="customize">
         <div class="crousal1">
           <!-- <h3>1 of 25</h3> -->
-          <div class="owl-carousel owl-theme">
-                  <div class="item">
-                  <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="">
+
+              <div class="divine">
+                    <div class="imgbox">
+            <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="">
                     <div class="overlay-chuch">
                       <h3 class="templetename"><?php echo $gettempData->temlete_name;?></h3>
                         <p class="templetetag"><?php echo $gettempData->tag_line;?></p>
+                        <div class="btn-bott">
                         <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
                         <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
+                        </div>
+                        <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>">
                     </div>
-                </div>
-              </div>
+                        
+                    </div>
+                    </div>
                 <div class="landing-box">
             <div class="select-box">
               <select class="select">

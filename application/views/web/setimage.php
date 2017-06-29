@@ -1,4 +1,30 @@
-   
+ 
+       <script>
+    $(document).ready(function() 
+    {
+     var owl = $("#owl-demo4");
+      owl.owlCarousel({
+
+      items : 5, //10 items above 1000px browser width
+      itemsDesktop : [1000,5], //5 items between 1000px and 901px
+      itemsDesktopSmall : [900,3], // 3 items betweem 900px and 601px
+      itemsTablet: [600,2], //2 items between 600 and 0;
+      itemsMobile : false // itemsMobile disabled - inherit from itemsTablet option
+      
+      });
+
+      // Custom Navigation Events
+      $(".next").click(function(){
+        owl.trigger('owl.next');
+      })
+      $(".prev").click(function(){
+        owl.trigger('owl.prev');
+      })
+      
+
+
+    });
+    </script>   
     
 <script>
 $(document).ready(function(){
@@ -29,7 +55,7 @@ $(document).ready(function()
     });
 	
 	 $(".web-overlay2 .inner-web .close").click(function(){
-        $(".web-overlay2").fadeOut()
+        $(".web-overlay2").remove()
     });
     $(".app-template").click(function(){
         $(".web-overlay2").fadeIn();
@@ -87,7 +113,7 @@ $(document).ready(function()
                             if(imgwidth > maxwidth && imgheight > maxheight)
                             {
                                 modelbox('');
-                               $('.content').html('<h3>You Have Previewing <span> Crop Image</span></h3><div class="imgbox"><div class="item"><img src="'+response.imagelink+'" alt="" id="photo"><input type="hidden" name="image_name" id="image_name" value="'+response.imagename+'"  /></div></div>');
+                               $('.content').html('<h3>You Have Previewing <span> Crop Image</span></h3><div class="imgbox" style="height:300px;"><div class="item crop-images"><img src="'+response.imagelink+'" alt="" id="photo"><input type="hidden" name="image_name" id="image_name" value="'+response.imagename+'"  /></div></div>');
                                $('img#photo').imgAreaSelect(
                                     { maxWidth: 300, maxHeight: 600, handles: true,
                                     onSelectEnd: getSizes
@@ -172,6 +198,7 @@ function getSizes(im,obj)
             var t= 'ajax';
                  $.post(WEBROOT_PATH+'user/upload_thumbnail',{"templeteid":id,"img":img,"t":t,"x1":x1,"y1":y1,"thumb_width":thumb_width,"thumb_height":thumb_height},function(data,status)
          {
+                    // $(".web-overlay2").remove()
                            //$("#cropimage").hide();
                   //  var imgSrc = SITE_URL+"upload/Document/"+userId+"/"+data;
                   //   $("#thumbs").html("");
@@ -218,15 +245,21 @@ $(document).ready(function () {
          <div class="column">
          		<div class="customize">
                 	<div class="crousal1">         
-                  <div class="item">
-                  <img class="templeteimgclass" src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="" style="height: 391px; width: 291px;">
+                    <div class="divine">
+                    <div class="imgbox">
+                    <img class="templeteimgclass" src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="">
                     <div class="overlay-chuch">
-                      <h3><?php echo $gettempData->temlete_name;?></h3>
-                        <p><?php echo $gettempData->tag_line;?></p>
+                      <h3 class="templetename"><?php echo $gettempData->temlete_name;?></h3>
+                        <p class="templetetag"><?php echo $gettempData->tag_line;?></p>
+                        <div class="btn-bott">
                         <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign Up</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
+                         </div>
+                        <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>">
                     </div>
-                </div>
+                        
+                    </div>
+                    </div>
              
 
                     </div>
@@ -234,12 +267,18 @@ $(document).ready(function () {
                     	<h3>Current Selection : <span>Church Name and Tag Line</span></h3>
                         <label class="grey padding">Background Image</label>
                         <a href="#" class="gallery">Gallery</a>
-                        <input type="file" name="background_image" id="">Upload
                         
+                        
+                    <div class="fileUpload btn btn-primary">
+                        <span>Upload</span>
+                        <input type="file" name="background_image" id="" class="none upload">
+                    </div>
                         
                     </div>
                 </div>
-                <div class="btn-row"><p>Your Progress is Automatically Saved <span>Last Save 07:29 p.m</span></p><a href="#">Save And Exit</a><a href="#" class="grey">Next</a></div>
+                <div class="btn-row"><p>Your Progress is Automatically Saved <span>Last Save 07:29 p.m</span></p>
+                <a href="<?php echo SITE_URL;?>user/preview/<?php echo $gettempData->id;?>">Save And Exit</a>
+                <a href="<?php echo SITE_URL;?>user/preview/<?php echo $gettempData->id;?>" class="grey">Next</a></div>
             </div>
     </div>
 </div>

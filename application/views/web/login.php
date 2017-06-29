@@ -23,6 +23,7 @@
                 <input type="password" class="input" placeholder="Enter Password" name="password"><br>
                 <?php echo form_error('password');?>
                 <input type="password" class="input" placeholder="Confirm Password" name="repassword"><br>
+                 <?php echo form_error('repassword');?>
                 <input type="submit" class="button" value="Next" name="registerwithus">
             </form>
             </div>

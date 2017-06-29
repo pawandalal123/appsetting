@@ -1,0 +1,42 @@
+<div class="container">
+	<div class="box">
+        <div class="contact">
+            <div class="col">
+            	<h3 id="contact_main_heading"><?php echo $homedata->contact_main_heading;?></h3>
+                <span  href="javascript:void();" class="maketextable" rel="h3">Edit</span>
+                <div class="row">
+                    <div class="col3">
+                        <input type="text" class="input" placeholder="Your name">
+                    </div>
+                    <div class="col4">
+                        <input type="text" class="input" placeholder="Company">
+                    </div>
+            	</div>
+                <div class="row">
+                	<textarea name="" cols="" rows="" class="textarea" placeholder="Write your message here..."></textarea>
+                </div>
+                <div class="row">
+                	<span class="right"><a href="mailto:hello@getreplacer.com">hello@getreplacer.com</a></span>
+                	<input type="submit" class="submit-btn" value="Submit">
+                </div>
+            </div>
+            <div class="col2">
+            	<h3 id="contact_right_heading"><?php echo $homedata->contact_right_heading;?></h3>
+                <span  href="javascript:void();" class="maketextable" rel="h3">Edit</span>
+                <p id="contact_right_text"><?php echo $homedata->contact_right_text;?></p>
+                <span  href="javascript:void();" class="maketextable" rel="p">Edit</span>
+                <div class="social">
+                    <ul>
+                        <li class="facebook"><a href="#">facebook</a></li>
+                        <li class="twitter"><a href="#">twitter</a></li>
+                        <li class="instagram"><a href="#">instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

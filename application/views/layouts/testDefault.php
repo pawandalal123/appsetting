@@ -26,6 +26,11 @@ var WEBROOT_PATH = '<?php echo SITE_URL; ?>';
         $(".web-overlay2").remove()
 
     });
+$(".sign-in").hover(function()
+{
+    var color = $('.hovercolor').val();
+  $(this).css("background-color",color)
+});
     
 });
 function modelbox(body)
@@ -45,7 +50,7 @@ function modelbox(body)
 </style>
 <body class="home">
 <div id="page_hide">
-<img src="http://www.shaadisaath.com/assets/img/AjaxLoader.gif"/>
+<img src="<?php echo WEBROOT_PATH_IMAGES;?>AjaxLoader.gif"/>
 		</div>
  <?php echo $this->load->view('/elements/headre');?>
  <?php echo $this->load->view($view_file);?> 

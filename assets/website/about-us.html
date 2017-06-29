@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>landing page</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+
+<!--------------- style css ---------------->
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<!--------------- style css ---------------->
+
+<!--------------- google font Lato ---------------->
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700" rel="stylesheet">
+<!--------------- google font Lato ---------------->
+
+<!--------------- js ---------------->
+<script src="js/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("select.select").each(function() {
+        var e = $(this).attr("title");
+        if ($("option:selected", this).val() != "") e = $("option:selected", this).text();
+        $(this).css({
+            "z-index": 10,
+            opacity: 0,
+            "-khtml-appearance": "none"
+        }).after('<span class="select">' + e + "</span>").change(function() {
+            val = $("option:selected", this).text();
+            $(this).next().text(val)
+        })
+    })
+});
+</script>
+<!--------------- js ---------------->
+
+</head>
+<body>
+
+<div class="main-header">
+<div class="header-top">
+	<div class="main-logo"><a href="#"><img src="images/[image_tag]"></a></div>
+    <div class="header-right">
+    	<div class="navigation">
+        	<ul>
+            	<li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#" class="donate">Donate</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="showcase2">
+	<img src="images/img-showcase.jpg" alt="god">
+	<div class="about-text">
+    	<h2>[banner_heading]</h2>
+        <p>[banner_text]</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="box">
+        <div class="key-point">
+        	<h3>[top_heading_text]</h3>
+            <div class="col">
+            	<h4>[point_first_heading]</h4>
+                <p>[point_first_text]</p>
+            </div>
+            <div class="col">
+            	<h4>[point_second_heading]</h4>
+                <p>[point_second_text]</p>
+            </div>
+            <div class="col">
+            	<h4>[point_third_heading]</h4>
+                <p>[point_third_text]</p>
+            </div>
+            <div class="row">
+            	<div class="imgbox">
+                	<img src="images/[center_left_image]" alt="god">
+                    <div class="title-overlay">
+                    	<h4>Family Praying</h4>
+                        <span>Main Pray Area</span>
+                    </div>
+                </div>
+                <div class="imgbox right">
+                	<img src="images/[center_right_image]" alt="god">
+                    <div class="title-overlay">
+                    	<h4>Family Praying</h4>
+                        <span>Main Pray Area</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="author">
+    	<div class="imgbox"><img src="images/[bootom_right_image]"></div>
+        <div class="textbox">
+        	<h3>[center_left_image]</h3>
+            <h4>[center_left_image]</h4>
+            <div class="row">
+                <div class="col">
+                	<p>[center_left_image]</p>
+                </div>
+                <div class="col col2">
+                	<p>[center_left_image]</p>
+                </div>
+            </div>
+            <a href="#">Write to me ></a>
+        </div>
+    </div>
+</div>
+<div class="bottom-text">
+    <div class="textbox"><p>[footer_text]</p></div>
+</div>
+<div class="footer">
+	<div class="box">
+    	<div class="social">
+        	<ul>
+            	<li class="facebook"><a href="#">facebook</a></li>
+                <li class="twitter"><a href="#">twitter</a></li>
+                <li class="instagram"><a href="#">instagram</a></li>
+            </ul>
+        </div>
+    	<div class="footer-logo"><a href="#"><img src="images/[image_tag]"></a></div>
+        <div class="footer-menu">
+        	<ul>
+            	<li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Donate</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+

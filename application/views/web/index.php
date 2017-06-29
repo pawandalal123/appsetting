@@ -40,13 +40,13 @@ function settemplete(templeteid)
      {
         if(data.islogin=='yes')
         {
-            alert();
+            //alert();
             window.location.href=WEBROOT_PATH+'user/setcolor/'+data.temoleteid;
 
         }
         else
         {
-            alert('pawan');
+            //alert('pawan');
             window.location.href=WEBROOT_PATH+'userlogin/login';
         }
 
@@ -98,8 +98,6 @@ $(document).ready(function(){
       <div class="our-template">
           <h3>OUR TEMPLATES</h3>
             <p>Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. Etiam elit elit, elementum sed varius at, adipiscing vitae est..</p>
-            <a href="javascript:void(0)" class="active web-temlate">Web Templates</a>
-            <a href="javascript:void(0)" class="app-template">Web and App Templates</a>
         </div>
         <?php 
         if(count($productArray)>0)
@@ -115,6 +113,11 @@ $(document).ready(function(){
                     <li><a href="#newest<?php echo $key;?>"><?php echo $key;?></a></li>
                     <?php } ?>
                 </ul>
+                <div class="search-box">
+                	<input type="submit" value="search" class="search" />
+                    <input type="text" placeholder="SEARCH" class="input2">
+                </div>
+                
             </div>
             <div class="tab-content" id="newest<?php echo $key;?>">
               <ul>
@@ -128,13 +131,13 @@ $(document).ready(function(){
                             <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$templeteval['background_image']?>" alt="" style="width: 270px; height: 270px;">
                             <div class="overlay"><h4><?php echo $templeteval['temlete_name'];?></h4><span><?php echo $templeteval['tag_line'];?></span></div>
                         </div>
-                        <a href="#" onclick="maketempletelist('<?php echo $subcatid;?>')">Preview</a>
+                        <a href="javascript::void(0);" <?php if($subcatid==1)  {?> onclick="maketempletelist('<?php echo $subcatid;?>')" <?php } ?>>Preview</a>
                     </li>
-                    <?<?php } ?>
+                    <?php } ?>
                 </ul>
             </div>
            
         </div>
-        <?<?php } ?>
+        <?php } ?>
     </div>
 </div>

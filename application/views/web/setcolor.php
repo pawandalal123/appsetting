@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="<?php echo WEBROOT_PATH_CSS;?>tinycolorpicker.css" type="text/css" media="screen"/>
+  <link href="<?php echo WEBROOT_PATH_CSS;?>bootstrap-colorpicker.min.css" rel="stylesheet">
+    <link href="<?php echo WEBROOT_PATH_CSS;?>bootstrap-colorpicker-plus.css" rel="stylesheet">
 
     <script src="<?php echo WEBROOT_PATH_JS;?>tinycolorpicker.js"></script>
     <script type="text/javascript">
@@ -35,28 +37,25 @@
             	<div class="hightight">
                 	<h3>Highlight Color</h3>
                     <h4>Will be used to highlight items such as buttons and special actions.</h4>
-                    <div class="imgbox">
+                    <div class="imgbox" style="margin-left: -150px; height: 192px" >
                             <div id="colorPicker">
                                 <a class="color"><div class="colorInner"></div></a>
                                 <div class="track"></div>
                                 <ul class="dropdown"><li></li></ul>
                             
                                 <input type="hidden" class="colorInput" name="colorInput" value="<?php echo $gettempData->color_code; ?>">
+                               
                                </div>
                     </div>
                     <div class="color-plate">
-                    	<ul>
-                        	<li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>img-color1.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>img-color2.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>img-color3.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>img-color4.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>img-color5.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>img-color6.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>img-color7.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>img-color8.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>img-color9.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>img-color10.jpg" alt=""></a></li>
-                        </ul>
+                    	            <div class="well">
+                                     <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>">
+                         <!--  <input type="hidden" value="" id="demo3"/> -->
+                          <div class="colorpickerplus-embed">
+                            <div class="colorpickerplus-container"></div>
+                          </div>
+
+                       </div>
                     </div>
                 </div>
             
@@ -66,19 +65,36 @@
                         <li><a href="#" class="active">Application</a></li>
                         <li><a href="#">Website</a></li>
                     </ul>
+                     <div class="divine">
                     <div class="imgbox">
-                          <div class="item">
-                    <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="" style="height: 391px; width: 291px;">
+                     <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="" >
                     <div class="overlay-chuch">
                         <h3><?php echo $gettempData->temlete_name;?></h3>
                         <p><?php echo $gettempData->tag_line;?></p>
+                        <div class="btn-bott">
+                              <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
                         <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
+                        </div>
+                   
+                          </div>
                         
                     </div>
-                </div>
-                       
+                     <div class="imgbox">
+                     <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="" >
+                    <div class="overlay-chuch">
+                        <h3><?php echo $gettempData->temlete_name;?></h3>
+                        <p><?php echo $gettempData->tag_line;?></p>
+                        <div class="btn-bott">
+                              <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
+                        </div>
+                   
+                          </div>
+                        
                     </div>
+                    </div>
+
+     
                 </div>
                 <div class="btn-row">
                 <input type="submit" class="save-exit" name="savecolor" value="Next">
@@ -91,5 +107,23 @@
 
 
 
-
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="<?php echo WEBROOT_PATH_JS;?>bootstrap-colorpicker.min.js"></script>
+    <script src="<?php echo WEBROOT_PATH_JS;?>bootstrap-colorpicker-plus.js"></script>
+    <script type="text/javascript">
+    $(function(){
+   
+    
+    var demo3 = $('.colorpickerplus-embed .colorpickerplus-container');
+        demo3.colorpickerembed();
+        demo3.on('changeColor', function(e,color)
+        {
+            if(color==null)
+             $('.hovercolor').val('#fff');
+               else
+              $('.hovercolor').val(color);
+        });
+ 
+    });
+    </script>
 
