@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class User extends CI_Model {
+class User_modal extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
@@ -43,13 +43,16 @@ function select_data($cols='*',$where=false,$where_or=false,$where_in=false) {
 			$conditions = array();
 			$conditions['email']=$email;
 			$conditions['password']=$password;
+			$conditions['user_type']=1;
+			$conditions['status']=1;
 			$login  =  $this->db->select('id, email,name')
 		    			 ->from($this->table)
 		   				 ->where($conditions)->get()->result();
 						// echo $this->db->last_query();
 		    // The results of the query are stored in $login.
 		    // If a value exists, then the user account exists and is validated
-		    if ( is_array($login) && count($login) == 1 ) {
+		    if ( is_array($login) && count($login) == 1 )
+		     {
 		        // Set the users details into the $details property of this class
 		         $this->details = $login[0];
 			    //print_r($this->details); die;
@@ -96,7 +99,7 @@ function select_data($cols='*',$where=false,$where_or=false,$where_in=false) {
 		  {
 			 $this->db->where($where);
              $this->db->update($this->table, $data); 
-             return $this->db->affected_rows(); 
+             return true; 
 		  }
 		  public function deletedata($where)
 		  {

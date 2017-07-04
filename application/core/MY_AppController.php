@@ -19,8 +19,8 @@ class MY_AppController extends CI_Controller {
 			$config['file_name'] = time().'_'.$img_name;
 			$this->load->library('upload', $config);
 			$this->upload->initialize($config);
-			if ( ! $this->upload->do_upload($feild_name))
-		   {
+			if( ! $this->upload->do_upload($feild_name))
+		    {
 				$upload_errors = $this->upload->display_errors('', '');
 				$err = 'Error: '.$upload_errors;
 				$status['error'] = true;

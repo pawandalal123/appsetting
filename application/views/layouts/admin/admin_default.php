@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="<?php echo WEBROOT_PATH_ADMIN_CSS;?>main.css" />
 <link rel="stylesheet" href="<?php echo WEBROOT_PATH_ADMIN_CSS;?>themes.css" />
 <script src="<?php echo WEBROOT_PATH_ADMIN_JS;?>jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo WEBROOT_PATH_JS;?>websitecommon.js"></script>
 <script>
 var WEBROOT_PATH = '<?php echo SITE_URL; ?>';
 </script>

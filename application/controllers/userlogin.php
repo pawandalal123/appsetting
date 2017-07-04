@@ -15,22 +15,33 @@ class UserLogin extends MY_AppController {
 				{
 					$this->CheckUserLogin();
 				}
+			
+				$this->data['view_file'] = 'web/login';
+				$this->load->view('layouts/testDefault', $this->data); 
+			}
+			public function register()
+			{
+				if($this->session->userdata('logged_in'))
+				{
+					redirect(SITE_URL);
+				}
+				
 				if($this->input->post('registerwithus'))
 				{
 					$this->registerwithus();
 				}
-				$this->data['view_file'] = 'web/login';
+				$this->data['view_file'] = 'web/register';
 				$this->load->view('layouts/testDefault', $this->data); 
 			}
 			 public function CheckUserLogin()
 		     {
 			               							
 		                    $userLoginDetails = $this->input->post();
-							$where="email_id = '".$userLoginDetails['email']."' and password='".md5($userLoginDetails['password'])."'";
-							$this->form_validation->set_rules('email', 'email', 'required');
+							$where="email = '".$userLoginDetails['useremail']."' and password='".md5($userLoginDetails['password'])."'";
+							$this->form_validation->set_rules('useremail', 'email', 'required');
 			                $this->form_validation->set_rules('password', 'password', 'required');
 		                    $CheckLoginQuery = $this->db->where($where)
-					 		                     ->get('user_signup');	
+					 		                     ->get('users');	
 							//echo $this->db->last_query();
 							
 							$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
@@ -38,24 +49,24 @@ class UserLogin extends MY_AppController {
                             if ($this->form_validation->run())
 			                 {
 							 if($CheckLoginQuery->num_rows() > 0)
-							{
-								$CheckLoginData = $CheckLoginQuery->row();
-						       $newdata = array(
-                             //  'username'  => 'johndoe',
-							   'UserId'     => $CheckLoginData->id,
-                               'email'     => $CheckLoginData->email_id,
-							   'mobile'    => $CheckLoginData->mobile_no,
-							   'emailstatus'     => $CheckLoginData->email_status,
-							   'mobilestatus'    => $CheckLoginData->mobile_status,
-							   'DisplayName'    => $CheckLoginData->profile_name,
-							   'DisplayAddress'    => $CheckLoginData->permanent_address,
-                               'logged_in' => TRUE
-                                     );
+								{
+									$CheckLoginData = $CheckLoginQuery->row();
+							       $newdata = array(
+	                             //  'username'  => 'johndoe',
+								   'UserId'     => $CheckLoginData->id,
+	                               'email'     => $CheckLoginData->email_id,
+								   'mobile'    => $CheckLoginData->mobile_no,
+								   'emailstatus'     => $CheckLoginData->email_status,
+								   'mobilestatus'    => $CheckLoginData->mobile_status,
+								   'DisplayName'    => $CheckLoginData->profile_name,
+								   'DisplayAddress'    => $CheckLoginData->permanent_address,
+	                               'logged_in' => TRUE
+	                                     );
 
-                               $this->session->set_userdata($newdata);
-							   redirect(SITE_URL.'user/profile');
-		                    
-							}
+	                               $this->session->set_userdata($newdata);
+								   redirect(SITE_URL.'user/profile');
+			                    
+								}
 							 else
 							 {
 								$this->data['err_msg'] = 'Login Details Do Not Match.';  
@@ -102,7 +113,7 @@ class UserLogin extends MY_AppController {
 						if($gettempData)
 						{
 							$insertData = array('temlete_name'=>$gettempData->temlete_name,
-							                'background_image'=>$gettempData->background_image,
+							                    'background_image'=>$gettempData->background_image,
 							                'color_code'=>$gettempData->color_code,
 							                'tag_line'=>$gettempData->tag_line,
 							                'user_id'=>$userLoginId,
@@ -128,6 +139,8 @@ class UserLogin extends MY_AppController {
 					}
 				}
 			}
+
+
 			
 			public function logout()
 			 {

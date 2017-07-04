@@ -15,6 +15,8 @@
 
 <script type="text/javascript" src="http://www.shaadisaath.com/assets/js/jquery.min.js"></script>
 <script type="text/javascript" src="<?php echo WEBROOT_PATH_JS;?>owl-crousel.js"></script>
+<script type="text/javascript" src="<?php echo WEBROOT_PATH_JS;?>websitecommon.js"></script>
+
 
 </head>
 <script>

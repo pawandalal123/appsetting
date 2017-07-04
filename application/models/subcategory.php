@@ -30,6 +30,15 @@ function select_data($cols='*',$where=false) {
 	   return $query->result();
 }
 
+public function getlist($where=false)
+{
+	if($where){
+  		 $this->db->where($where);
+  	 }
+        $query = $this->db->get($this->table);
+        return $query->result();
+ }
+
 ///////// function for single result////
 
 	public function getBy($condition,$cols='*')

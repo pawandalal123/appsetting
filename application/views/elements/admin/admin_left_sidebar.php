@@ -89,6 +89,22 @@
 <li>
 <a href="<?php echo SITE_URL.'admin/pageContent';?>">Page Management</a>
 </li>
+<li>
+<a href="<?php echo SITE_URL.'admin/training';?>">Trainig Videos</a>
+</li>
+</ul>
+</li>
+
+<li>
+<a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator"></i>
+<i class="gi gi-table sidebar-nav-icon"></i>Request Management</a>
+<ul>
+<li>
+<a href="<?php echo SITE_URL.'admin/modificationlist';?>">Modification</a>
+</li>
+<li>
+<a href="<?php echo SITE_URL.'admin/buglist';?>">Report Bug</a>
+</li>
 </ul>
 </li>
 </ul>

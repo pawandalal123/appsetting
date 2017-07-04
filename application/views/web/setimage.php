@@ -62,7 +62,7 @@ $(document).ready(function()
     });
     var _URL = window.URL || window.webkitURL;
 
-    $('input[name=background_image]').change(function()
+    $('input[name=background_image_app]').change(function()
     {
       var file, img;
       var fileField  = this.files[0];
@@ -99,7 +99,7 @@ $(document).ready(function()
               form_data.append('upadtefor','image');
               $.ajax({
                     type: "POST",
-                    url: WEBROOT_PATH+'user/upatdeimge',
+                    url: WEBROOT_PATH+'user/upatdeimgeapp',
                     data: form_data,
                     cache: false,
                     contentType: false,
@@ -114,10 +114,14 @@ $(document).ready(function()
                             {
                                 modelbox('');
                                $('.content').html('<h3>You Have Previewing <span> Crop Image</span></h3><div class="imgbox" style="height:300px;"><div class="item crop-images"><img src="'+response.imagelink+'" alt="" id="photo"><input type="hidden" name="image_name" id="image_name" value="'+response.imagename+'"  /></div></div>');
-                               $('img#photo').imgAreaSelect(
-                                    { maxWidth: 300, maxHeight: 600, handles: true,
-                                    onSelectEnd: getSizes
-                                });
+                               // $('img#photo').imgAreaSelect(
+                               //      { maxWidth: 300, maxHeight: 600, handles: true,
+                               //      onSelectEnd: getSizes
+                               //  });
+                                $('img#photo').Jcrop({
+                                  maxWidth: 300, maxHeight: 600, handles: true,
+                                    onSelect: getSizes
+                                  });
                             }
 
                           }
@@ -151,24 +155,24 @@ $(document).ready(function()
       //alert();
       var imagename = $(this).attr('rel');
       var id = $('input[name=updateid]').val();
-      $.post(WEBROOT_PATH+'user/upatdeimge',{'imagename':imagename,'updateid':id},function(data,status)
+      $.post(WEBROOT_PATH+'user/upatdeimgeapp',{'imagename':imagename,'updateid':id},function(data,status)
       {
           if(data.status=='success')
           {
             $('.templeteimgclass').attr('src',data.imagelink);
-            $(".web-overlay2").fadeOut()
+            $(".web-overlay3").fadeOut()
 
           }
           else
           {
             alert('some technical issue.');
-            $(".web-overlay2").fadeOut()
+            $(".web-overlay3").fadeOut()
           }
       
       },'json').fail(function(response)
       {
             alert('some technical issue.');
-            $(".web-overlay2").fadeOut()
+            $(".web-overlay3").fadeOut()
                         
                         });
 
@@ -177,17 +181,17 @@ $(document).ready(function()
 });
 
 </script>
-<link rel="stylesheet" type="text/css" href="http://www.shaadisaath.com/assets/css/imgareaselect-animated.css" />
-<script type="text/javascript" src="http://www.shaadisaath.com/assets/js/jquery.imgareaselect.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo WEBROOT_PATH_CSS;?>jquery.Jcrop.css" />
+<script type="text/javascript" src="<?php echo WEBROOT_PATH_JS;?>jquery.Jcrop.js"></script>
 <script type="text/javascript">
-function getSizes(im,obj)
+function getSizes(c)
   {
-    var x1 = obj.x1;
-    var x2_axis = obj.x2;
-    var y1 = obj.y1;
-    var y2_axis = obj.y2;
-    var thumb_width = obj.width;
-    var thumb_height = obj.height;
+    var x1 = c.x;
+    // var x2_axis = obj.x2;
+    var y1 = c.y;
+    // var y2_axis = obj.y2;
+    var thumb_width = c.w;
+    var thumb_height = c.h;
     var id = $('input[name=updateid]').val();
     
     if(thumb_width> 0)
@@ -196,20 +200,18 @@ function getSizes(im,obj)
           {
             var img = $("#image_name").val();
             var t= 'ajax';
-                 $.post(WEBROOT_PATH+'user/upload_thumbnail',{"templeteid":id,"img":img,"t":t,"x1":x1,"y1":y1,"thumb_width":thumb_width,"thumb_height":thumb_height},function(data,status)
-         {
-                    // $(".web-overlay2").remove()
-                           //$("#cropimage").hide();
-                  //  var imgSrc = SITE_URL+"upload/Document/"+userId+"/"+data;
-                  //   $("#thumbs").html("");
-                  // $("#thumbs").html("<img src="+imgSrc+" />");
-                  // $("#finalimage").html("");
-                  // $("#finalimage").html("<img src="+imgSrc+" />");
-                  // $('.button').show();
-        });
+            $.post(WEBROOT_PATH+'user/upload_thumbnail',{"templeteid":id,"img":img,"t":t,"x1":x1,"y1":y1,"thumb_width":thumb_width,"thumb_height":thumb_height},function(data,status)
+           {
+                $(".web-overlay2").remove()
+                             //$("#cropimage").hide();
+                    //  var imgSrc = SITE_URL+"upload/Document/"+userId+"/"+data;
+                    //   $("#thumbs").html("");
+                    // $("#thumbs").html("<img src="+imgSrc+" />");
+                    // $("#finalimage").html("");
+                    // $("#finalimage").html("<img src="+imgSrc+" />");
+                    // $('.button').show();
+          });
             
-       
-      
     };
             
           }
@@ -233,9 +235,9 @@ $(document).ready(function () {
 		<div class="preview-form">
             <h2>Get a free preview with your content</h2>
             <ul>
-                <li><a href="#" class="next">1</a></li>
+                <li><a href="#" class="active">1</a></li>
                 <li><a href="#" class="next">2</a></li>
-                <li><a href="#" class="active">3</a></li>
+                <li><a href="#" class="next">3</a></li>
                 <li><a href="#">4</a></li>
             </ul>
             <h3>Customize The App Screens</h3>
@@ -271,7 +273,7 @@ $(document).ready(function () {
                         
                     <div class="fileUpload btn btn-primary">
                         <span>Upload</span>
-                        <input type="file" name="background_image" id="" class="none upload">
+                        <input type="file" name="background_image_app" id="" class="none upload">
                     </div>
                         
                     </div>

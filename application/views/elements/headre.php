@@ -16,15 +16,39 @@ if($this->uri->segment(1)=='')
                     <li><a href="#">SERVICES</a></li>
                     <li><a href="#">FEATURES</a></li>
                     <li><a href="#">TEMPLATES</a></li>
-                    <?php 
-                    if($this->session->userdata('logged_in'))
+                    <?php
+                   if($this->session->userdata('logged_in'))
                     {
                         ?>
                     
-                    <li><a href="#">MY ACCOUNT</a></li>
-                    <?php } ?>
+                    <li><a href="<?php echo SITE_URL.'user/profile'?>">MY ACCOUNT</a></li>
                     <li><a href="#">TRAINING</a></li>
+                    <?php }
+                    else
+                    {
+                        ?>
+                        <li><a href="<?php echo SITE_URL.'user/training'?>">TRAINING</a></li>
+                        <?php
+                        } ?>
+                    
                     <li><a href="#">CONTACT</a></li>
+                    <?php
+                   if($this->session->userdata('logged_in'))
+                    {
+                        ?>
+                        <li><a href="<?php echo SITE_URL.'userlogin/logout'?>">Logout</a></li>
+
+                        <?php
+                    }
+                    else
+                    {
+                        ?>
+                        <li><a href="<?php echo SITE_URL.'userlogin/login'?>">LOGIN</a></li>
+                        <?php
+
+                    }
+
+                        ?>
                 </ul>
             </div>
         </div>
@@ -48,15 +72,38 @@ else
                     <li><a href="#">SERVICES</a></li>
                     <li><a href="#">FEATURES</a></li>
                     <li><a href="#">TEMPLATES</a></li>
-                    <?php 
+                      <?php 
                     if($this->session->userdata('logged_in'))
                     {
                         ?>
                     
-                    <li><a href="#">MY ACCOUNT</a></li>
-                    <?php } ?>
+                    <li><a href="<?php echo SITE_URL.'user/profile'?>">MY ACCOUNT</a></li>
                     <li><a href="#">TRAINING</a></li>
+                    <?php }
+                    else
+                    {
+                        ?>
+                        <li><a href="<?php echo SITE_URL.'user/training'?>">TRAINING</a></li>
+                        <?php
+                        } ?>
                     <li><a href="#">CONTACT</a></li>
+                    <?php
+                    if($this->session->userdata('logged_in'))
+                    {
+                        ?>
+                        <li><a href="<?php echo SITE_URL.'userlogin/logout'?>">Logout</a></li>
+
+                        <?php
+                    }
+                    else
+                    {
+                        ?>
+                        <li><a href="<?php echo SITE_URL.'userlogin/login'?>">LOGIN</a></li>
+                        <?php
+
+                    }
+
+                        ?>
                 </ul>
             </div>
         </div>

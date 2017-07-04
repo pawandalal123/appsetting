@@ -7,11 +7,14 @@ class Admin extends MY_AppController {
 		$this->load->model("admin_model");
 }	
 //index() action is the default action of this controller, it is executed at first
-public function index(){
+public function index()
+{
 	 if($this->session->userdata('isLoggedIn') ) {
 	 //if session is set redirect to dashboard
        redirect('/admin/dashboard');
-    } else {
+    } 
+    else 
+    {
        $this->show_login(false);
     }
 }
@@ -37,25 +40,29 @@ public function login()
 		$this->form_validation->set_rules('login_password', 'Password', 'trim|required|xss_clean');
 		$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
 	 // if any feild is got empty then redirect to login page and show message
-	if($this->form_validation->run() == FALSE) {          
-		$this->data['view_file']  = 'admin/login';
-		$this->load->view('layouts/admin/admin_blank', $this->data); 
+	if($this->form_validation->run() == FALSE)
+	 {          
+		$this->show_login(false);
 	}else{
 		// Login Id and password from the form POST
 		$login_id = $this->input->post('login_id');
 		$pass  = md5($this->input->post('login_password'));
      // If the user is valid, redirect to the dashboard
-		$this->load->model("user");
-	if( $login_id && $pass && $this->user->validate_user($login_id,$pass)) {
+		$this->load->model("user_modal");
+	if( $login_id && $pass && $this->user_modal->validate_user($login_id,$pass))
+	 {
 		 redirect('/admin/dashboard');	   
-	}else{
+	}
+	else
+	{
 		  // Otherwise show the login screen with an error message.
 			$this->show_login(true);
 		}
 	}
 }	
 // show_login function load the error on the login view	
-function show_login( $show_error = false ) {
+function show_login( $show_error = false ) 
+{
     $this->data['error'] = $show_error;
     $this->data['view_file']  = 'admin/login';
 	$this->load->view('layouts/admin/admin_blank', $this->data); 
@@ -88,8 +95,8 @@ public function view_admin(){
 	 $this->validateAdmin();
 		
 	 $where=array('user_type'=>1);
-	 $this->load->model("user");
-     $adminData=$this->user->select_data('*',$where);
+	 $this->load->model("user_modal");
+     $adminData=$this->user_modal->select_data('*',$where);
 	 $this->data['rows']  = $adminData;
 
 	 $this->data['view_file']  = 'admin/view_admin';
@@ -104,7 +111,7 @@ public function view_admin(){
 //parameter is Id of the record to be active or deactive
 public function activeDeactiveAdmin($adminId = false,$status_mode=false)
 {
-	$this->load->model("user");
+	$this->load->model("user_modal");
 	  $where=array("id"=>$adminId);
 	if($status_mode=='deActive')
 	{
@@ -117,10 +124,10 @@ public function activeDeactiveAdmin($adminId = false,$status_mode=false)
 		 $msgStatus='Deactivated';
 	 }
 	 ///////check user//////
-	 $checkuser= $this->user->getBy($where,array('user_type'));
+	 $checkuser= $this->user_modal->getBy($where,array('user_type'));
 	 if($checkuser)
 	 {
-	 	 $affected_row=$this->user->updateDetails($where,$cols);
+	 	 $affected_row=$this->user_modal->updateDetails($where,$cols);
 		 if($affected_row)
 		 {
 				  $msg="$msgStatus Successfully";
@@ -376,8 +383,8 @@ public function add_subcategory($subcatid=false)
 	{
 		 $this->validateAdmin();
 		 $where=array('user_type'=>0);
-	     $this->load->model("user");
-         $adminData=$this->user->select_data('*',$where);
+	     $this->load->model("user_modal");
+         $adminData=$this->user_modal->select_data('*',$where);
 	     $this->data['rows']  = $adminData;
 		 $this->data['view_file']  = 'admin/view_user';
 		 $this->load->view('layouts/admin/admin_default', $this->data); 
@@ -583,6 +590,119 @@ public function updatePage()
 }
 
 // Page Content all actions end here//
+
+
+////////// trainig section///////
+public function training($videoid=false)
+{
+	$this->validateAdmin();
+	$userData = $this->input->post();
+    if($this->input->post('savevideo'))
+    {
+    	$this->addvideo($videoid);
+    	redirect('/admin/training');
+    }
+	$this->load->model("training_videos");
+	// $this->db->order_by('total_views','desc');
+	$getvideos = $this->training_videos->select_data('*',array());
+		//echo $this->db->last_query();
+	$this->data['getvideos'] = $getvideos;
+	$this->load->model("category");
+	$this->data['catrow']=$this->category->select_data(array('id','name'),array('status'=>1));
+
+	/////////// if edit////////
+	$editdata='';
+	if($videoid)
+	{
+		$editdata = $this->training_videos->getBy(array('id'=>$videoid));
+		if(empty($editdata))
+		{
+			$msg="Some Technical Issue";
+			$this->session->set_userdata( array('msg'=>$msg,'class'=>'suc'));
+			redirect('/admin/training','refresh');
+
+		}
+
+	}
+	$this->data['editdata']=$editdata;
+	$this->data['view_file']  = 'admin/traingvideos';
+	$this->load->view('layouts/admin/admin_default', $this->data); 
+}
+public function addvideo($videoid=false)
+{
+	$this->load->model("training_videos");
+	$this->form_validation->set_rules('cat', 'Category', 'trim|required|xss_clean');
+	$this->form_validation->set_rules('subcat', 'Subcategory Name', 'trim|required|xss_clean');
+	$this->form_validation->set_rules('videourl', 'Video Url', 'trim|required|xss_clean');
+	$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
+	if($this->form_validation->run())
+    {
+		$status=1;
+		// $cat = $this->input->post('cat');
+		$userData = $this->input->post();
+	   @extract($userData );
+		$insertData=array('video_title' => $videotitle,
+					      'video_link'=>$videourl,
+					      'cat_id'=>$cat,
+					      'sub_cat_id'=>$subcat,
+				          'status'=>$status,
+				          'created_by'=>$this->session->userdata('id'),
+				          'created_at'=>date('Y-m-d H:i:s')
+				         );
+		if($videoid)
+		{
+			unset($insertData['created_at']);
+			$lastId=$this->training_videos->updateDetails(array('id'=>$videoid),$insertData);
+			$mesage='Updated';
+
+		}
+		else
+		{
+			$lastId=$this->training_videos->AdduserData($insertData);
+			$mesage='Created';
+		}
+		if(isset($mesage))
+		{
+			$msg=$mesage." successfully";
+			$this->session->set_userdata( array('msg'=>$msg,'class'=>'suc'));
+		    //redirect('/admin/category','refresh');
+		}
+		else
+		{
+			$msg="Some Technical Issue";
+			$this->session->set_userdata( array('msg'=>$msg,'class'=>'suc'));
+
+		}
+	}
+}
+
+public function activeDeactivevideo($videoid = false,$status_mode=false)
+	{
+	 $this->load->model("training_videos");
+	  $where=array("id"=>$videoid);
+	 if($status_mode=='deActive')
+	 {
+			$cols=array("status"=>1);
+			$msgStatus='Activated';
+	   } 
+	   else if($status_mode=='Active')
+	   {
+			 $cols=array("status"=>0);
+			 $msgStatus='Deactivated';
+		}
+	      $affected_row=$this->training_videos->updateDetails($where,$cols);
+	     if($affected_row)
+	     {
+				  $msg="$msgStatus Successfully";
+				  $this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
+				  redirect('/admin/training','refresh');
+			}else{
+			  
+				  $msg=" Status Not Changed !";
+				  $this->session->set_userdata( array('msg'=>$msg,'class' => 'err'));
+				  redirect('/admin/training','refresh');
+			  }
+ }
 	
 		
 // pageContent() action load the respective view on default layout
@@ -796,5 +916,52 @@ public function activeDeactivetemp($templateid = false,$status_mode=false)
 		$this->session->set_userdata( array('msg'=>$msg,'class' => 'err'));
 	    redirect($_SERVER['HTTP_REFERER']);
 	}
+}
+
+public function modificationlist()
+{
+	$this->load->model("user_messages");
+	$reportdata=$this->user_messages->select_data(array('type'=>1));
+	if(count($reportdata)>0)
+	{
+		foreach($reportdata as $reportlsit)
+		{
+
+		}
+		array_walk($reportdata, function(&$value,$key)
+		{
+			$value->username='pawan';
+
+		});
+
+	}
+	
+	$this->data['reportdata'] = $reportdata;
+	$this->data['view_file']  = 'admin/view_modification';
+	$this->load->view('layouts/admin/admin_default', $this->data);
+
+}
+public function buglist()
+{
+	$this->load->model("user_messages");
+	$reportdata=$this->user_messages->select_data(array('type'=>2));
+	if(count($reportdata)>0)
+	{
+		foreach($reportdata as $reportlsit)
+		{
+
+		}
+		array_walk($reportdata, function(&$value,$key)
+		{
+			$value->username='pawan';
+
+		});
+
+	}
+	
+	$this->data['reportdata'] = $reportdata;
+	$this->data['view_file']  = 'admin/view_modification';
+	$this->load->view('layouts/admin/admin_default', $this->data);
+
 }
 } // controller end here 
