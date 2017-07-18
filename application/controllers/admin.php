@@ -604,7 +604,7 @@ public function training($videoid=false)
     }
 	$this->load->model("training_videos");
 	// $this->db->order_by('total_views','desc');
-	$getvideos = $this->training_videos->select_data('*',array());
+	$getvideos = $this->training_videos->select_data('*',array('type'=>1));
 		//echo $this->db->last_query();
 	$this->data['getvideos'] = $getvideos;
 	$this->load->model("category");
@@ -645,6 +645,7 @@ public function addvideo($videoid=false)
 					      'video_link'=>$videourl,
 					      'cat_id'=>$cat,
 					      'sub_cat_id'=>$subcat,
+					      'type'=>1,
 				          'status'=>$status,
 				          'created_by'=>$this->session->userdata('id'),
 				          'created_at'=>date('Y-m-d H:i:s')
@@ -703,6 +704,112 @@ public function activeDeactivevideo($videoid = false,$status_mode=false)
 				  redirect('/admin/training','refresh');
 			  }
  }
+
+ ////////// trainig section///////
+public function galleryimages($imageid=false)
+{
+	$this->validateAdmin();
+	$userData = $this->input->post();
+    if($this->input->post('savevideo'))
+    {
+    	$this->addimage($imageid);
+    	redirect('/admin/galleryimages');
+    }
+	$this->load->model("training_videos");
+	// $this->db->order_by('total_views','desc');
+	$getvideos = $this->training_videos->select_data('*',array('type'=>2));
+		//echo $this->db->last_query();
+	$this->data['getvideos'] = $getvideos;
+	$this->load->model("category");
+	$this->data['catrow']=$this->category->select_data(array('id','name'),array('status'=>1));
+
+	/////////// if edit////////
+	$editdata='';
+	if($imageid)
+	{
+		$editdata = $this->training_videos->getBy(array('id'=>$imageid,'type'=>2));
+		if(empty($editdata))
+		{
+			$msg="Some Technical Issue";
+			$this->session->set_userdata( array('msg'=>$msg,'class'=>'suc'));
+			redirect('/admin/galleryimages','refresh');
+		}
+	}
+	$this->data['editdata']=$editdata;
+	$this->data['view_file']  = 'admin/addgalleryimages';
+	$this->load->view('layouts/admin/admin_default', $this->data); 
+}
+
+public function addimage($imageid=false)
+{
+	$this->load->model("training_videos");
+	$this->form_validation->set_rules('cat', 'Category', 'trim|required|xss_clean');
+	$this->form_validation->set_rules('subcat', 'Subcategory Name', 'trim|required|xss_clean');
+	$this->form_validation->set_rules('attachment', 'Gallery Image', 'trim|required|xss_clean');
+	$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
+	if($this->form_validation->run())
+    {
+		$status=1;
+		$imagename='';
+		if($_FILES['attachment']['name'])
+		{
+			//echo 'sdasDasd';
+			$up_path='upload/galleryimage';
+			$input_name='attachment';
+			$name =$_FILES['attachment']['name'];
+
+			$image_name = $this->uploadimage($up_path,$input_name,$name);
+			if($image_name['error']==true)
+			{
+				$msg=$image_name['error_type'];
+			    $this->session->set_userdata( array('msg'=>$msg,'class' => 'error'));
+			    exit();
+			}
+			else
+			{
+				$imagename = $image_name['file_name'];
+				$userData = $this->input->post();
+	            @extract($userData );
+		        $insertData=array('video_link'=>$imagename,
+							      'cat_id'=>$cat,
+							      'sub_cat_id'=>$subcat,
+						          'status'=>$status,
+						          'created_by'=>$this->session->userdata('id'),
+						          'created_at'=>date('Y-m-d H:i:s')
+						         );
+		        if($videoid)
+				{
+					unset($insertData['created_at']);
+					$lastId=$this->training_videos->updateDetails(array('id'=>$videoid),$insertData);
+					$mesage='Updated';
+
+				}
+				else
+				{
+					$lastId=$this->training_videos->AdduserData($insertData);
+					$mesage='Created';
+				}
+				if(isset($mesage))
+				{
+					$msg=$mesage." successfully";
+					$this->session->set_userdata( array('msg'=>$msg,'class'=>'suc'));
+				    //redirect('/admin/category','refresh');
+				}
+				else
+				{
+					$msg="Some Technical Issue";
+					$this->session->set_userdata( array('msg'=>$msg,'class'=>'suc'));
+
+				}
+			}
+		}
+		else
+		{
+			$msg="Some Technical Issue";
+			$this->session->set_userdata( array('msg'=>$msg,'class'=>'suc'));
+		}
+	}
+}
 	
 		
 // pageContent() action load the respective view on default layout
@@ -872,6 +979,101 @@ public function updateplan()
 
 // category all actions start
 // category() function load the respective view on default layout
+
+
+public function addtemplate($templateid=false)
+{
+	$this->validateAdmin();
+	$this->load->model("templetes");
+	if($this->input->post('savetemplate'))
+	{
+		$this->savetemplate();
+
+	}
+	$this->load->model("category");
+	$this->data['catrow']=$this->category->select_data(array('id','name'),array('status'=>1));
+	$this->data['view_file']  = 'admin/addtemplate';
+	$this->load->view('layouts/admin/admin_default', $this->data); 
+
+}
+public function savetemplate($templateid=false)
+{
+	$this->load->model("templetes");
+	$this->form_validation->set_rules('cat', 'Category', 'trim|required|xss_clean');
+	$this->form_validation->set_rules('subcat', 'Subcategory Name', 'trim|required|xss_clean');
+	$this->form_validation->set_rules('templatetitle', 'Template name', 'trim|required|xss_clean');
+	$this->form_validation->set_rules('tagline', 'Tag line', 'trim|required|xss_clean');
+	$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
+	if($this->form_validation->run())
+    {
+		$status=1;
+		$imagename='';
+		if($_FILES['attachment']['name'])
+		{
+			//echo 'sdasDasd';
+			$up_path='upload/';
+			$input_name='attachment';
+			$name =$_FILES['attachment']['name'];
+
+			$image_name = $this->uploadimage($up_path,$input_name,$name);
+			if($image_name['error']==true)
+			{
+				$msg=$image_name['error_type'];
+			    $this->session->set_userdata( array('msg'=>$msg,'class' => 'error'));
+			    exit();
+			}
+			else
+			{
+				$imagename = $image_name['file_name'];
+				$userData = $this->input->post();
+	            @extract($userData );
+		        $insertData=array('tag_line' => $templatetitle,
+					              'temlete_name'=>$tagline,
+					              'color_code'=>'#66B032',
+					              'color_code_hover'=>'#ffffff',
+					              'text_color'=>'#FD5308',
+							      'cat_id'=>$cat,
+							      'background_image'=>$imagename,
+							      'sub_cat_id'=>$subcat,
+						          'status'=>$status,
+						          'user_id'=>$this->session->userdata('id'),
+						          // 'created_by'=>$this->session->userdata('id'),
+						          'created_at'=>date('Y-m-d H:i:s')
+						         );
+		        if($templateid)
+				{
+					unset($insertData['created_at']);
+					$lastId=$this->templetes->updateDetails(array('id'=>$templateid),$insertData);
+					$mesage='Updated';
+
+				}
+				else
+				{
+					$lastId=$this->templetes->AdduserData($insertData);
+					$mesage='Created';
+				}
+				if(isset($mesage))
+				{
+					$msg=$mesage." successfully";
+					$this->session->set_userdata( array('msg'=>$msg,'class'=>'suc'));
+				    //redirect('/admin/category','refresh');
+				}
+				else
+				{
+					$msg="Some Technical Issue";
+					$this->session->set_userdata( array('msg'=>$msg,'class'=>'suc'));
+
+				}
+			}
+		}
+		else
+		{
+			$msg="Some Technical Issue";
+			$this->session->set_userdata( array('msg'=>$msg,'class'=>'suc'));
+		}
+	}
+
+}
 public function templetelist($type=false)
 {
 	    $this->validateAdmin();
@@ -920,6 +1122,7 @@ public function activeDeactivetemp($templateid = false,$status_mode=false)
 
 public function modificationlist()
 {
+	$this->validateAdmin();
 	$this->load->model("user_messages");
 	$reportdata=$this->user_messages->select_data(array('type'=>1));
 	if(count($reportdata)>0)
@@ -943,6 +1146,7 @@ public function modificationlist()
 }
 public function buglist()
 {
+	$this->validateAdmin();
 	$this->load->model("user_messages");
 	$reportdata=$this->user_messages->select_data(array('type'=>2));
 	if(count($reportdata)>0)
@@ -964,4 +1168,84 @@ public function buglist()
 	$this->load->view('layouts/admin/admin_default', $this->data);
 
 }
+
+/////// //////////// get replysection ///////
+public function makereply()
+{
+	if (!$this->input->is_ajax_request()) 
+	{
+	   exit('No direct script access allowed');
+	}
+	//echo 'pawan';
+	$replyfor=1;
+	if($this->input->post('replyfor'))
+	{
+		$replyfor=2;
+	}
+	?>
+    <input type="hidden" name="messageid" value="<?php echo $this->input->post('messageid')?>">
+    <input type="hidden" name="replyfor" value="<?php echo $replyfor?>">
+	<fieldset>
+	<div class="form-group">
+	<label class="col-md-4 control-label" for="user-settings-password">Message<span class="err">*</span></label>
+	<div class="col-md-8">
+	<textarea id="replymessage" name="replymessage" class="form-control validate[required]" value="" placeholder="Please choose a complex one.." /></textarea>
+	</div>
+	</div>
+	
+	</fieldset>
+	<div class="form-group form-actions">
+	<div class="col-xs-12 text-right">
+	<input type="submit" class="btn btn-sm btn-primary makereply" value="Make Reply"/>
+	</div>
+	</div>
+	
+
+	<?php
+
+}
+
+	//////////////// contact list////////
+	public function messagelist()
+	{
+		$this->validateAdmin();
+		$this->load->model("contactus");
+	    $reportdata=$this->contactus->select_data();
+		$this->data['reportdata'] = $reportdata;
+		$this->data['view_file']  = 'admin/view_contact';
+		$this->load->view('layouts/admin/admin_default', $this->data);
+
+	}
+
+	public function savereply()
+	{
+		if (!$this->input->is_ajax_request()) 
+		{
+		   exit('No direct script access allowed');
+		}
+		$this->load->model('message_reply');
+		$postdata = $this->input->post();
+		@extract($postdata);
+		$checkreply = $this->message_reply->getBy(array('messageid'=>$messageid,'type'=>$replyfor));
+		$dataArray = array('messageid'=>$messageid,
+			               'type'=>$replyfor,
+			               'message'=>$message,
+			               'reply_by'=>$this->session->userdata('id'));
+		if($checkreply)
+		{
+			$dataArray['updated_at']=date('Y-m-d H:i:s');
+			$dataArray['updated_by']=$this->session->userdata('id');
+
+			$this->message_reply->updateDetails(array('messageid'=>$messageid,'type'=>$replyfor),$dataArray);
+
+		}
+		else
+		{
+			$dataArray['created_at']=date('Y-m-d H:i:s');
+			$this->message_reply->AdduserData($dataArray);
+
+		}
+		echo 'success';
+
+	}
 } // controller end here 

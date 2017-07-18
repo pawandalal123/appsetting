@@ -1,4 +1,25 @@
 
+<script type="text/javascript">
+
+$(document).ready(function()
+{
+  $('.clickme').click(function()
+  {
+    var messageid = $(this).attr('id');
+    var body='<div class="modalcontent"></div>';
+    modelblock('Make Reply',body);
+    $.post(WEBROOT_PATH+'admin/makereply',{'messageid':messageid},function(data,status)
+    {
+      $('.modalcontent').html(data);
+
+    });
+
+  });
+  
+
+});
+   
+</script>
 
 <div id="page-content">
   <ul class="breadcrumb breadcrumb-top">
@@ -50,7 +71,7 @@ $c++; ?>
 <td class="text-center">
 <div class="btn-group">
 
-<a href="<?php echo SITE_URL.'admin/activeDeactiveAdmin';?>/<?php echo $result->id;?>/Active" title="Activated" >Reply</a>
+<a class="clickme" href="#" title="Activated"  id="<?php echo  $result->id;?>">Reply</a>
 
 </div>
 </td>

@@ -1,77 +1,94 @@
+
+<script type="text/javascript">
+
+$(document).ready(function()
+{
+  $('.clickme').click(function()
+  {
+    var messageid = $(this).attr('id');
+    var body='<div class="modalcontent"></div>';
+    modelblock('Make Reply',body);
+    $.post(WEBROOT_PATH+'admin/makereply',{'messageid':messageid,'replyfor':1},function(data,status)
+    {
+      $('.modalcontent').html(data);
+
+    });
+
+  });
+  
+
+});
+   
+</script>
+
 <div id="page-content">
-
-<ul class="breadcrumb breadcrumb-top">
-<li>Admin</li>
-<li><a href="contactDetails">View Contact Details</a></li>
-</ul>
-<div class="block full">
-<div class="block-title">
-<h2><a href="addContact" class="btn btn-primary" ><strong>Add Contact</strong></a>&nbsp;
-<?php  if( $this->session->userdata('msg') ) {?>
+  <ul class="breadcrumb breadcrumb-top">
+    <li>Admin</li>
+    <li><a href="subcategory"> Sub Category</a></li>
+  </ul>
+  <div class="block full">
+    <div class="block-title">
+      <h2>
+       <?php  if( $this->session->userdata('msg') ) {?>
 <span class="<?php echo $this->session->userdata('class');?>"> <?php echo $this->session->userdata('msg');?></span>
- <?php $this->session->unset_userdata('msg');}?></h2>
-
-
-</div>
-
+ <?php $this->session->unset_userdata('msg');}?>
+      </h2>
+      
+    </div>
+  
 <div class="table-responsive">
 <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
 <thead>
 <tr>
 <th class="text-center">ID</th>
-<th class="text-center">Comapany Name</th>
-<th class="text-center">Email id</th>
-<th class="text-center">LandLine No</th>
-<th class="text-center">Mobile No</th>
-<th class="text-center">Executive Name</th>
-<th class="text-center">Address</th>
-<th class="text-center">Status</th>
+
+<th class="text-center">First Name</th>
+<th class="text-center">Last Name</th>
+<th class="text-center">Email</th>
+<th class="text-center">Message</th>
+
+<th class="text-center">Ip address</th>
+
 <th class="text-center">Actions</th>
+
+
+<th></th>
+
 </tr>
 </thead>
 <tbody>
 <?php 
-if(isset($rows)){
+if(isset($reportdata)){
 //pr($rows);
 $c=0;
-foreach($rows as $result){
-$c++;
-
- ?>
+foreach($reportdata as $result)
+{
+$c++; ?>
 <tr>
 <td class="text-center"><?php echo $c;?></td>
 
-<td><?php echo $result->company_name;?></td>
-<td><?php echo $result->contact_email;?></td>
-<td><?php echo $result->contact_no;?> </td>
-<td><?php echo $result->mobile;?> </td>
-<td><?php echo $result->executive_name;?></td>
-<td><?php echo $result->address;?></td>
+<td><?php echo $result->first_name;?></td>
+<td><?php echo $result->last_name;?></td>
+<td><?php echo $result->email;?></td>
+<td><?php echo $result->message;?></td>
+<td><?php echo $result->ip_address;?></td>
 <td class="text-center">
 <div class="btn-group">
-<?php if($result->status==1){?>
-<a href="<?php echo SITE_URL.'admin/activeDeactiveContact';?>/<?php echo $result->id;?>/Active" title="Activated" ><img src="<?php echo WEBROOT_PATH_IMAGES;?>green_icon.png" alt="Activated" /></a>
-<?php } else{?>
-<a href="<?php echo SITE_URL.'admin/activeDeactiveContact';?>/<?php echo $result->id;?>/deActive" title="Deactivated" ><img src="<?php echo WEBROOT_PATH_IMAGES;?>red_icon.png" alt="Deactivated" /></a>
-<?php }?>
-</div>
-</td>
 
-<td class="text-center">
-<div class="btn-group">
-<a href="<?php echo SITE_URL.'admin/editContact';?>/<?php echo $result->id;?>" title="Edit" class="btn btn-xs btn-default">
-<i class="fa fa-pencil"></i></a>
-<a href="<?php echo SITE_URL.'admin/deleteContact';?>/<?php echo $result->id;?>" onclick="return confirm('Are you sure to delete ?')" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+<a class="clickme" href="#" title="Activated"  id="<?php echo  $result->id;?>">Reply</a>
 
 </div>
 </td>
+
+
 <td></td>
 
 </tr>
-<?php } }?>
+<?php }
+}?>
 </tbody>
 </table>
 </div>
+  </div>
 </div>
-</div>
-<div id="pageModal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+

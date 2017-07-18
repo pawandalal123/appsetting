@@ -36,7 +36,7 @@ function select_data($cols='*',$where=false,$where_or=false,$where_in=false) {
 
 ///////// function for single result////
 
-	public function getBy($pageid)
+	public function getBy($planid)
 	{
 		if($pageid)
 		{

@@ -18,6 +18,12 @@ class Website extends MY_AppController {
 		{
 			$this->saveindex($id);
 		}
+
+		if($this->input->post('nextpage'))
+		{
+			$this->saveindex($id);
+			redirect(SITE_URL.'website/about/'.$id);
+		}
 		$this->load->model("Webindex");
 		$condition = array('app_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
@@ -249,6 +255,11 @@ class Website extends MY_AppController {
 		{
 			$this->saveabout($id);
 		}
+		if($this->input->post('nextpage'))
+		{
+			$this->saveabout($id);
+			redirect(SITE_URL.'website/contact/'.$id);
+		}
 		$this->load->model("Webindex");
 		$this->load->model("wesite_about");
 		$condition = array('app_id'=>$id);
@@ -476,6 +487,11 @@ class Website extends MY_AppController {
 		{
 			$this->savecontact($id);
 		}
+		if($this->input->post('nextpage'))
+		{
+			$this->savecontact($id);
+			redirect(SITE_URL.'website/donate/'.$id);
+		}
 		$this->load->model("Webindex");
 		$condition = array('app_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
@@ -509,6 +525,12 @@ class Website extends MY_AppController {
 		if($this->input->post('savehome'))
 		{
 			$this->savedonate($id);
+		}
+		if($this->input->post('saveandpay'))
+		{
+			$this->input->post('savehome');
+			redirect('website/subscription/'.$id);
+
 		}
 		$this->load->model("Webindex");
 		$condition = array('app_id'=>$id);
@@ -689,6 +711,140 @@ class Website extends MY_AppController {
 		{
 
 		}
+
+	}
+
+//////////// payment function ////
+	public function subscription($id)
+	{
+		if(!$this->session->userdata('logged_in'))
+		{
+			redirect(SITE_URL);
+		}
+		if($id)
+		{
+			
+			$loginuser=$this->session->userdata('UserId');
+		    $this->load->model("templetes");
+		    $condition = array('id'=>$id,'user_id'=>$loginuser);
+			$gettempData = $this->templetes->getBy($condition);
+			if($gettempData)
+			{
+				$this->load->model("subscription_plan");
+				$subscriptionData=$this->subscription_plan->select_data('*',array('status'=>1));
+				$this->data['gettempData'] = $gettempData;
+				$this->data['subscriptionData'] = $subscriptionData;
+				$this->data['rows']  = $pageData;
+				$this->data['view_file'] = 'web/subscription';
+				$this->load->view('layouts/testDefault', $this->data); 
+
+			}
+			else
+			{
+
+			}
+			
+		}
+		else
+		{
+
+		}
+		
+	}
+
+	public function checkout($id)
+	{
+		if(!$this->session->userdata('logged_in'))
+		{
+			redirect(SITE_URL);
+		}
+		if($id)
+		{
+			//echo 'jfh';
+			$loginuser=$this->session->userdata('UserId');
+			$this->load->model("payments");
+			$payments = $this->payments->getBy(array('id'=>$id));
+			if($payments)
+			{
+
+			    $this->load->model("templetes");
+			    $condition = array('id'=>$payments->app_id,'user_id'=>$loginuser);
+				$gettempData = $this->templetes->getBy($condition);
+				//echo $this->db->last_query();
+				if($gettempData)
+				{
+					//echo 'dalal';
+					$this->load->model("subscription_plan");
+					$this->data['payments'] = $payments;
+					$this->data['plan_data'] = $this->subscription_plan->getBy(array('id'=>$payments->plan_id));
+					$this->data['view_file'] = 'web/checkout';
+				    $this->load->view('layouts/testDefault', $this->data); 
+				}
+				else
+				{
+					echo '';
+
+				}
+		  }
+		  else{
+		  	echo '';
+
+		  }
+			
+		}
+		else
+		{
+
+		}
+
+	}
+
+	public function makesubscription()
+	{
+		if (!$this->input->is_ajax_request()) 
+		{
+
+		   exit('No direct script access allowed');
+		}
+		$templateid = $this->input->post('app_id');
+		$plan_id = $this->input->post('plan_id');
+		$loginuser=$this->session->userdata('UserId');
+		$this->load->model("templetes");
+	    $condition = array('id'=>$templateid,'user_id'=>$loginuser);
+		$gettempData = $this->templetes->getBy($condition);
+		if($gettempData)
+		{
+			$this->load->model("subscription_plan");
+			$subscriptionData=$this->subscription_plan->getBy(array('id'=>$plan_id));
+			if($subscriptionData)
+			{
+				$this->load->model("payments");
+				$result['response']['bookingstatus']='success';
+				$insertArray = array('app_id'=>$templateid,
+					                 'plan_id'=>$plan_id,
+					                 'user_id'=>$loginuser,
+					                 'amount'=>$subscriptionData->price,
+					                 'created_at'=>date('Y-m-d H:i:s'),
+					                 'payment_date'=>date('Y-m-d H:i:s')
+					                 );
+				$makeplan = $this->payments->AdduserData($insertArray);
+				$result['response']['payment_id']=$makeplan;
+
+			}
+			else
+			{
+				$result['response']['bookingstatus']='error';
+			}
+
+		}
+		else
+		{
+			$result['response']['bookingstatus']='error';
+		}
+
+		echo json_encode($result);
+
+
 
 	}
 

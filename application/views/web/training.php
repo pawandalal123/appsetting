@@ -20,26 +20,36 @@ $(document).ready(function(){
         	<!-- <div class="welcome-msg">
             	<h4>Welcome <samp>Januka!</samp> <span>CustomerID 345</span></h4>
             </div> -->
-            <div class="editing">
+             <div class="editing">
             	<label>Choose Product</label>
                 <div class="select-box">
-                <select class="select">
-                    <option>All</option>
-                    <option>All</option>
-                    <option>All</option>
+                <form method="get" id="trainingform">
+                <select class="select trainingsubmit" name="training">
+                <option value="all">All</option>
+                <?php
+                if(count($subcategoryList)>0)
+                {
+                   foreach($subcategoryList as $subcategoryList)
+                   {
+                     echo '<option value='.$subcategoryList->id.'>'.$subcategoryList->name.'</option>';
+                   } 
+                }
+                ?>
+                
                 </select>
+                </form>
                 </div>
             </div>
         </div>
-        
         <div class="taining-bar">
         	<h3>Training Guides</h3>
             <div class="search-box">
-            	<input type="text" class="input" placeholder="Search">
-                <input type="submit" value="search" class="search-btn">
+            <form method="get">
+            	<input type="text" class="input" placeholder="Search" name="keyword">
+                <input type="submit" value="search" class="search-btn ">
+                </form>
             </div>
         </div>
-        
         <div class="products-list">
         <?php 
         if(count($getvideos)>0)
@@ -72,15 +82,22 @@ $(document).ready(function(){
         ?>
         </div>
         
-        <div class="bottom-text">
-        	<span>Anonymous Proxy</span>
-            <p>Get The Boot A Birds Eye Look Into Mcse Boot Camps</p>
-        </div>
+      
         
     </div>
 </div>
 
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $('.trainingsubmit').change(function()
+        {
+            $('#trainingform').submit();
 
+        });
+
+    });
+</script>
 
 
 

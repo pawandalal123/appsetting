@@ -15,10 +15,16 @@
     define('WEBROOT_PATH_CSS', SITE_URL.'assets/css/');
 	define('WEBROOT_PATH_ADMIN_CSS', SITE_URL.'assets/admin/css/');
 	define('WEBROOT_PATH_ADMIN_JS', SITE_URL.'assets/admin/js/');
-      define('WEBROOT_PATH_IMAGES_admin', SITE_URL.'assets/img/');
+    define('WEBROOT_PATH_IMAGES_admin', SITE_URL.'assets/img/');
     define('WEBROOT_PATH_JS', SITE_URL.'assets/js/');
+    
 	define('WEBROOT_PATH_sell', SITE_URL.'upload/Document/');
 	define('WEBROOT_PATH_UPLOAD_IMAGES', SITE_URL.'upload/');
     define('SITE_DEFAULT_TITLE', 'App Seeting');
+
+    define('WEBROOT_PATH_SITE_JS', SITE_URL.'assets/website/js/');
+    define('WEBROOT_PATH_SITE_IMAGES', SITE_URL.'assets/website/images/');
+    define('WEBROOT_PATH_SITE_CSS', SITE_URL.'assets/website/css/');
+    define('WEBROOT_PATH_SITE_UPLODE', SITE_URL.'assets/website/uplode/');
 	
 ?>

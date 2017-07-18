@@ -1,7 +1,7 @@
 <!--------------- header ---------------->
 <?php
 
-if($this->uri->segment(1)=='')
+if($this->uri->segment(1)=='' || $this->uri->segment(1)=='services' || $this->uri->segment(1)=='contact')
 {
     ?>
     <div class="header">
@@ -12,8 +12,8 @@ if($this->uri->segment(1)=='')
             <div class="toggle-menu"></div>
             <div class="navigation">
                 <ul>
-                    <li><a href="#">HOME</a></li>
-                    <li><a href="#">SERVICES</a></li>
+                    <li><a href="<?php echo SITE_URL;?>">HOME</a></li>
+                    <li><a href="<?php echo SITE_URL;?>services">SERVICES</a></li>
                     <li><a href="#">FEATURES</a></li>
                     <li><a href="#">TEMPLATES</a></li>
                     <?php
@@ -22,7 +22,7 @@ if($this->uri->segment(1)=='')
                         ?>
                     
                     <li><a href="<?php echo SITE_URL.'user/profile'?>">MY ACCOUNT</a></li>
-                    <li><a href="#">TRAINING</a></li>
+                    <li><a href="<?php echo SITE_URL.'user/training'?>">TRAINING</a></li>
                     <?php }
                     else
                     {
@@ -31,19 +31,19 @@ if($this->uri->segment(1)=='')
                         <?php
                         } ?>
                     
-                    <li><a href="#">CONTACT</a></li>
+                    <li><a href="<?php echo SITE_URL;?>contact">CONTACT</a></li>
                     <?php
                    if($this->session->userdata('logged_in'))
                     {
                         ?>
-                        <li><a href="<?php echo SITE_URL.'userlogin/logout'?>">Logout</a></li>
+                        <li><a href="<?php echo SITE_URL.'userlogin/logout'?>">LOGOUT</a></li>
 
                         <?php
                     }
                     else
                     {
                         ?>
-                        <li><a href="<?php echo SITE_URL.'userlogin/login'?>">LOGIN</a></li>
+                        <li><a href="<?php echo SITE_URL.'userlogin/mainlogin'?>">LOGIN</a></li>
                         <?php
 
                     }
@@ -68,8 +68,8 @@ else
             <div class="toggle-menu"></div>
             <div class="navigation">
                 <ul>
-                    <li><a href="#">HOME</a></li>
-                    <li><a href="#">SERVICES</a></li>
+                    <li><a href="<?php echo SITE_URL;?>">HOME</a></li>
+                    <li><a href="<?php echo SITE_URL;?>services">SERVICES</a></li>
                     <li><a href="#">FEATURES</a></li>
                     <li><a href="#">TEMPLATES</a></li>
                       <?php 
@@ -78,7 +78,7 @@ else
                         ?>
                     
                     <li><a href="<?php echo SITE_URL.'user/profile'?>">MY ACCOUNT</a></li>
-                    <li><a href="#">TRAINING</a></li>
+                    <li><a href="<?php echo SITE_URL.'user/training'?>">TRAINING</a></li>
                     <?php }
                     else
                     {
@@ -86,7 +86,7 @@ else
                         <li><a href="<?php echo SITE_URL.'user/training'?>">TRAINING</a></li>
                         <?php
                         } ?>
-                    <li><a href="#">CONTACT</a></li>
+                    <li><a href="<?php echo SITE_URL;?>contact">CONTACT</a></li>
                     <?php
                     if($this->session->userdata('logged_in'))
                     {
@@ -98,7 +98,7 @@ else
                     else
                     {
                         ?>
-                        <li><a href="<?php echo SITE_URL.'userlogin/login'?>">LOGIN</a></li>
+                        <li><a href="<?php echo SITE_URL.'userlogin/mainlogin'?>">LOGIN</a></li>
                         <?php
 
                     }

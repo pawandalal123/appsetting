@@ -1,3 +1,22 @@
+<style>
+.modal{ 
+  position: fixed; 
+  display: block!important;
+  top: 0; 
+  right: 0; 
+  bottom: 0; 
+  left: 0; 
+  /*z-index: 1040; */
+  overflow-y: auto; 
+  background: rgba(0, 0, 0, 0.7); 
+  -webkit-transition: opacity .15s linear; transition: opacity .15s linear; 
+} 
+  .owl-item.active
+  {
+    max-width: 430px!important;
+  }
+/* Model */
+ </style>
 <div id="sidebar">
 <div class="sidebar-scroll">
 <div class="sidebar-content">
@@ -13,10 +32,7 @@
 </div>
 <div class="sidebar-user-name"><?php if( $this->session->userdata('isLoggedIn') ) { echo $this->session->userdata('name');}?></div>
 <div class="sidebar-user-links">
-<a href="#modal-user-profile" data-toggle="modal" id="profile" data-placement="bottom" title="Profile" rel="<?php echo $this->session->userdata('id');?>">
-<i class="gi gi-user"></i></a>
-<a href="#" data-toggle="tooltip" data-placement="bottom" title="Messages"><i class="gi gi-envelope"></i></a>
-<a href="#modal-user-settings" data-toggle="modal" class="enable-tooltip" data-placement="bottom" title="Settings"><i class="gi gi-cogwheel"></i></a>
+
 <a href="<?php echo SITE_URL.'admin/logout';?>" data-toggle="tooltip" data-placement="bottom" title="Logout"><i class="gi gi-exit"></i></a>
 </div>
 </div>
@@ -68,6 +84,7 @@
 <i class="gi gi-table sidebar-nav-icon"></i>Templetes</a>
 <ul>
 <li>
+<a href="<?php echo SITE_URL.'admin/addtemplate';?>">Add Templetes</a>
 <a href="<?php echo SITE_URL.'admin/templetelist';?>">Defaults Templetes</a>
 <a href="<?php echo SITE_URL.'admin/templetelist/users';?>">User Templetes</a>
 </li>
@@ -92,6 +109,9 @@
 <li>
 <a href="<?php echo SITE_URL.'admin/training';?>">Trainig Videos</a>
 </li>
+<li>
+<a href="<?php echo SITE_URL.'admin/galleryimages';?>">Uplode Gallery Images</a>
+</li>
 </ul>
 </li>
 
@@ -104,6 +124,9 @@
 </li>
 <li>
 <a href="<?php echo SITE_URL.'admin/buglist';?>">Report Bug</a>
+</li>
+<li>
+<a href="<?php echo SITE_URL.'admin/messagelist';?>">Contact Messages</a>
 </li>
 </ul>
 </li>

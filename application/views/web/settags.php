@@ -39,9 +39,9 @@ $(document).ready(function(){
     <div class="preview-form">
       <h2>Get a free preview with your content</h2>
       <ul>
-        <li><a href="#" class="next">1</a></li>
-        <li><a href="#" class="next">2</a></li>
-        <li><a href="#" class="active">3</a></li>
+        <li><a href="#" class="active next">1</a></li>
+        <li><a href="#" class="active ">2</a></li>
+        <li><a href="#" class="">3</a></li>
         <li><a href="#">4</a></li>
       </ul>
       <h3>Customize The iOS<span>*</span> App Screens</h3>
@@ -59,25 +59,15 @@ $(document).ready(function(){
                       <h3 class="templetename"><?php echo $gettempData->temlete_name;?></h3>
                         <p class="templetetag"><?php echo $gettempData->tag_line;?></p>
                         <div class="btn-bott">
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; color: <?php echo $gettempData->text_color; ?>!important;">Sign In</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; color: <?php echo $gettempData->text_color; ?>!important;">Sign In</a>
                         </div>
                         <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>">
                     </div>
                         
                     </div>
                     </div>
-                <div class="landing-box">
-            <div class="select-box">
-              <select class="select">
-                <option>Landing</option>
-                <option>Landing-1</option>
-                <option>Landing-2</option>
-                <option>Landing-3</option>
-                <option>Landing-4</option>
-              </select> </div>
-            <h4>Edited Elemants : <span>1</span>/4 </h4>
-          </div>
+              
             </div>
          
         <div class="customize-detail">
@@ -98,7 +88,8 @@ $(document).ready(function(){
         <p>Your Progress is Automatically Saved <span>Last Save 07:29 p.m</span></p>
         <!-- <a href="#">Save And Exit</a> -->
         <input class="save-exit" type="submit" name="savedetails" value="Save And Exit">
-        <a href="#" class="grey">Next</a></div>
+        <input class="save-exit" type="submit" name="savedetails" value="Next">
+        <!-- <a href="#" class="grey">Next</a></div> -->
         </form>
     </div>
   </div>

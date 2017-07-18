@@ -1,0 +1,642 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0058)http://localhost/appset/appsetting/website/subscription/75 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<title>landing page</title>
+<!--------------- style css ---------------->
+
+<link rel="stylesheet" type="text/css" href="./landing page_files/style.css" media="screen">
+<!--------------- style css ---------------->
+
+<!--------------- google font Lato ---------------->
+<link href="./landing page_files/css" rel="stylesheet">
+<!--------------- google font Lato ---------------->
+
+<script type="text/javascript" src="./landing page_files/jquery.min.js"></script>
+<script type="text/javascript" src="./landing page_files/owl-crousel.js"></script>
+<script type="text/javascript" src="./landing page_files/websitecommon.js"></script>
+
+
+<script>
+var WEBROOT_PATH = 'http://localhost/appset/appsetting/';
+	$(document).ready(function(){
+    $(document).on('click','.close',function()
+    {
+        // $(".web-overlay2").fadeOut();
+        $(".web-overlay2").remove()
+
+    });
+$(".sign-in").hover(function()
+{
+    var color = $('.hovercolor').val();
+  $(this).css("background-color",color)
+});
+    
+});
+function modelbox(body)
+{
+    var template = '<div class="web-overlay2"><div class="inner-web"><div class="close"></div>'+
+                   '<div class="content">'+body+'</div>'+
+                '</div></div>';
+                $(".web-overlay2").fadeIn();
+                $(".web-overlay2").show();
+                 $('body').append(template);
+           
+}
+</script><style type="text/css">
+	#page_hide{display:none;background:#000;position:fixed;left:0;top:0;width:100%;height:100%;opacity:.8;z-index:9999}
+#page_hide img{position:fixed;top:50%;left:45%}
+</style></head>
+
+
+<body class="home">
+<div id="page_hide">
+<img src="./landing page_files/AjaxLoader.gif">
+		</div>
+ <!--------------- header ---------------->
+<div class="header inner">
+  <div class="box">
+      <div class="logo"><a href="http://localhost/appset/appsetting/"><img src="./landing page_files/logo.png" alt=""></a></div>
+        <div class="header-right">
+            <div class="search"></div>
+            <div class="toggle-menu"></div>
+            <div class="navigation">
+                <ul>
+                    <li><a href="http://localhost/appset/appsetting/website/subscription/75#">HOME</a></li>
+                    <li><a href="http://localhost/appset/appsetting/website/subscription/75#">SERVICES</a></li>
+                    <li><a href="http://localhost/appset/appsetting/website/subscription/75#">FEATURES</a></li>
+                    <li><a href="http://localhost/appset/appsetting/website/subscription/75#">TEMPLATES</a></li>
+                                          
+                    <li><a href="http://localhost/appset/appsetting/user/profile">MY ACCOUNT</a></li>
+                    <li><a href="http://localhost/appset/appsetting/website/subscription/75#">TRAINING</a></li>
+                                        <li><a href="http://localhost/appset/appsetting/website/subscription/75#">CONTACT</a></li>
+                                            <li><a href="http://localhost/appset/appsetting/userlogin/logout">Logout</a></li>
+
+                                        </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--------------- header ---------------->
+ <script>
+$(document).ready(function() {
+	$(".account-process").hide();
+	$("#first").show();
+	$(".account-step li.basic").click(function(){
+    	$("#first").show();
+		$("#second").hide();
+		$("#third").hide();
+	});
+	$(".account-step li.advance").click(function(){
+    	$("#second").show();
+		$("#first").hide();
+		$("#third").hide();
+	});
+	$(".account-step li.superior").click(function(){
+		$("#third").show();
+    	$("#second").hide();
+		$("#first").hide();
+	});
+	$(".account-step li").click(function(){
+		$(".account-step li").removeClass("active");
+    	$(this).addClass("active");
+	});
+});
+	
+</script>
+<div class="container">
+	<div class="box">
+    <!-- 	<div class="welcome-mess">Welcome <span>Januka!</span></div>
+        <div class="account-nav">
+        	<ul>
+            	<li><a href="#">Your Products</a></li>
+                <li><a href="#" class="active">Your Subscription</a></li>
+            </ul>
+        </div> -->
+        <div class="account-title">
+        	<h2>Choose Your Subscription</h2>
+            <h3>Your demo account expires on <span>20th March, 2017</span></h3>
+        </div>
+        
+        <div class="account-step">
+        <div class="box">
+                	<ul>
+        	        		<li class="basic active">
+                    <div class="iner-box">
+                        <h4>normal</h4>
+                        <div class="price"><strong>1000 <sup>$</sup></strong> / month</div>
+                        <p>Up to 10 Users <br>saD sad sa D<br>D Sad&nbsp;<br>D SAd<br>ad sa<br>D SA</p>
+                        <a href="http://localhost/appset/appsetting/website/subscription/75#">SELECT</a>
+                    </div>
+                </li>
+        		            	
+                <!-- <li class="advance">
+                	<div class="iner-box">
+                        <h4>ADVANCE</h4>
+                        <div class="price"><strong>35 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                        <a href="#">SELECT</a>
+                    </div>
+                </li>
+                <li class="superior">
+                	<div class="iner-box">
+                        <h4>SUPERIOR</h4>
+                        <div class="price"><strong>49 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                        <a href="#">SELECT</a>
+                    </div>
+                </li> -->
+            </ul>
+                    </div>
+        </div>
+        <!-- <div class="account-process" id="second">
+        	<div class="change-package"><a href="#"> <  Change Package </a></div>
+        	<div class="row first">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>BASIC</h4>
+                        <div class="price"><strong>23 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                    </div>
+                    <div class="col-right">
+                    	<div class="radio-box">
+                    	<label><input type="radio" class="radio" name="radio"> DEFAULT INSTALLATION  ( + 1000 $ )</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                        <div class="radio-box">
+                        <label><input type="radio" class="radio" name="radio"> STANDALONE INSTALLATION  ( + 1000 $ )</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                        <div class="total-amo">
+                        	<h3>TOTAL AMOUNT</h3>
+                            <h4>1023 $</h4>
+                        </div>
+                        <a href="#" class="next-btn">next</a>
+                    </div>
+                </div>
+            </div>
+            <div class="change-package"><a href="#"> <  Change Package </a></div>
+            <div class="row second">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>BASIC</h4>
+                        <div class="price"><strong>23 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                    </div>
+                    <div class="col-right">
+                    	<div class="radio-box">
+                    	<label><input type="radio" class="radio" name="radio"> DEFAULT INSTALLATION  ( + 1000 $ )</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p>
+                        <div class="row">
+                        	<label><input type="radio" class="radio"> Pay It Now</label>
+                            <label><input type="radio" class="radio"> Pay It Now</label>
+                        </div>
+                        </div>
+                        <div class="radio-box">
+                        <label><input type="radio" class="radio" name="radio"> STANDALONE INSTALLATION  ( + 1000 $ )</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                        <div class="total-amo">
+                        	<h3>TOTAL AMOUNT</h3>
+                            <h4>1023 $</h4>
+                        </div>
+                        <a href="#" class="next-btn">next</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="change-package"><a href="#"> <  Change Instllation Type </a></div>
+            <div class="row third">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>BASIC</h4>
+                        <div class="price"><strong>23 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                        <p><strong>INSTALLATION  ( + 1000 $ )</strong> (Default - Pay it Now)</p>
+                    </div>
+                    <div class="col-right">
+                    	<h2>YOUR ORDER</h2>
+                    	<div class="radio-box">
+                    	<label class="padd25"> DEFAULT INSTALLATION  ( + 1000 $ ) - PAY IT NOW</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                    
+                        <div class="total-amo">
+                        	<h3>TOTAL AMOUNT</h3>
+                            <h4>1023 $</h4>
+                            <input type="text" class="coupan" placeholder="I Have A Coupon">
+                        </div>
+                        <a href="#" class="next-btn">next</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="change-package"><a href="#"> <  Change Instllation Type </a></div>
+            <div class="row fourth">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>BASIC</h4>
+                        <div class="price"><strong>23 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                        <p><strong>INSTALLATION  ( + 1000 $ )</strong> (Default - Pay it Now)</p>
+                    </div>
+                    <div class="col-right">
+                    	<h2>YOUR ORDER</h2>
+                    	<div class="radio-box">
+                    	<label class="padd25"> DEFAULT INSTALLATION  ( + 1000 $ ) - PAY IT NOW</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                    
+                        <div class="total-amo">
+                        	<h3>TOTAL AMOUNT</h3>
+                            <h4>1023 $</h4>
+                            <input type="text" class="coupan apply">
+                            <input type="submit" class="btn-apply" value="Apply">
+                        </div>
+                        <a href="#" class="next-btn">next</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="change-package"><a href="#"> <  Review Order </a></div>
+            <div class="row fourth">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>BASIC</h4>
+                        <div class="price"><strong>23 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                        <p><strong>INSTALLATION  ( + 1000 $ )</strong> (Default - Pay it Now)<strong>15% OFF COUPON APPLIED</strong></p>
+                        <a href="#" class="price-btn">1023 $</a>
+                    </div>
+                    <div class="col-right">
+                    	<span class="credit-info">Your Credit card information is encryted</span>
+                        <div class="payment-form">
+                        	<div class="row2">
+                                <label>Card Number</label>
+                                <input class="input3 card" type="text" placeholder="0987 0912 1234 9876 1273">
+                            </div>
+                            <div class="row2">
+                                <label>Name on Card</label>
+                                <input class="input3 card" type="text" placeholder="Januka Wijesinghe">
+                            </div>
+                            <div class="row2">
+                            	<div class="col">
+                                    <label>Expires on</label>
+                                    <input class="input3 card" type="text" placeholder="06 / 21">
+                                </div>
+                                <div class="col co2">
+                                    <label>CVC</label>
+                                    <input class="input3 card" type="text" placeholder="221">
+                                </div>
+                                <div class="select-payment">
+                                	<span>or select other payment method</span> 
+                                    <strong><img src="images/img-paypal.jpg"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="next-btn">PAY</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div> -->
+        
+       <!--  <div class="account-process" id="second">
+        	<div class="change-package"><a href="#"> <  Change Package  </a></div>
+        	<div class="row first">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>ADVANCE</h4>
+                        <div class="price"><strong>35 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                    </div>
+                    <div class="col-right">
+                    	<div class="radio-box">
+                    	<label><input type="radio" class="radio" name="radio"> DEFAULT INSTALLATION  ( + 1000 $ )</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                        <div class="radio-box">
+                        <label><input type="radio" class="radio" name="radio"> STANDALONE INSTALLATION  ( + 1000 $ )</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                        <div class="total-amo">
+                        	<h3>TOTAL AMOUNT</h3>
+                            <h4>1023 $</h4>
+                        </div>
+                        <a href="#" class="next-btn">next</a>
+                    </div>
+                </div>
+            </div>
+            <div class="change-package"><a href="#"> <  Change Package </a></div>
+            <div class="row second">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>ADVANCE</h4>
+                        <div class="price"><strong>35 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                    </div>
+                    <div class="col-right">
+                    	<div class="radio-box">
+                    	<label><input type="radio" class="radio" name="radio"> DEFAULT INSTALLATION  ( + 1000 $ )</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p>
+                        <div class="row">
+                        	<label><input type="radio" class="radio"> Pay It Now</label>
+                            <label><input type="radio" class="radio"> Pay It Now</label>
+                        </div>
+                        </div>
+                        <div class="radio-box">
+                        <label><input type="radio" class="radio" name="radio"> STANDALONE INSTALLATION  ( + 1000 $ )</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                        <div class="total-amo">
+                        	<h3>TOTAL AMOUNT</h3>
+                            <h4>1023 $</h4>
+                        </div>
+                        <a href="#" class="next-btn">next</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="change-package"><a href="#"> <  Change Instllation Type </a></div>
+            <div class="row third">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>ADVANCE</h4>
+                        <div class="price"><strong>35 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                        <p><strong>INSTALLATION  ( + 1000 $ )</strong> (Default - Pay it Now)</p>
+                    </div>
+                    <div class="col-right">
+                    	<h2>YOUR ORDER</h2>
+                    	<div class="radio-box">
+                    	<label class="padd25"> DEFAULT INSTALLATION  ( + 1000 $ ) - PAY IT NOW</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                    
+                        <div class="total-amo">
+                        	<h3>TOTAL AMOUNT</h3>
+                            <h4>1023 $</h4>
+                            <input type="text" class="coupan" placeholder="I Have A Coupon">
+                        </div>
+                        <a href="#" class="next-btn">next</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="change-package"><a href="#"> <  Change Instllation Type </a></div>
+            <div class="row fourth">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>ADVANCE</h4>
+                        <div class="price"><strong>35 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                        <p><strong>INSTALLATION  ( + 1000 $ )</strong> (Default - Pay it Now)</p>
+                    </div>
+                    <div class="col-right">
+                    	<h2>YOUR ORDER</h2>
+                    	<div class="radio-box">
+                    	<label class="padd25"> DEFAULT INSTALLATION  ( + 1000 $ ) - PAY IT NOW</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                    
+                        <div class="total-amo">
+                        	<h3>TOTAL AMOUNT</h3>
+                            <h4>1023 $</h4>
+                            <input type="text" class="coupan apply">
+                            <input type="submit" class="btn-apply" value="Apply">
+                        </div>
+                        <a href="#" class="next-btn">next</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="change-package"><a href="#"> <  Review Order </a></div>
+            <div class="row fourth">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>BASIC</h4>
+                        <div class="price"><strong>23 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                        <p><strong>INSTALLATION  ( + 1000 $ )</strong> (Default - Pay it Now)<strong>15% OFF COUPON APPLIED</strong></p>
+                        <a href="#" class="price-btn">1023 $</a>
+                    </div>
+                    <div class="col-right">
+                    	<span class="credit-info">Your Credit card information is encryted</span>
+                        <div class="payment-form">
+                        	<div class="row2">
+                                <label>Card Number</label>
+                                <input class="input3 card" type="text" placeholder="0987 0912 1234 9876 1273">
+                            </div>
+                            <div class="row2">
+                                <label>Name on Card</label>
+                                <input class="input3 card" type="text" placeholder="Januka Wijesinghe">
+                            </div>
+                            <div class="row2">
+                            	<div class="col">
+                                    <label>Expires on</label>
+                                    <input class="input3 card" type="text" placeholder="06 / 21">
+                                </div>
+                                <div class="col co2">
+                                    <label>CVC</label>
+                                    <input class="input3 card" type="text" placeholder="221">
+                                </div>
+                                <div class="select-payment">
+                                	<span>or select other payment method</span> 
+                                    <strong><img src="images/img-paypal.jpg"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="next-btn">PAY</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="account-process" id="third">
+        	<div class="change-package"><a href="#"> <  Change Package </a></div>
+        	<div class="row first">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>ADVANCE</h4>
+                        <div class="price"><strong>49 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                    </div>
+                    <div class="col-right">
+                    	<div class="radio-box">
+                    	<label><input type="radio" class="radio" name="radio"> DEFAULT INSTALLATION  ( + 1000 $ )</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                        <div class="radio-box">
+                        <label><input type="radio" class="radio" name="radio"> STANDALONE INSTALLATION  ( + 1000 $ )</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                        <div class="total-amo">
+                        	<h3>TOTAL AMOUNT</h3>
+                            <h4>1023 $</h4>
+                        </div>
+                        <a href="#" class="next-btn">next</a>
+                    </div>
+                </div>
+            </div>
+            <div class="change-package"><a href="#"> <  Change Package </a></div>
+            <div class="row second">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>BASIC</h4>
+                        <div class="price"><strong>49 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                    </div>
+                    <div class="col-right">
+                    	<div class="radio-box">
+                    	<label><input type="radio" class="radio" name="radio"> DEFAULT INSTALLATION  ( + 1000 $ )</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p>
+                        <div class="row">
+                        	<label><input type="radio" class="radio"> Pay It Now</label>
+                            <label><input type="radio" class="radio"> Pay It Now</label>
+                        </div>
+                        </div>
+                        <div class="radio-box">
+                        <label><input type="radio" class="radio" name="radio"> STANDALONE INSTALLATION  ( + 1000 $ )</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                        <div class="total-amo">
+                        	<h3>TOTAL AMOUNT</h3>
+                            <h4>1023 $</h4>
+                        </div>
+                        <a href="#" class="next-btn">next</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="change-package"><a href="#"> <  Change Instllation Type </a></div>
+            <div class="row third">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>BASIC</h4>
+                        <div class="price"><strong>49 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                        <p><strong>INSTALLATION  ( + 1000 $ )</strong> (Default - Pay it Now)</p>
+                    </div>
+                    <div class="col-right">
+                    	<h2>YOUR ORDER</h2>
+                    	<div class="radio-box">
+                    	<label class="padd25"> DEFAULT INSTALLATION  ( + 1000 $ ) - PAY IT NOW</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                    
+                        <div class="total-amo">
+                        	<h3>TOTAL AMOUNT</h3>
+                            <h4>1023 $</h4>
+                            <input type="text" class="coupan" placeholder="I Have A Coupon">
+                        </div>
+                        <a href="#" class="next-btn">next</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="change-package"><a href="#"> <  Change Instllation Type </a></div>
+            <div class="row fourth">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>BASIC</h4>
+                        <div class="price"><strong>49 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                        <p><strong>INSTALLATION  ( + 1000 $ )</strong> (Default - Pay it Now)</p>
+                    </div>
+                    <div class="col-right">
+                    	<h2>YOUR ORDER</h2>
+                    	<div class="radio-box">
+                    	<label class="padd25"> DEFAULT INSTALLATION  ( + 1000 $ ) - PAY IT NOW</label>
+                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
+                    
+                        <div class="total-amo">
+                        	<h3>TOTAL AMOUNT</h3>
+                            <h4>1023 $</h4>
+                            <input type="text" class="coupan apply">
+                            <input type="submit" class="btn-apply" value="Apply">
+                        </div>
+                        <a href="#" class="next-btn">next</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="change-package"><a href="#"> <  Review Order </a></div>
+            <div class="row fourth">
+            	<div class="box">
+                	<div class="col-left">
+                    	<h4>BASIC</h4>
+                        <div class="price"><strong>23 <sup>$</sup></strong> / month</div>
+                        <p>Up to 100 Users <br/>Other Factor</p>
+                        <p><strong>INSTALLATION  ( + 1000 $ )</strong> (Default - Pay it Now)<strong>15% OFF COUPON APPLIED</strong></p>
+                        <a href="#" class="price-btn">1023 $</a>
+                    </div>
+                    <div class="col-right">
+                    	<span class="credit-info">Your Credit card information is encryted</span>
+                        <div class="payment-form">
+                        	<div class="row2">
+                                <label>Card Number</label>
+                                <input class="input3 card" type="text" placeholder="0987 0912 1234 9876 1273">
+                            </div>
+                            <div class="row2">
+                                <label>Name on Card</label>
+                                <input class="input3 card" type="text" placeholder="Januka Wijesinghe">
+                            </div>
+                            <div class="row2">
+                            	<div class="col">
+                                    <label>Expires on</label>
+                                    <input class="input3 card" type="text" placeholder="06 / 21">
+                                </div>
+                                <div class="col co2">
+                                    <label>CVC</label>
+                                    <input class="input3 card" type="text" placeholder="221">
+                                </div>
+                                <div class="select-payment">
+                                	<span>or select other payment method</span> 
+                                    <strong><img src="images/img-paypal.jpg"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="next-btn">PAY</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div> -->
+        
+        
+    </div>
+</div>
+ 
+ <!--------------- footer ---------------->
+<div class="footer">
+	<div class="box">
+    	<div class="col1">
+        	<div class="footer-logo"><a href="http://localhost/appset/appsetting/website/subscription/75#"><img src="./landing page_files/logo.png" alt=""></a></div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+        </div>
+        <div class="col2">
+        	<ul class="footer-link">
+            	<li><a href="http://localhost/appset/appsetting/website/subscription/75#">Home</a></li>
+                <li><a href="http://localhost/appset/appsetting/website/subscription/75#">Services</a></li>
+                <li><a href="http://localhost/appset/appsetting/website/subscription/75#">Features</a></li>
+            </ul>
+            <ul class="footer-link">
+            	<li><a href="http://localhost/appset/appsetting/website/subscription/75#">Templates</a></li>
+                <li><a href="http://localhost/appset/appsetting/website/subscription/75#">Contact</a></li>
+                <li><a href="http://localhost/appset/appsetting/website/subscription/75#">Legal</a></li>
+            </ul>
+            <div class="social">
+            	<ul>
+                	<li><a href="http://localhost/appset/appsetting/website/subscription/75#"><img src="./landing page_files/icon-facebook.png" alt=""></a></li>
+                	<li><a href="http://localhost/appset/appsetting/website/subscription/75#"><img src="./landing page_files/icon-twitter.png" alt=""></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col3">
+        	<p>Subscribe to our newsletter to get product updates and offers.</p>
+            <form>
+            	<input type="text" class="input" placeholder="Your Email">
+                <input type="button" class="button" value="Sign Up">
+            </form>
+        </div>
+    </div>
+</div>
+<div class="footer-bottom">
+	<p>© TECHVATE PVT LTD | <span>All rights reserved</span></p>
+</div>
+<!--------------- footer ---------------->
+ 
+ 
+
+</body></html>

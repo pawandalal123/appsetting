@@ -24,9 +24,10 @@ class User extends MY_AppController {
         	}
         	$getcatKey = array_keys($catArray);
         	$getcatKey = implode(',', $getcatKey);
-        	$condition = "cat_id in ('".$getcatKey."') and is_default=0 and status=1";
-        	$getproducts = $this->templetes->select_data('*',$condition);
         	
+        	$condition = "cat_id in (".$getcatKey.") and is_default=0 and status=1";
+        	$getproducts = $this->templetes->select_data('*',$condition);
+        	// echo $this->db->last_query();
         	if(count($getproducts)>0)
         	{
         		foreach($getproducts as $getproducts)
@@ -40,12 +41,71 @@ class User extends MY_AppController {
         	}
         	////////// get templets for category///
         }
+        // echo '<pre>';
         // print_r($productArray);
+        // echo '</pre>';
+        // die;
 
 		$this->data['titlehome']='Landing Page Home';
 		$this->data['view_file'] = 'web/index';
 		$this->data['productArray']=$productArray;
 		$this->load->view('layouts/testDefault', $this->data); 
+	}
+
+	public function services()
+	{
+		
+		$this->data['titlehome']='Landing Page Home';
+		$this->data['view_file'] = 'web/services';
+		
+		$this->load->view('layouts/testDefault', $this->data);
+	}
+	public function contact()
+	{
+		if($this->input->post('savecontact'))
+		{
+			$this->savecontact();
+
+		}
+		
+		$this->data['titlehome']='Landing Page Home';
+		$this->data['view_file'] = 'web/contactus';
+		
+		$this->load->view('layouts/testDefault', $this->data);
+	}
+
+	public function savecontact()
+	{
+		$this->form_validation->set_rules('firstname', 'Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('lastname', 'last name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('message', 'Message', 'trim|required|xss_clean|max_length[300]');
+		$this->form_validation->set_rules('email', 'Message', 'trim|email|required|xss_clean');
+		$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
+		if($this->form_validation->run())
+		{
+			$userdata = $this->input->post();
+			@extract($userdata);
+			$insertArray = array('first_name'=>$firstname,
+				                'last_name'=>$lastname,
+				                'email_id'=>$email,
+				                'message'=>$message,
+				                'created_at'=>date('Y-m-d H:i:s'),
+				                'ip_address'=>$_SERVER['REMOTE_ADDR']);
+			$this->load->model('contactus');
+			$insert = $this->contactus->AdduserData($insertArray);
+			if($insert)
+			{
+				$msg='Thanks for your mesage,we will contact you shortaly.';
+				$this->session->set_userdata( array('msg'=>$msg,'class' => 'sucess-msg'));
+
+			}
+			else
+			{
+				$msg="some technical issue";
+				$this->session->set_userdata( array('msg'=>$msg,'class' => 'error-msg'));
+
+			}
+		}
 	}
 
 	public function gettempletes()
@@ -63,7 +123,7 @@ class User extends MY_AppController {
 		$getsubcat = $this->subcategory->getBy($condition,array('name'));
 
 		///////// get templets based on category////
-		$condition = "sub_cat_id = '".$subcatid."' and status=1";
+		$condition = "sub_cat_id = '".$subcatid."' and status=1 and is_default=0";
         $getproducts = $this->templetes->select_data('*',$condition);
 		?>
 		 <script>
@@ -96,9 +156,10 @@ class User extends MY_AppController {
         <div class="popup-nav">
           <ul>
               <li><a href="#" class="active">iOS Mobile App</a></li>
-                <li><a href="#"> Website</a></li>
+                <!-- <li><a href="#"> Website</a></li> -->
             </ul>
         </div>
+        <input type="hidden" name="selectedtemplate" value="">
         
         <div id="demo2">
             <?php 
@@ -110,16 +171,16 @@ class User extends MY_AppController {
             foreach($getproducts as $getproducts)
             {
              ?>
-             <div class="item" onclick="settemplete('<?php echo $getproducts->id?>')" >
+             <div class="item templateselect"  id="<?php echo $getproducts->id?>">
                 <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$getproducts->background_image;?>" alt="">
                     <div class="overlay-chuch">
-                    	<h3><?php echo $getproducts->temlete_name;?></h3>
-                        <p><?php echo $getproducts->tag_line;?></p>
+                    	<!-- //<h3><?php echo $getproducts->temlete_name;?></h3> -->
+                        <!-- <p><?php echo $getproducts->tag_line;?></p> -->
                         
-                        <div class="btn-bott">
-                            <a href="#" class="sign-in" style="background: <?php echo $getproducts->color_code; ?>!important">Sign In</a>
-                            <a href="#" class="sign-up" style="background: <?php echo $getproducts->color_code; ?>!important">Sign In</a>
-                        </div>
+                        <!-- <div class="btn-bott">
+                            <a href="#" class="sign-in" style="background: <?php echo $getproducts->color_code; ?>!important; color: <?php echo $getproducts->text_color; ?>!important;">Sign In</a>
+                            <a href="#" class="sign-up" style="background: <?php echo $getproducts->color_code; ?>!important; color: <?php echo $getproducts->text_color; ?>!important;">Sign In</a>
+                        </div> -->
                     </div>
                 </div>
                 
@@ -139,7 +200,8 @@ class User extends MY_AppController {
         </div>
         <h4>ABOUT</h4>
         <p>Forget Ebay and other forms of advertising for your property that costs you hard earned money. Why not do it all for free? Investment Assets Properties have ready several locations around the world to take your free listings for any luxury property.</p>
-        <div class="row"><a href="#" class="active mor-detil">More Details</a><a href="#" class="active">Start</a></div>
+        <div class="row"><a href="#" class="active mor-detil">More Details</a>
+        <a href="javascript::void(0);" class="active" onclick="settemplete()">Start</a></div>
         <div class="social-popup social-popup2">
           <h5>LIKE WHAT YOU SEE ? SHARE IT</h5>
             <ul>
@@ -175,6 +237,7 @@ class User extends MY_AppController {
 				$insertData = array('temlete_name'=>$gettempData->temlete_name,
 					                'background_image'=>$gettempData->background_image,
 					                'color_code'=>$gettempData->color_code,
+					                'text_color'=>$gettempData->text_color,
 					                'color_code_hover'=>$gettempData->color_code_hover,
 					                'tag_line'=>$gettempData->tag_line,
 					                'user_id'=>$this->session->userdata('UserId'),
@@ -211,7 +274,9 @@ class User extends MY_AppController {
 				////////upadte color code/////
 				if($this->input->post('savecolor'))
 				{
-					$upadteData = array('color_code'=>$this->input->post('colorInput'),
+					$upadteData = array('color_code'=>$this->input->post('colorforback'),
+						                'text_color'=>$this->input->post('colorfortext'),
+						                'last_updated_page'=>'',
 						                'color_code_hover'=>$this->input->post('colorhover'));
 					$upadte = $this->templetes->updateDetails($condition,$upadteData);
 					if($upadte)
@@ -258,7 +323,7 @@ class User extends MY_AppController {
 			$gettempData = $this->templetes->getBy($condition);
 			if($gettempData)
 			{
-				if($this->input->post('savedetails'))
+				if($this->input->post('savedetails') || $this->input->post('savenext'))
 				{
 					$userData = $this->input->post();
 				    @extract($userData );
@@ -269,10 +334,22 @@ class User extends MY_AppController {
 					if($this->form_validation->run())
 					{
 						$upadteData = array('temlete_name'=>$tempname,
-							                'tag_line'=>$tagline);
+							                'tag_line'=>$tagline,
+							                // 'last_updated'=>date('Y-m-d H:i:s'),
+							                'last_updated_page'=>'');
+						if($this->input->post('savenext'))
+						{
+							$upadteData['last_updated'] = date('Y-m-d H:i:s');
+							$upadteData['last_updated_page'] ='settag';
+						}
 						$upadte = $this->templetes->updateDetails($condition,$upadteData);
 						if($upadte)
 						{
+							if($this->input->post('savenext'))
+							{
+								redirect('userlogin/logout/');
+
+							}
 							redirect('user/setimage/'.$value);
 
 						}
@@ -315,6 +392,25 @@ class User extends MY_AppController {
 			$gettempData = $this->templetes->getBy($condition);
 			if($gettempData)
 			{
+				if($this->input->post('savedetails'))
+				{
+					$userData = $this->input->post();
+				    @extract($userData );
+				    // print_r($userData);
+				       $upadteData = array('last_updated_page'=>'setimage','last_updated' => date('Y-m-d H:i:s'));
+					   $upadte = $this->templetes->updateDetails($condition,$upadteData);
+						if($upadte)
+						{
+							redirect('userlogin/logout/');
+						}
+						else
+						{
+							$msg="some technical issue";
+							$this->session->set_userdata( array('msg'=>$msg,'class' => 'error'));
+						}
+				}
+				
+
 				///////////// make gallery images////
 				$gelimageArray = $this->templetes->select_data(array('background_image'),array('status'=>1));
 				$this->data['gelimageArray'] = $gelimageArray;
@@ -341,11 +437,55 @@ class User extends MY_AppController {
 	{
 		$this->load->model("training_videos");
 		$this->db->order_by('total_views','desc');
-		$getvideos = $this->training_videos->select_data('*',array('status'=>1));
-		//echo $this->db->last_query();
-		$this->data['getvideos'] = $getvideos;
-		$this->data['view_file'] = 'web/training';
-	    $this->load->view('layouts/testDefault', $this->data); 
+		$condition = 'training_videos.status = 1 and training_videos.type=1';
+		if($this->input->is_ajax_request())
+		{
+			if($this->input->post('searchval'))
+			{
+				$condition="name like '%".$searhval."%'";
+
+			}
+			$getvideos = $this->training_videos->getsearchvideo($condition);
+			echo $this->db->last->query();
+
+		}
+		else
+		{
+			if($this->input->get('training') && $this->input->get('training')!='all')
+			{
+				$condition.= " and sub_cat_id='".$this->input->get('training')."'";
+
+			}
+			if($this->input->get('keyword'))
+			{
+				$condition.= " and ( name like '%".$this->input->get('keyword')."%' or video_title like '%".$this->input->get('keyword')."%')";
+
+			}
+			$getvideos = $this->training_videos->getsearchvideo($condition);
+			//echo $this->db->last_query();
+			$getvideosubcat = $this->training_videos->select_data('*',array('status'=>1,'type'=>1));
+			$subcategory = array();
+			if(count($getvideosubcat)>0)
+			{
+				$subcatidList = [];
+				foreach($getvideosubcat as $getvsubcat)
+				{
+					$subcatidList[] = $getvsubcat->sub_cat_id;
+				}
+				$subcatidList = implode(',', array_unique($subcatidList));
+				$condition = "id in ".'('.$subcatidList.')'."";
+				$this->load->model("subcategory");
+				$subcategoryList = $this->subcategory->getlist($condition);
+
+
+			}
+			$this->data['subcategoryList'] = $subcategoryList;
+			$this->data['getvideos'] = $getvideos;
+			$this->data['view_file'] = 'web/training';
+		    $this->load->view('layouts/testDefault', $this->data); 
+
+		}
+		
 
 	}
 
@@ -374,7 +514,7 @@ class User extends MY_AppController {
 			else
 			{
 				$imagename = $image_name['file_name'];
-				$updateArray = array('background_image'=>$imagename);
+				$updateArray = array('background_image'=>$imagename,'last_updated_page'=>'');
 				$upadte = $this->templetes->updateDetails($condition,$updateArray);
 				if($upadte)
 				{
@@ -573,7 +713,7 @@ class User extends MY_AppController {
 			if($getuserdata)
 			{
 				$this->load->model("templetes");
-				$gettempletdata = $this->templetes->select_data('*',array('user_id'=>$getuserdata->id));
+				$gettempletdata = $this->templetes->select_data('*',array('user_id'=>$getuserdata->id,'is_default'=>1));
 				if(count($gettempletdata)>0)
 				{
 					$this->load->model("subcategory");
@@ -598,6 +738,7 @@ class User extends MY_AppController {
 						}
 						$templateArray[$gettemplate->id] = array('tempname'=>$gettemplate->temlete_name,
 							                                     'subscription'=>'basic',
+							                                     'last_updated_page'=>$gettemplate->last_updated_page,
 							                                      'tempfor'=>$subcatname,
 							                                     'remaining_days'=>250);
 
@@ -826,6 +967,39 @@ class User extends MY_AppController {
 		
 	}
 
+	public function modificationlist($templateid)
+	{
+		if($templateid)
+		{
+			if(!$this->session->userdata('logged_in'))
+			{
+				redirect(SITE_URL);
+			}
+			$this->load->model("user_modal");
+			$userloginid= $this->session->userdata('UserId');
+            //echo $userloginid;
+            $this->load->model("user_messages");
+            //////////// get all bugs list/////
+            $condition = array('app_id'=>$templateid,'type'=>1,'user_id'=>$userloginid);
+            $this->data['getbuglist']=$this->user_messages->select_data($condition);
+			
+			$condition = array('id'=>$userloginid);
+            $getuserdata=$this->user_modal->getBy($condition);
+            $this->load->model("templetes");
+            $templatedata = $this->templetes->getBy(array('id'=>$templateid));
+			$this->data['getuserdata'] = $getuserdata;
+			$this->data['templatedata'] = $templatedata;
+			$this->data['view_file'] = 'user/modificationlist';
+			$this->load->view('layouts/testDefault', $this->data); 
+
+		}
+		else
+		{
+
+		}
+
+	}
+
 	public function reportbuglist($templateid)
 	{
 		if($templateid)
@@ -837,7 +1011,10 @@ class User extends MY_AppController {
 			$this->load->model("user_modal");
 			$userloginid= $this->session->userdata('UserId');
             //echo $userloginid;
-           
+            $this->load->model("user_messages");
+            //////////// get all bugs list/////
+            $condition = array('app_id'=>$templateid,'type'=>2,'user_id'=>$userloginid);
+            $this->data['getbuglist']=$this->user_messages->select_data($condition);
 			
 			$condition = array('id'=>$userloginid);
             $getuserdata=$this->user_modal->getBy($condition);
@@ -965,6 +1142,10 @@ class User extends MY_AppController {
 		}
           echo json_encode($status);
 	}
+
+	
+
+
 
 
 	

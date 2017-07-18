@@ -48,6 +48,19 @@ function select_data($cols='*',$where=false,$where_or=false,$where_in=false) {
 
 	}
 
+	public function getsearchvideo($condition=false)
+	{
+		if($condition)
+		{
+			$this->db->where($condition);
+		}
+		$pageData = $this->db->join('subcategories' , 'training_videos.sub_cat_id=subcategories.id')
+		                     ->get($this->table)->result();
+
+		return $pageData;
+
+	}
+
 
 	
 	   public function AdduserData($data)

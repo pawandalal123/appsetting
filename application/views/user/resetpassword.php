@@ -2,13 +2,14 @@
 
 <div class="container">
 	<div class="box">
+    <?php echo $this->load->view('/user/commonsection');?>
         <div class="login-form reset">
             <div class="login-box">
-    <?php echo $this->load->view('/user/commonsection');?>
+    
         
                 <h2>Request Password Change</h2>
                
-            </div>
+            
         
        
         <?php  if( $this->session->userdata('msg') ) {?>
@@ -28,6 +29,7 @@
                 <div class="row01"><input type="submit" class="btn" value="Submit" name="changepassword"> </div>
                 </form>
             </div>
+    </div>
     </div>
 </div>
 </div>

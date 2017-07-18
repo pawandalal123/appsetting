@@ -1,3 +1,13 @@
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/base/jquery-ui.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/   css" media="all" />
+       
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<style type="text/css">
+  .selectedtemplate
+  {
+    background-color: #3ec6ff;
+  }
+</style>
 <script>
 $(document).ready(function() {
 $('.tab-content').hide().fadeIn();
@@ -11,6 +21,36 @@ $('.tab-content').hide().fadeIn();
     $('.tabnav a').bind('click', function(e){
         $(this.hash).hide().fadeIn().addClass('active');
 	})
+
+    $(document).on('click','.templateselect',function()
+    {
+      var templeteid = $(this).attr('id');
+      $('.item').removeClass('selectedtemplate');
+       $(this).addClass('selectedtemplate');
+       $('input[name=selectedtemplate]').val(templeteid);
+
+    });
+    $( "#makesubcatlist" ).autocomplete({
+      source: WEBROOT_PATH+'commonfunc/getsubcatlist',
+      minlength: 1,
+      select: function( event, ui )
+      {
+       
+        var subcatid = ui.item.id;
+        $.post(WEBROOT_PATH+'commonfunc/searchlist',{'searhval':subcatid},function(data,status)
+          {
+
+            $('.searchresult').html(data);
+            $('.tablist').hide();
+            
+          }).fail(function(response)
+           {
+              alert('please try later');
+          });
+      }
+      });
+
+    
 });
 
 function maketempletelist(subcatid)
@@ -29,33 +69,44 @@ function maketempletelist(subcatid)
                     });
 }
 
+
 function settemplete(templeteid)
 {
     //alert('');
-  
-  $.post(WEBROOT_PATH+'user/settemplete',{'templeteid':templeteid},function(data,status)
-  {
-    
-     if(data.status=='success')
-     {
-        if(data.islogin=='yes')
+    var templeteid = $('input[name=selectedtemplate]').val();
+    if(templeteid!='')
+    {
+       $.post(WEBROOT_PATH+'user/settemplete',{'templeteid':templeteid},function(data,status)
         {
-            //alert();
-            window.location.href=WEBROOT_PATH+'user/setcolor/'+data.temoleteid;
+          
+           if(data.status=='success')
+           {
+              if(data.islogin=='yes')
+              {
+                  //alert();
+                  window.location.href=WEBROOT_PATH+'user/setcolor/'+data.temoleteid;
 
-        }
-        else
+              }
+              else
+              {
+                  //alert('pawan');
+                  window.location.href=WEBROOT_PATH+'userlogin/login';
+              }
+
+           }
+        
+        },'json').fail(function(response)
         {
-            //alert('pawan');
-            window.location.href=WEBROOT_PATH+'userlogin/login';
-        }
+                          
+                          });
 
-     }
-  
-  },'json').fail(function(response)
-  {
-                    
-                    });
+    }
+    else
+    {
+      alert('Please select template');
+    }
+
+
 }
 
 
@@ -103,7 +154,7 @@ $(document).ready(function(){
         if(count($productArray)>0)
         {
         ?>
-        <div class="tab">
+        <div class="tab tablist">
           <div class="tabnav">
               <ul>
               <?php 
@@ -114,11 +165,18 @@ $(document).ready(function(){
                     <?php } ?>
                 </ul>
                 <div class="search-box">
-                	<input type="submit" value="search" class="search" />
-                    <input type="text" placeholder="SEARCH" class="input2">
+                	 <input type="submit" value="search" class="search" />
+                    <input type="text" placeholder="SEARCH" class="input2" id="makesubcatlist" autocomplete="off">
                 </div>
                 
             </div>
+            
+            <?php 
+
+              foreach($productArray as $key=>$valArray)
+              {
+                ?>
+           
             <div class="tab-content" id="newest<?php echo $key;?>">
               <ul>
               <?php 
@@ -136,8 +194,15 @@ $(document).ready(function(){
                     <?php } ?>
                 </ul>
             </div>
+            <?php } ?>
+            </div>
+
            
-        </div>
+        
         <?php } ?>
+         <div class="searchresult">
+
+              
+            </div>
     </div>
 </div>

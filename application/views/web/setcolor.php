@@ -23,8 +23,8 @@
 		<div class="preview-form">
             <h2>Get a free preview with your content</h2>
             <ul>
-                <li><a href="#" class="active next">1</a></li>
-                <li><a href="#" class="active">2</a></li>
+                <li><a href="#" class="active">1</a></li>
+                <li><a href="#" class="">2</a></li>
                 <li><a href="#">3</a></li>
                 <li><a href="#">4</a></li>
             </ul>
@@ -37,6 +37,20 @@
             	<div class="hightight">
                 	<h3>Highlight Color</h3>
                     <h4>Will be used to highlight items such as buttons and special actions.</h4>
+                    <div class="color-radio">
+                    	<ul>
+                            <li>
+                                <input checked type="radio" name="colorfor" value="1">
+                                <label>For Button</label>
+                                <div class="bullet"></div>
+                            </li>
+                            <li>
+                                <input type="radio" name="colorfor" value="2">
+                                <label>Text color</label>
+                                <div class="bullet"></div>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="imgbox" style="margin-left: -150px; height: 192px" >
                             <div id="colorPicker">
                                 <a class="color"><div class="colorInner"></div></a>
@@ -44,6 +58,9 @@
                                 <ul class="dropdown"><li></li></ul>
                             
                                 <input type="hidden" class="colorInput" name="colorInput" value="<?php echo $gettempData->color_code; ?>">
+
+                                <input type="hidden" class="colorforback" name="colorforback" value="<?php echo $gettempData->color_code; ?>">
+                                <input type="hidden" class="colorfortext" name="colorfortext" value="<?php echo $gettempData->text_color; ?>">
                                
                                </div>
                     </div>
@@ -63,7 +80,7 @@
                     <h3>Preview</h3>
                     <ul>
                         <li><a href="#" class="active">Application</a></li>
-                        <li><a href="#">Website</a></li>
+                        <!-- <li><a href="#">Website</a></li> -->
                     </ul>
                      <div class="divine">
                     <div class="imgbox">
@@ -72,21 +89,21 @@
                         <h3><?php echo $gettempData->temlete_name;?></h3>
                         <p><?php echo $gettempData->tag_line;?></p>
                         <div class="btn-bott">
-                              <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
+                              <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; color: <?php echo $gettempData->text_color; ?>!important;">Sign In</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important ; color: <?php echo $gettempData->text_color; ?>!important;">Sign In</a>
                         </div>
                    
                           </div>
                         
                     </div>
                      <div class="imgbox">
-                     <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="" >
+                     <img src="<?php echo WEBROOT_PATH_IMAGES.'whiteimage.png';?>" alt="" >
                     <div class="overlay-chuch">
-                        <h3><?php echo $gettempData->temlete_name;?></h3>
-                        <p><?php echo $gettempData->tag_line;?></p>
+                        <!-- <h3><?php echo $gettempData->temlete_name;?></h3>
+                        <p><?php echo $gettempData->tag_line;?></p> -->
                         <div class="btn-bott">
-                              <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a>
+                             <!--  <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a> -->
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important ; color: <?php echo $gettempData->text_color; ?>!important;">Sign In</a>
                         </div>
                    
                           </div>

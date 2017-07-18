@@ -1,3 +1,7 @@
+<?php
+$urisegment = $this->uri->segment(2);
+$appid = $this->uri->segment(3)
+?>
 <input type="hidden" name="template_id" value="<?php echo $templete_id;?>">
 
 <div class="main-header">
@@ -7,10 +11,10 @@
     	<label>You Are Editing</label>
         <div class="select-box">
         <select class="select changepage">
-        	<option value="index">Home Page</option>
-            <option value="about">About Us</option>
-            <option value="contact">Contact</option>
-            <option value="donate">Donate</option>
+        	<option value="index" <?php if($urisegment=='index') echo 'selected'; ?>>Home Page</option>
+            <option value="about" <?php if($urisegment=='about') echo 'selected'; ?>>About Us</option>
+            <option value="contact" <?php if($urisegment=='contact') echo 'selected'; ?>>Contact</option>
+            <option value="donate" <?php if($urisegment=='donate') echo 'selected'; ?>>Donate</option>
         </select>
         </div>
     </div>
@@ -21,7 +25,23 @@
             <input type="submit" name="savehome" value="Save" class="active save-btn">
             <!-- <a href="#" title="Save" class="active">Save</a> -->
             </li>
-            <li><a href="#" title="Close">Close</a></li>
+            <?php
+            if($urisegment=='donate')
+            {
+                ?>
+                <input type="submit" name="saveandpay" value="Save and Pay" class="save-btn">
+                <?php
+
+            }
+            else
+            {
+                ?>
+                <input type="submit" name="nextpage" value="Next" class="save-btn">
+                <!-- <li><a href="#" title="Close">Close</a> --></li>
+                <?php
+            }
+            ?>
+            
         </ul>
         </form>
     </div>

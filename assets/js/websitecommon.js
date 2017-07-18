@@ -5,7 +5,7 @@ $(document).ready(function()
       {
        // alert();
          var category = $(this).val();
-         $.post(WEBROOT_PATH+'CommonFunc/categorylist',{'category':category},function(data,status)
+         $.post(WEBROOT_PATH+'commonfunc/categorylist',{'category':category},function(data,status)
           {
             $('.subcat').html(data);
           }).fail(function(response)
@@ -14,6 +14,39 @@ $(document).ready(function()
           });
 
       });
+    $('.makesearch').keyup(function()
+    {
+      var searhval = $(this).val();
+      if(searhval.length>=3)
+      {
+         $.post(WEBROOT_PATH+'commonfunc/searchlist',{'searhval':searhval},function(data,status)
+          {
+            
+          }).fail(function(response)
+           {
+              alert('please try later');
+          });
+
+      }
+
+    });
+
+    $('.makesearchvideo').keyup(function()
+    {
+      var searhval = $(this).val();
+      if(searhval.length>=3)
+      {
+         $.post(WEBROOT_PATH+'user/training',{'searhval':searhval},function(data,status)
+          {
+            
+          }).fail(function(response)
+           {
+              alert('please try later');
+          });
+
+      }
+
+    });
       var _URL = window.URL || window.webkitURL;
       $(document).on('click','.profileeditable',function()
         {
@@ -64,12 +97,12 @@ $(document).ready(function()
             }
             if(err==0)
             {
-              
+              $(this).parent().text(feildname);
               $.post(WEBROOT_PATH+'user/updateprofile',{'feildfor':feildfor,'id':id,'feildname':feildname},function(data,status)
               {
                   if(data.status=='success')
                   {
-                    $(this).parent().text(feildname);
+                    
                     //swal({ title: "Done", text: "Successfully Created", type: "success" });
                   }
                   else

@@ -35,11 +35,16 @@
 
                ?>
                 <div class="row">
-                	<div class="col1 kipty"><?php echo $templist['tempfor'];?></div>
+                	<div class="col1 kipty"><?php echo $templist['tempname'];?></div>
                 	<div class="col1"><?php echo $key;?></div>
                     <div class="col1"><?php echo $templist['subscription'];?></div>
                     <div class="col1"><?php echo $templist['remaining_days'];?> Days</div>
-                    <div class="col1"><a href="<?php echo SITE_URL.'user/edittemplate/'.$key?>" class="btn">Edit</a></div>
+                    <div class="col1">
+                    <?php 
+                    $lastupadte = $templist['last_updated_page'] ?  $templist['last_updated_page'] : 'edittemplate';
+                    ?>
+                    <a href="<?php echo SITE_URL.'user/'.$lastupadte.'/'.$key?>" class="btn">Edit</a>
+                    </div>
                 </div>
                 <?php
                  }

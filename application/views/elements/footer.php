@@ -13,8 +13,9 @@
             </ul>
             <ul class="footer-link">
             	<li><a href="#">Templates</a></li>
+                <li><a href="<?php echo SITE_URL.'user/training'?>">Training</a></li>
                 <li><a href="#">Contact</a></li>
-                <li><a href="#">Legal</a></li>
+                
             </ul>
             <div class="social">
             	<ul>
@@ -33,6 +34,6 @@
     </div>
 </div>
 <div class="footer-bottom">
-	<p>© TECHVATE PVT LTD | <span>All rights reserved</span></p>
+	<p>© 3appcloud.com | <span>All rights reserved</span></p>
 </div>
 <!--------------- footer ---------------->

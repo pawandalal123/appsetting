@@ -19,7 +19,7 @@
             </div>
             <div class="review-menu">
             	<ul>
-                    <li><a href="<?php echo SITE_URL.'user/edittemplate'..$templatedata->id ?>">Overview</a></li>
+                    <li><a href="<?php echo SITE_URL.'user/edittemplate'.$templatedata->id ?>">Overview</a></li>
                      <li><a href="<?php echo SITE_URL.'user/modification/'.$templatedata->id ?>" class="active">Modifications</a></li>
                      <li><a href="<?php echo SITE_URL.'user/reportbug/'.$templatedata->id ?>">Report Bug</a></li>
                     <li><a href="#">Help</a></li>
@@ -29,12 +29,13 @@
         <div class="report-menu">
             	<ul>
                 	<li><a href="#" class="active">Request a Modification</a></li>
-                    <li><a href="#">Previously Submitted<sup>2</sup></a></li>
+                    <li><a href="<?php echo SITE_URL.'user/modificationlist/'.$templatedata->id ?>">Previously Submitted<!-- <sup>2</sup> --></a></li>
                 </ul>
           </div>
           <div class="modifications-row">
           <?php  if( $this->session->userdata('msg') ) {?>
-<span class="<?php echo $this->session->userdata('class');?>"> <?php echo $this->session->userdata('msg');?></span>
+<span class="<?php echo $this->session->userdata('class');?>">
+ <?php echo $this->session->userdata('msg');?></span>
  <?php $this->session->unset_userdata('msg');}?>
           	<div class="modifications-form">
             <form method="post" enctype="multipart/form-data">
@@ -44,12 +45,12 @@
                 <div class="row01">
                 	<div class="col">
                     <div class="custom-check">
-                    <input type="checkbox" id="test1" class="" name="modifi_for[]" value="app" checked>
+                    <input type="checkbox" id="test1" class="" name="modifi_for" value="app" checked>
                     <label for="test1">Mobile App</label></div></div>
                     <div class="col"><div class="custom-check">
-                    <input type="checkbox" id="test2" class="" name="modifi_for[]" value="Website">
+                    <input type="checkbox" id="test2" class="" name="modifi_for" value="Website">
                     <label for="test2">Website</label></div></div>
-                    <?php echo form_error('modifi_for');?>
+                    <?php //echo form_error('modifi_for');?>
                 </div>
                 <div class="row01">
                 <input type="text" class="input" placeholder="Subject" name="subject">
