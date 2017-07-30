@@ -31,7 +31,7 @@ if($this->uri->segment(1)=='' || $this->uri->segment(1)=='services' || $this->ur
                         <?php
                         } ?>
                     
-                    <li><a href="<?php echo SITE_URL;?>contact">CONTACT</a></li>
+                    <li><a href="">CONTACT</a></li>
                     <?php
                    if($this->session->userdata('logged_in'))
                     {
@@ -86,7 +86,7 @@ else
                         <li><a href="<?php echo SITE_URL.'user/training'?>">TRAINING</a></li>
                         <?php
                         } ?>
-                    <li><a href="<?php echo SITE_URL;?>contact">CONTACT</a></li>
+                    <li><a href="">CONTACT</a></li>
                     <?php
                     if($this->session->userdata('logged_in'))
                     {

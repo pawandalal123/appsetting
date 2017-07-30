@@ -132,6 +132,7 @@ class UserLogin extends MY_AppController {
 					$newPass = md5($password);
 					$userData = array('email'=>$useremail,
 					'name'=>$username,
+					'token'=>md5($useremail),
 					'mobile'=>$usermobile,
 					'password'=>$newPass ,
 					'created_at'=>date('Y-m-d H:i:s'));
@@ -157,22 +158,20 @@ class UserLogin extends MY_AppController {
 						{
 							$insertData = array('temlete_name'=>$gettempData->temlete_name,
 							                    'background_image'=>$gettempData->background_image,
-							                'color_code'=>$gettempData->color_code,
-							                'tag_line'=>$gettempData->tag_line,
-							                'user_id'=>$userLoginId,
-							                'is_default'=>1,
-							                'cat_id'=>$gettempData->cat_id,
-							                'sub_cat_id'=>$gettempData->sub_cat_id,
-							                'created_at'=>date('Y-m-d H:i:s'));
+							                    'color_code'=>$gettempData->color_code,
+							                    'tag_line'=>$gettempData->tag_line,
+							                    'user_id'=>$userLoginId,
+							                    'is_default'=>1,
+							                    'cat_id'=>$gettempData->cat_id,
+							                    'sub_cat_id'=>$gettempData->sub_cat_id,
+							                    'created_at'=>date('Y-m-d H:i:s'));
 							$tempid = $this->templetes->AdduserData($insertData);
 							if($tempid)
 							{
 							 redirect(SITE_URL.'user/setcolor/'.$tempid);
 
 							}
-
 						}
-						
 
 					}
 					else

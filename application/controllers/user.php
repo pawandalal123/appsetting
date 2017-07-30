@@ -60,7 +60,7 @@ class User extends MY_AppController {
 		
 		$this->load->view('layouts/testDefault', $this->data);
 	}
-	public function contact()
+	public function moreinfo()
 	{
 		if($this->input->post('savecontact'))
 		{
@@ -200,7 +200,7 @@ class User extends MY_AppController {
         </div>
         <h4>ABOUT</h4>
         <p>Forget Ebay and other forms of advertising for your property that costs you hard earned money. Why not do it all for free? Investment Assets Properties have ready several locations around the world to take your free listings for any luxury property.</p>
-        <div class="row"><a href="#" class="active mor-detil">More Details</a>
+        <div class="row"><a href="<?php echo SITE_URL?>moreinfo" class="active mor-detil">More Details</a>
         <a href="javascript::void(0);" class="active" onclick="settemplete()">Start</a></div>
         <div class="social-popup social-popup2">
           <h5>LIKE WHAT YOU SEE ? SHARE IT</h5>
