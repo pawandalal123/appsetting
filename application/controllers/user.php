@@ -52,6 +52,51 @@ class User extends MY_AppController {
 		$this->load->view('layouts/testDefault', $this->data); 
 	}
 
+	public function templates()
+	{
+		$this->load->model("templetes");
+		$this->load->model("category");
+		$catArray = array();
+		$productArray = array();
+		//////////// get all active category
+        $getactivecat = $this->category->select_data(array('id','name'),array('status'=>1));
+        if(count($getactivecat)>0)
+        {
+        	foreach($getactivecat as $getactivecat)
+        	{
+        		$catArray[$getactivecat->id] = $getactivecat->name;
+
+        	}
+        	$getcatKey = array_keys($catArray);
+        	$getcatKey = implode(',', $getcatKey);
+        	
+        	$condition = "cat_id in (".$getcatKey.") and is_default=0 and status=1";
+        	$getproducts = $this->templetes->select_data('*',$condition);
+        	// echo $this->db->last_query();
+        	if(count($getproducts)>0)
+        	{
+        		foreach($getproducts as $getproducts)
+        		{
+        			$catname = $catArray[$getproducts->cat_id];
+        			$productArray[$catname][$getproducts->sub_cat_id] =array('temlete_name'=>$getproducts->temlete_name,
+        				                                                     'background_image'=>$getproducts->background_image,
+        				                                                     'tag_line'=>$getproducts->tag_line);
+        		}
+
+        	}
+        	////////// get templets for category///
+        }
+        // echo '<pre>';
+        // print_r($productArray);
+        // echo '</pre>';
+        // die;
+
+		$this->data['titlehome']='Landing Page Home';
+		$this->data['view_file'] = 'web/templates';
+		$this->data['productArray']=$productArray;
+		$this->load->view('layouts/testDefault', $this->data); 
+	}
+
 	public function services()
 	{
 		
@@ -61,6 +106,19 @@ class User extends MY_AppController {
 		$this->load->view('layouts/testDefault', $this->data);
 	}
 	public function moreinfo()
+	{
+		if($this->input->post('savecontact'))
+		{
+			$this->savecontact();
+
+		}
+		
+		$this->data['titlehome']='Landing Page Home';
+		$this->data['view_file'] = 'web/aboutus';
+		
+		$this->load->view('layouts/testDefault', $this->data);
+	}
+	public function contact()
 	{
 		if($this->input->post('savecontact'))
 		{
@@ -97,6 +155,7 @@ class User extends MY_AppController {
 			{
 				$msg='Thanks for your mesage,we will contact you shortaly.';
 				$this->session->set_userdata( array('msg'=>$msg,'class' => 'sucess-msg'));
+				 $href="WEBROOT_PATH+'userlogin/contectus"; 
 
 			}
 			else
@@ -200,7 +259,7 @@ class User extends MY_AppController {
         </div>
         <h4>ABOUT</h4>
         <p>Forget Ebay and other forms of advertising for your property that costs you hard earned money. Why not do it all for free? Investment Assets Properties have ready several locations around the world to take your free listings for any luxury property.</p>
-        <div class="row"><a href="<?php echo SITE_URL?>moreinfo" class="active mor-detil">More Details</a>
+        <div class="row"><a href="<?php echo SITE_URL?>aboutus" class="active mor-detil">More Details</a>
         <a href="javascript::void(0);" class="active" onclick="settemplete()">Start</a></div>
         <div class="social-popup social-popup2">
           <h5>LIKE WHAT YOU SEE ? SHARE IT</h5>

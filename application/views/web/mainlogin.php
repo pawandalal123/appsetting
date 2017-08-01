@@ -6,7 +6,7 @@
                 	<div class="login-nav">
                     	<ul>
                         	<li><a href="#" class="active">Login</a></li>
-                            <li><a href="#">Sign Up</a></li>
+                            <li><a href="<?php echo SITE_URL.'userlogin/signup'?>">Sign Up</a></li>
                         </ul>
                     </div>
                     <?php  if(isset($err_msg)) {

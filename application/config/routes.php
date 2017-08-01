@@ -74,7 +74,7 @@
 $route['default_controller'] = "user";
 $route['error'] = 'user/notfound';
 $route['services'] = 'user/services';
-$route['moreinfo'] = 'user/moreinfo';
+$route['aboutus'] = 'user/moreinfo';
 
 ///////////// routes for admin/////
 
