@@ -219,24 +219,27 @@
 
             $colorInner.style.backgroundColor = self.colorHex;
             $colorInput.value = self.colorHex;
-            var colorfor = $('input[name=colorfor]:checked').val();
-            if(colorfor==1)
-            {
-                $('.colorforback').val(self.colorHex);
-                $('.sign-in').css('background',self.colorHex);
+            $('.sign-in').css('background',self.colorHex);
                $('.sign-up').css('background',self.colorHex);
+               $('.colorforback').val(self.colorHex);
+            // var colorfor = $('input[name=colorfor]:checked').val();
+            // if(colorfor==1)
+            // {
+            //    // $('.colorforback').val(self.colorHex);
+            //     $('.sign-in').css('background',self.colorHex);
+            //    $('.sign-up').css('background',self.colorHex);
 
-            }
-            else
-            {
-                $('.colorfortext').val(self.colorHex);
-                $('.sign-in').css('color',self.colorHex);
-               $('.sign-up').css('color',self.colorHex);
+            // }
+            // else
+            // {
+            //     //$('.colorfortext').val(self.colorHex);
+            //     $('.sign-in').css('color',self.colorHex);
+            //    $('.sign-up').css('color',self.colorHex);
 
                 
 
 
-            }
+            // }
             
         };
 

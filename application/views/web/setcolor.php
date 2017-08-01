@@ -23,10 +23,10 @@
 		<div class="preview-form">
             <h2>Get a free preview with your content</h2>
             <ul>
-                <li><a href="#" class="active">1</a></li>
-                <li><a href="#" class="">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
+                <li><a href="<?php echo SITE_URL?>user/setcolor/<?php echo $gettempData->id; ?>" class="active">1</a></li>
+                <li><a href="<?php echo SITE_URL?>user/settags/<?php echo $gettempData->id; ?>" class="">2</a></li>
+                <li><a href="<?php echo SITE_URL?>user/setimage/<?php echo $gettempData->id; ?>">3</a></li>
+                <li><a href="<?php echo SITE_URL?>user/preview/<?php echo $gettempData->id; ?>">4</a></li>
             </ul>
             <h3>Look and Feel</h3>
             <span>Please select the highlight color and font</span>
@@ -37,20 +37,8 @@
             	<div class="hightight">
                 	<h3>Highlight Color</h3>
                     <h4>Will be used to highlight items such as buttons and special actions.</h4>
-                    <div class="color-radio">
-                    	<ul>
-                            <li>
-                                <input checked type="radio" name="colorfor" value="1">
-                                <label>For Button</label>
-                                <div class="bullet"></div>
-                            </li>
-                            <li>
-                                <input type="radio" name="colorfor" value="2">
-                                <label>Text color</label>
-                                <div class="bullet"></div>
-                            </li>
-                        </ul>
-                    </div>
+                    <input checked type="hidden" name="colorfor" value="1">
+                  
                     <div class="imgbox" style="margin-left: -150px; height: 192px" >
                             <div id="colorPicker">
                                 <a class="color"><div class="colorInner"></div></a>
@@ -64,22 +52,14 @@
                                
                                </div>
                     </div>
-                    <div class="color-plate">
-                    	            <div class="well">
-                                     <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>">
-                         <!--  <input type="hidden" value="" id="demo3"/> -->
-                          <div class="colorpickerplus-embed">
-                            <div class="colorpickerplus-container"></div>
-                          </div>
-
-                       </div>
-                    </div>
+                    <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>">
+                    
                 </div>
             
                   <div class="preview">
                     <h3>Preview</h3>
                     <ul>
-                        <li><a href="#" class="active">Application</a></li>
+                        <!-- <li><a href="#" class="active">Application</a></li> -->
                         <!-- <li><a href="#">Website</a></li> -->
                     </ul>
                      <div class="divine">
@@ -89,8 +69,8 @@
                         <h3><?php echo $gettempData->temlete_name;?></h3>
                         <p><?php echo $gettempData->tag_line;?></p>
                         <div class="btn-bott">
-                              <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; color: <?php echo $gettempData->text_color; ?>!important;">Sign In</a>
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important ; color: <?php echo $gettempData->text_color; ?>!important;">Sign In</a>
+                              <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; ">Sign In</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important ;">Sign In</a>
                         </div>
                    
                           </div>
@@ -103,7 +83,7 @@
                         <p><?php echo $gettempData->tag_line;?></p> -->
                         <div class="btn-bott">
                              <!--  <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important">Sign In</a> -->
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important ; color: <?php echo $gettempData->text_color; ?>!important;">Sign In</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important ; ">Sign In</a>
                         </div>
                    
                           </div>
@@ -124,23 +104,5 @@
 
 
 
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <script src="<?php echo WEBROOT_PATH_JS;?>bootstrap-colorpicker.min.js"></script>
-    <script src="<?php echo WEBROOT_PATH_JS;?>bootstrap-colorpicker-plus.js"></script>
-    <script type="text/javascript">
-    $(function(){
-   
-    
-    var demo3 = $('.colorpickerplus-embed .colorpickerplus-container');
-        demo3.colorpickerembed();
-        demo3.on('changeColor', function(e,color)
-        {
-            if(color==null)
-             $('.hovercolor').val('#fff');
-               else
-              $('.hovercolor').val(color);
-        });
- 
-    });
-    </script>
+  
 

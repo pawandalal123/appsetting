@@ -117,49 +117,47 @@ class User extends MY_AppController {
 
 		}
 		$this->load->model('subcategory');
-		$this->load->model("templetes");
+		$this->load->model("templetes_images");
 		$subcatid = $this->input->post('subcatid');
 		$condition = array('id'=>$this->input->post('subcatid'));
 		$getsubcat = $this->subcategory->getBy($condition,array('name'));
 
 		///////// get templets based on category////
-		$condition = "sub_cat_id = '".$subcatid."' and status=1 and is_default=0";
-        $getproducts = $this->templetes->select_data('*',$condition);
+		$condition = "sub_cat_id = '".$subcatid."' and status=1";
+        $getproducts = $this->templetes_images->select_data('*',$condition);
 		?>
 		 <script>
-    $(document).ready(function() 
-    {
-	   var owl = $("#owl-demo2");
-      owl.owlCarousel({
+	    $(document).ready(function() 
+	    {
+		   var owl = $("#owl-demo2");
+	      owl.owlCarousel({
 
-      items : 5, //10 items above 1000px browser width
-      itemsDesktop : [1000,5], //5 items between 1000px and 901px
-      itemsDesktopSmall : [900,3], // 3 items betweem 900px and 601px
-      itemsTablet: [600,2], //2 items between 600 and 0;
-      itemsMobile : false // itemsMobile disabled - inherit from itemsTablet option
-      
-      });
+	      items : 5, //10 items above 1000px browser width
+	      itemsDesktop : [1000,5], //5 items between 1000px and 901px
+	      itemsDesktopSmall : [900,3], // 3 items betweem 900px and 601px
+	      itemsTablet: [600,2], //2 items between 600 and 0;
+	      itemsMobile : false // itemsMobile disabled - inherit from itemsTablet option
+	      
+	      });
 
-      // Custom Navigation Events
-      $(".next").click(function(){
-        owl.trigger('owl.next');
-      })
-      $(".prev").click(function(){
-        owl.trigger('owl.prev');
-      })
-      
+	      // Custom Navigation Events
+	      $(".next").click(function(){
+	        owl.trigger('owl.next');
+	      })
+	      $(".prev").click(function(){
+	        owl.trigger('owl.prev');
+	      })
 
-
-    });
-    </script>
+	    });
+	    </script>
       <h3>You Have Previewing <span> <?php echo $getsubcat->name;?></span></h3>
         <div class="popup-nav">
           <ul>
               <li><a href="#" class="active">iOS Mobile App</a></li>
-                <!-- <li><a href="#"> Website</a></li> -->
+                <li><a href="#"> Website</a></li>
             </ul>
         </div>
-        <input type="hidden" name="selectedtemplate" value="">
+       
         
         <div id="demo2">
             <?php 
@@ -168,11 +166,13 @@ class User extends MY_AppController {
             ?>
             <div id="owl-demo2" class="owl-carousel">
             <?php 
+            $template_id='';
             foreach($getproducts as $getproducts)
             {
+            	$template_id = $getproducts->template_id;
              ?>
-             <div class="item templateselect"  id="<?php echo $getproducts->id?>">
-                <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$getproducts->background_image;?>" alt="">
+             <div class="item templateselect"  id="<?php echo $getproducts->template_id?>">
+                <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.'galleryimage/'.$getproducts->image_name;?>" alt="">
                     <div class="overlay-chuch">
                     	<!-- //<h3><?php echo $getproducts->temlete_name;?></h3> -->
                         <!-- <p><?php echo $getproducts->tag_line;?></p> -->
@@ -198,6 +198,7 @@ class User extends MY_AppController {
             }
             ?>
         </div>
+         <input type="hidden" name="selectedtemplate" value="<?php echo $template_id;?>">
         <h4>ABOUT</h4>
         <p>Forget Ebay and other forms of advertising for your property that costs you hard earned money. Why not do it all for free? Investment Assets Properties have ready several locations around the world to take your free listings for any luxury property.</p>
         <div class="row"><a href="<?php echo SITE_URL?>moreinfo" class="active mor-detil">More Details</a>
@@ -224,7 +225,7 @@ class User extends MY_AppController {
 		$status['status']='success';
 		$status['islogin']='no';
 		$templeteid  =$this->input->post('templeteid');
-		$this->session->set_userdata( array(
+		$this->session->set_userdata(array(
 		            'templete_id'=>$templeteid
 		        ));
 		if($this->session->userdata('logged_in') && $this->session->userdata('logged_in')!='')
@@ -640,13 +641,11 @@ class User extends MY_AppController {
 		}
 		if($value)
 		{
-			
 			$this->load->model("templetes");
 			$condition = array('id'=>$value);
 			$gettempData = $this->templetes->getBy($condition);
 			if($gettempData)
 			{
-		
 				$this->data['gettempData'] = $gettempData;
 				$this->data['view_file'] = 'web/checkpreview';
 				$this->data['templete_id'] = $value;
@@ -743,7 +742,6 @@ class User extends MY_AppController {
 							                                     'remaining_days'=>250);
 
 					}
-
 
 				}
 				///////////// make gallery images////

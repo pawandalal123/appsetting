@@ -235,10 +235,10 @@ $(document).ready(function () {
 		<div class="preview-form">
             <h2>Get a free preview with your content</h2>
             <ul>
-                <li><a href="#" class="active next">1</a></li>
-                <li><a href="#" class="next">2</a></li>
-                <li><a href="#" class="active">3</a></li>
-                <li><a href="#">4</a></li>
+                <li><a href="<?php echo SITE_URL?>user/setcolor/<?php echo $gettempData->id; ?>" class="active next">1</a></li>
+                <li><a href="<?php echo SITE_URL?>user/settags/<?php echo $gettempData->id; ?>" class="next">2</a></li>
+                <li><a href="<?php echo SITE_URL?>user/setimage/<?php echo $gettempData->id; ?>" class="active">3</a></li>
+                <li><a href="<?php echo SITE_URL?>user/preview/<?php echo $gettempData->id; ?>">4</a></li>
             </ul>
             <h3>Customize The App Screens</h3>
             <span>Choose an elemant from the screen to customize it.</span>
@@ -290,7 +290,7 @@ $(document).ready(function () {
                 ?>
                 <form accept="" method="post">
                   <input class="save-exit" type="submit" name="savedetails" value="Save And Exit">
-                  <a href="<?php echo SITE_URL;?>user/preview/<?php echo $gettempData->id;?>" class="grey">Next</a>
+                  <a href="<?php echo SITE_URL;?>user/preview/<?php echo $gettempData->id;?>" class="save-exit">Next</a>
                 </form>
                 
                 </div>

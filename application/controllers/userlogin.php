@@ -172,7 +172,6 @@ class UserLogin extends MY_AppController {
 
 							}
 						}
-
 					}
 					else
 					{
