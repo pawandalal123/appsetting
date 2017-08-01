@@ -33,6 +33,20 @@ class UserLogin extends MY_AppController {
 				$this->data['view_file'] = 'web/mainlogin';
 				$this->load->view('layouts/testDefault', $this->data); 
 			}
+				public function signup()
+			{
+				if($this->session->userdata('logged_in'))
+				{
+					redirect(SITE_URL);
+				}
+				if($this->input->post('userlogin'))
+				{
+					$this->CheckUserLogin();
+				}
+			
+				$this->data['view_file'] = 'web/signup';
+				$this->load->view('layouts/testDefault', $this->data); 
+			}
 			public function register()
 			{
 				if($this->session->userdata('logged_in'))

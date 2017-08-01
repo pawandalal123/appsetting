@@ -14,8 +14,8 @@ if($this->uri->segment(1)=='' || $this->uri->segment(1)=='services' || $this->ur
                 <ul>
                     <li><a href="<?php echo SITE_URL;?>">HOME</a></li>
                     <li><a href="<?php echo SITE_URL;?>services">SERVICES</a></li>
-                    <li><a href="#">FEATURES</a></li>
-                    <li><a href="#">TEMPLATES</a></li>
+                    <li><a href="<?php echo SITE_URL;?>aboutus">ABOUT US</a></li>
+                    <li><a href="<?php echo SITE_URL.'user/templates'?>">TEMPLATES</a></li>
                     <?php
                    if($this->session->userdata('logged_in'))
                     {
@@ -31,7 +31,7 @@ if($this->uri->segment(1)=='' || $this->uri->segment(1)=='services' || $this->ur
                         <?php
                         } ?>
                     
-                    <li><a href="">CONTACT</a></li>
+                    <li><a href="<?php echo SITE_URL.'user/contact'?>">CONTACT</a></li>
                     <?php
                    if($this->session->userdata('logged_in'))
                     {
@@ -70,8 +70,8 @@ else
                 <ul>
                     <li><a href="<?php echo SITE_URL;?>">HOME</a></li>
                     <li><a href="<?php echo SITE_URL;?>services">SERVICES</a></li>
-                    <li><a href="#">FEATURES</a></li>
-                    <li><a href="#">TEMPLATES</a></li>
+                    <li><a href="<?php echo SITE_URL;?>aboutus">ABOUT US</a></li>
+                    <li><a href="<?php echo SITE_URL.'user/templates'?>">TEMPLATES</a></li>
                       <?php 
                     if($this->session->userdata('logged_in'))
                     {
@@ -86,7 +86,7 @@ else
                         <li><a href="<?php echo SITE_URL.'user/training'?>">TRAINING</a></li>
                         <?php
                         } ?>
-                    <li><a href="">CONTACT</a></li>
+                    <li><a href="<?php echo SITE_URL.'user/contact'?>">CONTACT</a></li>
                     <?php
                     if($this->session->userdata('logged_in'))
                     {
