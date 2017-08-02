@@ -13,7 +13,45 @@ $(document).ready(function(){
             $(this).next().text(val)
         })
     })
+
+  $(document).on('change','.changesubcat',function()
+  {
+    var subcatid = $(this).val();
+    window.location.href=WEBROOT_PATH+'services/'+subcatid;
+
+  });
 });
+function settempletesubcat(subcatid)
+{
+    //alert('');
+
+       $.post(WEBROOT_PATH+'user/settempletesubcat',{'subcatid':subcatid},function(data,status)
+        {
+          
+           if(data.status=='success')
+           {
+              if(data.islogin=='yes')
+              {
+                  //alert();
+                  window.location.href=WEBROOT_PATH+'user/setcolor/'+data.temoleteid;
+
+              }
+              else
+              {
+                  //alert('pawan');
+                  window.location.href=WEBROOT_PATH+'userlogin/login';
+              }
+
+           }
+        
+        },'json').fail(function(response)
+        {
+                          
+                          });
+
+   
+
+}
 </script>
 <!--------------- showcase ---------------->
 <div class="showcase service-show">
@@ -70,39 +108,48 @@ $(document).ready(function(){
             <div class="editing">
             	<label>Displaying Prices For</label>
                 <div class="select-box">
-                <select class="select">
-                    <option>Church Template</option>
-                    <option>Church Template</option>
-                    <option>Church Template</option>
+                <select class="select changesubcat">
+                <?php
+                if(count($subcatdata)>0)
+                {
+                    foreach ($subcatdata as $subcatdata)
+                     {
+                        ?>
+                        <option value="<?php echo $subcatdata->id;?>" <?php if($subcatdata->id==$idtomatch) echo 'selected' ?>><?php echo $subcatdata->name;?></option>
+                        <?php
+                    }
+
+                } 
+                ?>
                 </select>
                 </div>
             </div>
+            <?php 
+            if(count($planlist)>0)
+            {
+                ?>
         	<ul>
+            <input type="hidden" name="selectedtemplate" value="<?php echo $template_id;?>">
+            <?php 
+            foreach($planlist as $planlist)
+            {
+                ?>
             	<li class="basic">
                     <div class="iner-box">
-                        <h4>BASIC</h4>
-                        <div class="price"><strong>23 <sup>$</sup></strong> / month</div>
-                        <p>Up to 100 Users <br/>Other Factor</p>
-                        <a href="#">SELECT</a>
+                        <h4><?php echo $planlist->plan_name;?></h4>
+                        <div class="price"><strong><?php echo $planlist->price;?> <sup>$</sup></strong> / month</div>
+                        <p>Up to <?php echo $planlist->max_installtion?> Users <br/>Other Factor</p>
+                        <a href="#" onclick="settempletesubcat(<?php echo $planlist->sub_cat_id;?>)">SELECT</a>
                     </div>
                 </li>
-                <li class="advance active">
-                	<div class="iner-box">
-                        <h4>ADVANCE</h4>
-                        <div class="price"><strong>35 <sup>$</sup></strong> / month</div>
-                        <p>Up to 100 Users <br/>Other Factor</p>
-                        <a href="#">SELECT</a>
-                    </div>
-                </li>
-                <li class="superior">
-                	<div class="iner-box">
-                        <h4>SUPERIOR</h4>
-                        <div class="price"><strong>49 <sup>$</sup></strong> / month</div>
-                        <p>Up to 100 Users <br/>Other Factor</p>
-                        <a href="#">SELECT</a>
-                    </div>
-                </li>
+                <?php 
+            }
+                ?>
+      
             </ul>
+            <?php 
+        }
+            ?>
             <div class="textbox">
             	<p>I have been questioned by many people to disclose some of the greatest traffic generating techniques that I know of. I am not to immediate to reveal them because I know the majority doesn't even take battle on them. All I know is that they work and you should be familiar with this too.</p>
             </div>

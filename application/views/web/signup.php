@@ -16,18 +16,18 @@
                     <div class="row">
                         <div class="col3">
                             <label>Your Name</label>
-                            <input type="text" class="input" placeholder="Your Name" name="useremail">
-                             <?php echo form_error('yourname');?>
+                            <input type="text" class="input" placeholder="Your Name" name="username" value="<?php echo  set_value('username');?>">
+                             <?php echo form_error('username');?>
                         </div>
                          <div class="col3">
                             <label>Your Mobile</label>
-                            <input type="Mobile" class="input" placeholder="Your Mobile" name="useremail">
-                             <?php echo form_error('yourmobile');?>
+                            <input type="Mobile" class="input" placeholder="Your Mobile" name="usermobile" value="<?php echo  set_value('usermobile');?>">
+                             <?php echo form_error('usermobile');?>
                         </div>
                          <div class="col3">
                             <label>Your Email</label>
-                            <input type="Email" class="input" placeholder="Your Email" name="useremail">
-                             <?php echo form_error('youremail');?>
+                            <input type="Email" class="input" placeholder="Your Email" name="useremail" value="<?php echo  set_value('useremail');?>">
+                             <?php echo form_error('useremail');?>
                         </div>
                         <div class="col4">
                             <label>Password</label>
@@ -36,8 +36,8 @@
                         </div>
                         <div class="col4">
                             <label>Confirm Password</label>
-                            <input type="password" class="input" placeholder="Password" name="password">
-                            <?php echo form_error('password');?>
+                            <input type="password" class="input" placeholder="Password" name="repassword">
+                            <?php echo form_error('repassword');?>
                             <div class="row">
                         <div class="right"><input type="submit" class="submit-btn" value="signup"  name="userlogin"></div>
                     </div>

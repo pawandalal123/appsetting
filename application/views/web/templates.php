@@ -41,7 +41,8 @@ $('.tab-content').hide().fadeIn();
           {
 
             $('.searchresult').html(data);
-            $('.tablist').hide();
+            $('.tabshowhide').hide();
+            $('.tabnav ui li').removeClass('active');
             
           }).fail(function(response)
            {
@@ -165,7 +166,7 @@ $(document).ready(function(){
               {
                 ?>
            
-            <div class="tab-content" id="newest<?php echo $key;?>">
+            <div class="tab-content tabshowhide" id="newest<?php echo $key;?>">
               <ul>
               <?php 
               foreach($valArray as $subcatid=>$templeteval)
@@ -183,14 +184,15 @@ $(document).ready(function(){
                 </ul>
             </div>
             <?php } ?>
+            <div class="searchresult">
+
+              
+            </div>
             </div>
 
            
         
         <?php } ?>
-         <div class="searchresult">
-
-              
-            </div>
+         
     </div>
 </div>

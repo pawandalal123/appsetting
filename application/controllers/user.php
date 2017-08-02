@@ -97,9 +97,38 @@ class User extends MY_AppController {
 		$this->load->view('layouts/testDefault', $this->data); 
 	}
 
-	public function services()
+	public function services($subcatid=false)
 	{
+		$idtomatch='';
+		$planlist=[];
 		
+	    $this->load->model("subcategory");
+	    $subcatdata=$this->subcategory->getlist(array('status'=>1));
+	    $this->data['subcatdata']  = $subcatdata;
+
+	    $this->load->model("subscription_plan");
+	    if($subcatid)
+	    {
+	    	//die;
+	    	$idtomatch=$subcatid;
+	    	$condition = array('sub_cat_id'=>$subcatid);
+	        $planlist = $this->subscription_plan->select_data('*',$condition);
+	    }
+	    else
+	    {
+	    	$this->db->order_by('id','asc');
+	        $getplan = $this->subscription_plan->getBy(array('status'=>1));
+	        if($getplan)
+	        {
+	        	$idtomatch=$getplan->sub_cat_id;
+	        	$condition = array('sub_cat_id'=>$getplan->sub_cat_id);
+	            $planlist = $this->subscription_plan->select_data('*',$condition);
+
+	        }
+	    }
+        $this->data['idtomatch']=$idtomatch;
+	    $this->data['subcatdata']=$subcatdata;
+        $this->data['planlist']=$planlist;
 		$this->data['titlehome']='Landing Page Home';
 		$this->data['view_file'] = 'web/services';
 		
@@ -243,8 +272,6 @@ class User extends MY_AppController {
                     </div>
                 </div>
                 
-                
-              
               <?php
               }
               ?>
@@ -267,7 +294,7 @@ class User extends MY_AppController {
             <ul>
               <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>icon-facebook2.png" alt=""></a></li>
                 <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>icon-twitter2.png" alt=""></a></li>
-                <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>icon-googlep.png" alt=""></a></li>
+                <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>instagram.png" alt=""></a></li>
                 <li><a href="#"><img src="<?php echo WEBROOT_PATH_IMAGES;?>icon-message.png" alt=""></a></li>
             </ul>
         </div>
@@ -311,6 +338,53 @@ class User extends MY_AppController {
 				
 			    $status['islogin']='yes';
 		}
+		// echo 'pawan';
+		// die;
+		echo json_encode($status);
+             flush();	
+	}
+
+	public function settempletesubcat()
+	{
+		if (!$this->input->is_ajax_request()) 
+		{
+		   exit('No direct script access allowed');
+		}
+		$status['status']='success';
+		$status['islogin']='no';
+		$subcatid  =$this->input->post('subcatid');
+		$this->load->model("templetes");
+		$condition = array('sub_cat_id'=>$subcatid,'is_default'=>0);
+		$gettempData = $this->templetes->getBy($condition);
+		if($gettempData)
+		{
+			$this->session->set_userdata(array(
+		            'templete_id'=>$gettempData->id
+		        ));
+				if($this->session->userdata('logged_in') && $this->session->userdata('logged_in')!='')
+				{
+						$insertData = array('temlete_name'=>$gettempData->temlete_name,
+							                'background_image'=>$gettempData->background_image,
+							                'color_code'=>$gettempData->color_code,
+							                'text_color'=>$gettempData->text_color,
+							                'color_code_hover'=>$gettempData->color_code_hover,
+							                'tag_line'=>$gettempData->tag_line,
+							                'user_id'=>$this->session->userdata('UserId'),
+							                'is_default'=>1,
+							                'cat_id'=>$gettempData->cat_id,
+							                'sub_cat_id'=>$gettempData->sub_cat_id,
+							                'created_at'=>date('Y-m-d H:i:s'));
+						$tempid = $this->templetes->AdduserData($insertData);
+						$status['temoleteid']=$tempid;
+					    $status['islogin']='yes';
+				}
+
+		}
+		else
+		{
+			$status['status']='error';
+		}
+		
 		// echo 'pawan';
 		// die;
 		echo json_encode($status);

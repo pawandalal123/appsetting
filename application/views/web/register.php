@@ -13,11 +13,11 @@
             <span>Choose an elemant from the screen to customize it.</span>
             <div class="form">
             <form action="#" method="post">
-            	<input type="text" class="input" placeholder="Your Name" name="username"><br>
+            	<input type="text" class="input" placeholder="Your Name" name="username" value="<?php echo  set_value('username');?>"><br>
             	<?php echo form_error('username');?>
-                <input type="text" class="input" placeholder="Your Mobile" name="usermobile"><br>
+                <input type="text" class="input" placeholder="Your Mobile" name="usermobile" value="<?php echo  set_value('usermobile');?>"><br>
                 <?php echo form_error('usermobile');?>
-                <input type="text" class="input" placeholder="Your Email" name="useremail"><br>
+                <input type="text" class="input" placeholder="Your Email" name="useremail" value="<?php echo  set_value('useremail');?>"><br>
                 <?php echo form_error('useremail');?>
                 <!-- <input type="text" class="input" placeholder="Confirm Email" ><br> -->
                 <input type="password" class="input" placeholder="Enter Password" name="password"><br>

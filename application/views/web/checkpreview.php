@@ -24,10 +24,11 @@ $('.webcontent').hide().fadeIn();
         <div class="preview-form">
             <h2>Get a free preview with your content</h2>
             <ul>
-                <li><a href="#" class="next">1</a></li>
-                <li><a href="#" class="next">2</a></li>
-                <li><a href="#" class="next">3</a></li>
-                <li><a href="#" class="active">4</a></li>
+             
+                <li><a href="<?php echo SITE_URL?>user/setcolor/<?php echo $gettempData->id; ?>" class="next">1</a></li>
+                <li><a href="<?php echo SITE_URL?>user/settags/<?php echo $gettempData->id; ?>" class="next">2</a></li>
+                <li><a href="<?php echo SITE_URL?>user/setimage/<?php echo $gettempData->id; ?>" class="next">3</a></li>
+                <li><a href="<?php echo SITE_URL?>user/preview/<?php echo $gettempData->id; ?>" class="active">4</a></li>
             </ul>
             <h3>Its done! Well Almost</h3>
             <span>Please select the highlight color and font</span>

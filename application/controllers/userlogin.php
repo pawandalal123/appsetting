@@ -41,7 +41,7 @@ class UserLogin extends MY_AppController {
 				}
 				if($this->input->post('userlogin'))
 				{
-					$this->CheckUserLogin();
+					$this->registerwithus();
 				}
 			
 				$this->data['view_file'] = 'web/signup';
@@ -88,40 +88,40 @@ class UserLogin extends MY_AppController {
 						   'DisplayAddress'    => $CheckLoginData->permanent_address,
                            'logged_in' => TRUE
                                  );
-                           $this->session->set_userdata($newdata);
-       //                      if($this->session->userdata('templete_id'))
-							// {
-							// 	$this->load->model("templetes");
-							// 	$condition = array('id'=>$this->session->userdata('templete_id'));
-							// 	$gettempData = $this->templetes->getBy($condition);
-							// 	if($gettempData)
-							// 	{
-							// 		$insertData = array('temlete_name'=>$gettempData->temlete_name,
-							// 		                    'background_image'=>$gettempData->background_image,
-							// 		                'color_code'=>$gettempData->color_code,
-							// 		                'tag_line'=>$gettempData->tag_line,
-							// 		                'user_id'=>$userLoginId,
-							// 		                'is_default'=>1,
-							// 		                'cat_id'=>$gettempData->cat_id,
-							// 		                'sub_cat_id'=>$gettempData->sub_cat_id,
-							// 		                'created_at'=>date('Y-m-d H:i:s'));
-							// 		$tempid = $this->templetes->AdduserData($insertData);
-							// 		if($tempid)
-							// 		{
-							// 		 redirect(SITE_URL.'user/setcolor/'.$tempid);
+                            $this->session->set_userdata($newdata);
+                            if($this->session->userdata('templete_id'))
+							{
+								$this->load->model("templetes");
+								$condition = array('id'=>$this->session->userdata('templete_id'));
+								$gettempData = $this->templetes->getBy($condition);
+								if($gettempData)
+								{
+									$insertData = array('temlete_name'=>$gettempData->temlete_name,
+									                    'background_image'=>$gettempData->background_image,
+									                'color_code'=>$gettempData->color_code,
+									                'tag_line'=>$gettempData->tag_line,
+									                'user_id'=>$CheckLoginData->id,
+									                'is_default'=>1,
+									                'cat_id'=>$gettempData->cat_id,
+									                'sub_cat_id'=>$gettempData->sub_cat_id,
+									                'created_at'=>date('Y-m-d H:i:s'));
+									$tempid = $this->templetes->AdduserData($insertData);
+									if($tempid)
+									{
+									 redirect(SITE_URL.'user/setcolor/'.$tempid);
 
-							// 		}
+									}
 
-							// 	}
+								}
 								
 
-							// }
-							// else
-							// {
-							// 	redirect(SITE_URL.'user/profile');
+							}
+							else
+							{
+								redirect(SITE_URL.'user/profile');
 
-							// }
-						   redirect(SITE_URL.'user/profile');
+							}
+						   //redirect(SITE_URL.'user/profile');
 	                    
 					 }
 					 else
@@ -137,7 +137,7 @@ class UserLogin extends MY_AppController {
 				@extract($userData );
 				$this->form_validation->set_rules('username', 'Name', 'required');
 				$this->form_validation->set_rules('useremail', 'Email ', 'required|is_unique[users.email]');
-				$this->form_validation->set_rules('usermobile', 'Mobile', 'required|numeric');
+				$this->form_validation->set_rules('usermobile', 'Mobile', 'required|callback_numeric_dash');
 				$this->form_validation->set_rules('password', 'Password', 'required');
 				//echo $this->db->last_query();
 				$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
@@ -195,6 +195,17 @@ class UserLogin extends MY_AppController {
 				}
 			}
 
+		// 	function numeric_dash ($num) {
+  //   return ( ! preg_match("/^([0-9-\s])+$/D", $num)) ? FALSE : TRUE;
+  // }
+public function numeric_dash($string) 
+    {
+        if ( !preg_match('/^[0-9 .,\-]+$/i',$string) )
+        {
+            return false;
+        }
+    }
+
 
 			
 			public function logout()
@@ -211,11 +222,11 @@ class UserLogin extends MY_AppController {
 								   'logged_in' => TRUE
 										 );
 							  
-							  if($this->session->userdata('templete_id'))
-							  {
-							  	$newdata['templete_id'] = $this->session->userdata('templete_id');
+				  if($this->session->userdata('templete_id'))
+				  {
+				  	$newdata['templete_id'] = $this->session->userdata('templete_id');
 
-							  }
+				  }
 							  $this->session->unset_userdata($newdata);
 							  redirect(SITE_URL);
 							  
