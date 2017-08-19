@@ -710,14 +710,14 @@ public function galleryimages($imageid=false)
 {
 	$this->validateAdmin();
 	$userData = $this->input->post();
-    if($this->input->post('savevideo'))
+    if($this->input->post('saveimage'))
     {
     	$this->addimage($imageid);
     	redirect('/admin/galleryimages');
     }
-	$this->load->model("training_videos");
+	$this->load->model("templetes_images");
 	// $this->db->order_by('total_views','desc');
-	$getvideos = $this->training_videos->select_data('*',array('type'=>2));
+	$getvideos = $this->templetes_images->select_data('*',array('type'=>3));
 		//echo $this->db->last_query();
 	$this->data['getvideos'] = $getvideos;
 	$this->load->model("category");
@@ -727,7 +727,7 @@ public function galleryimages($imageid=false)
 	$editdata='';
 	if($imageid)
 	{
-		$editdata = $this->training_videos->getBy(array('id'=>$imageid,'type'=>2));
+		$editdata = $this->templetes_images->getBy(array('id'=>$imageid,'type'=>3));
 		if(empty($editdata))
 		{
 			$msg="Some Technical Issue";
@@ -742,13 +742,14 @@ public function galleryimages($imageid=false)
 
 public function addimage($imageid=false)
 {
-	$this->load->model("training_videos");
-	$this->form_validation->set_rules('cat', 'Category', 'trim|required|xss_clean');
-	$this->form_validation->set_rules('subcat', 'Subcategory Name', 'trim|required|xss_clean');
-	$this->form_validation->set_rules('attachment', 'Gallery Image', 'trim|required|xss_clean');
+	$this->load->model("templetes_images");
+	// $this->form_validation->set_rules('cat', 'Category', 'trim|required|xss_clean');
+	$this->form_validation->set_rules('subcat', 'Subcategory Name', 'trim|required');
+	// $this->form_validation->set_rules('attachment', 'Gallery Image', 'trim|required');
 	$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
 	if($this->form_validation->run())
     {
+    	
 		$status=1;
 		$imagename='';
 		if($_FILES['attachment']['name'])
@@ -770,23 +771,23 @@ public function addimage($imageid=false)
 				$imagename = $image_name['file_name'];
 				$userData = $this->input->post();
 	            @extract($userData );
-		        $insertData=array('video_link'=>$imagename,
-							      'cat_id'=>$cat,
+		        $insertData=array('image_name'=>$imagename,
 							      'sub_cat_id'=>$subcat,
+						          'type'=>3,
 						          'status'=>$status,
 						          'created_by'=>$this->session->userdata('id'),
 						          'created_at'=>date('Y-m-d H:i:s')
 						         );
-		        if($videoid)
+		        if($imageid)
 				{
 					unset($insertData['created_at']);
-					$lastId=$this->training_videos->updateDetails(array('id'=>$videoid),$insertData);
+					$lastId=$this->templetes_images->updateDetails(array('id'=>$videoid),$insertData);
 					$mesage='Updated';
 
 				}
 				else
 				{
-					$lastId=$this->training_videos->AdduserData($insertData);
+					$lastId=$this->templetes_images->AdduserData($insertData);
 					$mesage='Created';
 				}
 				if(isset($mesage))
@@ -809,7 +810,40 @@ public function addimage($imageid=false)
 			$this->session->set_userdata( array('msg'=>$msg,'class'=>'suc'));
 		}
 	}
+	// else
+	// {
+	// 	 // echo validation_errors(); 
+	// 	 // die;
+	// }
 }
+
+public function activeDeactiimages($imageid = false,$status_mode=false)
+	{
+	 $this->load->model("templetes_images");
+	  $where=array("id"=>$imageid);
+	 if($status_mode=='deActive')
+	 {
+			$cols=array("status"=>1);
+			$msgStatus='Activated';
+	   } 
+	   else if($status_mode=='Active')
+	   {
+			 $cols=array("status"=>0);
+			 $msgStatus='Deactivated';
+		}
+	      $affected_row=$this->templetes_images->updateDetails($where,$cols);
+	     if($affected_row)
+	     {
+				  $msg="$msgStatus Successfully";
+				  $this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
+				  redirect('/admin/galleryimages','refresh');
+			}else{
+			  
+				  $msg=" Status Not Changed !";
+				  $this->session->set_userdata( array('msg'=>$msg,'class' => 'err'));
+				  redirect('/admin/galleryimages','refresh');
+			  }
+ }
 	
 		
 // pageContent() action load the respective view on default layout
@@ -825,6 +859,10 @@ public function subscriptionlist()
 // addPage() action load the respective view on default layout
 public function addPlan()
 {
+	    $this->load->model("subcategory");
+	    $subcatdata=$this->subcategory->getlist(array('status'=>1));
+	    $this->data['subcatdata']  = $subcatdata;
+
 	    $this->validateAdmin();
 	    $this->data['view_file']  = 'admin/addsubscription_plan';
 		$this->load->view('layouts/admin/admin_default', $this->data); 
@@ -833,6 +871,7 @@ public function addPlan()
 public function saveplan()
 {
 		$this->load->model("subscription_plan");
+		$this->form_validation->set_rules('subcategory', 'Subcategory Name', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('planame', 'Plan Name', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('amount', 'Amount', 'trim|required|numeric');
 		$this->form_validation->set_rules('maxinstall', 'Max installtion', 'trim|required|numeric');
@@ -849,6 +888,7 @@ public function saveplan()
 			$planame = $this->input->post('planame');
 			$content = $this->input->post('content');
 			$insertData=array('plan_name' => $planame,
+				              'sub_cat_id' => $this->input->post('subcategory'),
 							  'description' => $content,
 							  'price' => $this->input->post('amount'),
 							  'max_installtion' => $this->input->post('maxinstall'),

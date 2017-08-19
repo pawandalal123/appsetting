@@ -7,14 +7,14 @@
         </div>
         <div class="col2">
         	<ul class="footer-link">
-            	<li><a href="#">Home</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Features</a></li>
+            	<li><a href="<?php echo SITE_URL?>">Home</a></li>
+                <li><a href="<?php echo SITE_URL?>services">Services</a></li>
+                <li><a href="<?php echo SITE_URL?>aboutus">About Us</a></li>
             </ul>
             <ul class="footer-link">
-            	<li><a href="#">Templates</a></li>
+            	<li><a href="<?php echo SITE_URL?>user/templates">Templates</a></li>
                 <li><a href="<?php echo SITE_URL.'user/training'?>">Training</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="<?php echo SITE_URL?>user/contact">Contact</a></li>
                 
             </ul>
             <div class="social">

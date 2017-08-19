@@ -24,7 +24,7 @@
                 <img class="userprofileimage" src="<?php echo $link;?>">
                 <div class="upload-btn btn-primary">
                                 <span>file</span>
-                                <input type="file" class="upload" />
+                                <input name="background_image_user" type="file" class="upload" rel="profileimage" />
                             </div>
                             </div>
                 <h3 id="username"><?php echo $getuserdata->name?></h3>

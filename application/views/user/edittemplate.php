@@ -19,7 +19,7 @@
             </div>
             <div class="review-menu">
             	<ul>
-                    <li><a href="#" class="active">Overview</a></li>
+                    <li><a href="#" class="active" >Overview</a></li>
                     <li><a href="<?php echo SITE_URL.'user/modification/'.$templatedata->id ?>">Modifications</a></li>
                     <li><a href="<?php echo SITE_URL.'user/reportbug/'.$templatedata->id ?>">Report Bug</a></li>
                     <li><a href="#">Help</a></li>
@@ -28,12 +28,12 @@
         </div>
         <div class="registration">
         	<h3>User Registrations</h3>
-            <strong class="user-count">320</strong>
+            <strong class="user-count"><?php echo $totalcount?></strong>
         </div>
         <div class="registration-col">
         	<div class="mobile-app">
             	<h3>Mobile App</h3>
-                <a href="#">Preview</a>
+                <a href="#" class="previewtemp" id="<?php echo $templatedata->id;?>">Preview</a>
                 <a href="<?php echo SITE_URL.'user/setcolor/'.$templatedata->id ?>">Edit</a>
             </div>
             <div class="mobile-app website">
@@ -44,6 +44,30 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $(document).on('click','.previewtemp',function()
+        {
+            var templateid = $(this).attr('id');
+           $('#page_hide').show()
+            modelboxsmall('');
+            $.post(WEBROOT_PATH+'user/setpreview',{'templateid':templateid},function(data,status)
+            {
+                $('#page_hide').hide()
+                
+                  $('.content').html(data);
+              
+              }).fail(function(response)
+              {
+                                 $('#page_hide').hide()
+              });
+
+        })
+
+    })
+</script>
 
 
 

@@ -16,8 +16,11 @@
                 	<textarea name="" cols="" rows="" class="textarea" placeholder="Write your message here..."></textarea>
                 </div>
                 <div class="row">
-                	<span class="right"><a href="mailto:hello@getreplacer.com">hello@getreplacer.com</a></span>
-                	<input type="submit" class="submit-btn" value="Submit">
+                	<div class="right">
+                    <a id="contactemail"><?php echo $homedata->contact_email;?></a>
+                    <span  href="javascript:void();" class="maketextable" rel="a">Edit</span>
+                    </div>
+                	<input type="submit" class="submit-btn colorclass" value="Submit">
                 </div>
             </div>
             <div class="col2">

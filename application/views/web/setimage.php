@@ -254,8 +254,8 @@ $(document).ready(function () {
                       <h3 class="templetename"><?php echo $gettempData->temlete_name;?></h3>
                         <p class="templetetag"><?php echo $gettempData->tag_line;?></p>
                         <div class="btn-bott">
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; color: <?php echo $gettempData->text_color; ?>!important;">Sign In</a>
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; color: <?php echo $gettempData->text_color; ?>!important;">Sign In</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; ">Sign In</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; ">Sign In</a>
                          </div>
                         <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>">
                     </div>

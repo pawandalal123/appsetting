@@ -20,6 +20,28 @@
 
 <form action="<?php echo SITE_URL.'admin/saveplan';?>" method="post" id="contentFrm" class="form-horizontal form-bordered"  />
 <div class="form-group">
+<label class="col-md-3 col-lg-2 control-label" for="compose-to">Plan for<span class="err">*</span></label>
+<div class="col-md-9 col-lg-10">
+<select class="form-control form-control-borderless validate[required]" name="subcategory">
+<option value="">Select</option>
+<?php
+if(count($subcatdata)>0)
+{
+	foreach($subcatdata as $subcatdata)
+	{
+		?>
+		<option value="<?php echo $subcatdata->id;?>"><?php echo $subcatdata->name;?></option>
+		<?php
+
+	}
+
+} 
+?>
+</select>
+<?php echo form_error("subcategory");?>
+</div>
+</div>
+<div class="form-group">
 <label class="col-md-3 col-lg-2 control-label" for="compose-to">Plan Name<span class="err">*</span></label>
 <div class="col-md-9 col-lg-10">
 <input type="text" id="Plan name" name="planame" class="form-control form-control-borderless validate[required]" placeholder="Enter page Title.." />

@@ -61,7 +61,7 @@
                 </div>
             </div> -->
             
-            <div class="change-package"><a href="<?php echo SITE_URL.'website/subscription/'.$payments->app_id;?>"> <  Change Instllation Type </a></div>
+          <!--   <div class="change-package"><a href="<?php echo SITE_URL.'website/subscription/'.$payments->app_id;?>"> <  Change Instllation Type </a></div>
             <div class="row third">
             	<div class="box">
                 	<div class="col-left">
@@ -84,7 +84,7 @@
                         <a href="<?php echo SITE_URL.'website/makepayment/'.$payments->id?>" class="next-btn">next</a>
                     </div>
                 </div>
-            </div>
+            </div> -->
             
            <!--  <div class="change-package"><a href="#"> <  Change Instllation Type </a></div>
             <div class="row fourth">
@@ -112,15 +112,15 @@
                 </div>
             </div> -->
             
-           <!--  <div class="change-package"><a href="#"> <  Review Order </a></div>
+            <div class="change-package"><a href="<?php echo SITE_URL.'website/checkout/'.$payments->id;?>"> <  Review Order </a></div>
             <div class="row fourth">
             	<div class="box">
                 	<div class="col-left">
                     	<h4>BASIC</h4>
-                        <div class="price"><strong>23 <sup>$</sup></strong> / month</div>
-                        <p>Up to 100 Users <br/>Other Factor</p>
-                        <p><strong>INSTALLATION  ( + 1000 $ )</strong> (Default - Pay it Now)<strong>15% OFF COUPON APPLIED</strong></p>
-                        <a href="#" class="price-btn">1023 $</a>
+                        <div class="price"><strong><?php echo $plan_data->price;?>  <sup>$</sup></strong> / month</div>
+                        <p>Up to <?php echo $plan_data->max_installtion;?> Users <br/>Other Factor</p>
+                        <p><strong>INSTALLATION  ( + <?php echo $plan_data->default_installation_price; ?> $ )</strong> (Default - Pay it Now)<strong>15% OFF COUPON APPLIED</strong></p>
+                        <a href="#" class="price-btn"><?php echo $plan_data->price+$plan_data->default_installation_price; ?> $</a>
                     </div>
                     <div class="col-right">
                     	<span class="credit-info">Your Credit card information is encryted</span>
@@ -152,7 +152,7 @@
                         <a href="#" class="next-btn">PAY</a>
                     </div>
                 </div>
-            </div> -->
+            </div>
             
         </div>
         

@@ -87,49 +87,4 @@ $c++;
 </div>
 </div>
 
-<div id="modal-regular" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-<h3 class="modal-title">Add New Category</h3>
-</div>
 
-
-<div class="modal-body">
-<form action="<?php echo SITE_URL.'admin/add_category';?>" method="post"  id="addcategory" enctype="multipart/form-data" class="form-horizontal form-bordered"/>
-<div class="form-group">
-<label class="col-md-3 control-label" for="example-text-input">Category Name <span class="err">*</span></label>
-<div class="col-md-9">
-<input type="text" id="cat" name="cat" class="form-control validate[required]" placeholder="Enter Category Name" />
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-md-3 control-label" for="example-file-input">Category Image</label>
-<div class="col-md-9">
-<input type="file" id="image" name="image" />
-</div>
-</div>
-<div class="modal-footer">
-<div class="form-group form-actions">
-<div class="col-md-9 col-md-offset-3">
-<input type="submit" id="submit" class="btn btn-sm btn-primary" name="submit"  value="Submit"/>
-<input type="reset" id="reset" class="btn btn-sm btn-warning" name="reset"  value="Reset"/>
-<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-</div>
-</div>
-</div>
-</form>
-</div>
-
-
-</div>
-</div>
-</div>
-
-<div id="modal-regular2" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-
-
-
-</div>

@@ -50,7 +50,7 @@
                 <!-- <h3>Social accounts</h3> -->
                 <p>After a while, finding that nothing more happened, she decided on going into the garden</p>
                 <!-- <a href="#">Login with Facebook</a> -->
-                <span class="replace-acc">Don't have a Replacer account yet?</span>
+                <span class="replace-acc"><img src="<?php echo WEBROOT_PATH_IMAGES;?>login-screen.jpg" /></span>
             </div>
         </div>
     </div>

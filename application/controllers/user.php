@@ -134,7 +134,34 @@ class User extends MY_AppController {
 		
 		$this->load->view('layouts/testDefault', $this->data);
 	}
-	public function moreinfo()
+	public function moreinfo($subcatid)
+	{
+		if($this->input->post('savecontact'))
+		{
+			$this->savecontact();
+
+		}
+		$this->load->model('subcategory');
+		$this->load->model("templetes_images");
+		
+		$condition = array('id'=>$subcatid);
+		$getsubcat = $this->subcategory->getBy($condition,array('name'));
+
+		///////// get templets based on category////
+		$condition = "sub_cat_id = '".$subcatid."' and status=1 and type!=3";
+        $getproductsimages = $this->templetes_images->select_data('*',$condition);
+		
+		$this->data['getproductsimages']=$getproductsimages;
+		$this->data['getsubcat']=$getsubcat;	
+		$this->data['titlehome']='Landing Page Home';
+		$this->data['view_file'] = 'web/moreinfo';
+		
+		$this->load->view('layouts/testDefault', $this->data);
+	}
+	
+	
+	
+	public function aboutus()
 	{
 		if($this->input->post('savecontact'))
 		{
@@ -147,6 +174,9 @@ class User extends MY_AppController {
 		
 		$this->load->view('layouts/testDefault', $this->data);
 	}
+	
+	
+	
 	public function contact()
 	{
 		if($this->input->post('savecontact'))
@@ -164,9 +194,9 @@ class User extends MY_AppController {
 	public function savecontact()
 	{
 		$this->form_validation->set_rules('firstname', 'Name', 'trim|required|xss_clean');
-		$this->form_validation->set_rules('lastname', 'last name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('lastname', 'Last name', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('message', 'Message', 'trim|required|xss_clean|max_length[300]');
-		$this->form_validation->set_rules('email', 'Message', 'trim|email|required|xss_clean');
+		$this->form_validation->set_rules('email', 'Email', 'trim|email|required|xss_clean');
 		$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
 		if($this->form_validation->run())
 		{
@@ -182,6 +212,19 @@ class User extends MY_AppController {
 			$insert = $this->contactus->AdduserData($insertArray);
 			if($insert)
 			{
+				$this->load->model('common');
+				$to=$email;
+				$from='pwan.dalal123@gmail.com';
+				$subject='Message from contact us form';
+				$body='<p>Name:'.$firstname.'</p>';
+				$body.='<p>Last name:'.$lastname.'</p>';
+				$body.='<p>Email:'.$email.'</p>';
+				$body.='<p>Message:'.$message.'</p>';
+
+
+				$sendmail = $this->common->sendemail($to,$from,$subject,$body);
+				//print_r($sendmail);
+				//die;
 				$msg='Thanks for your mesage,we will contact you shortaly.';
 				$this->session->set_userdata( array('msg'=>$msg,'class' => 'sucess-msg'));
 				 $href="WEBROOT_PATH+'userlogin/contectus"; 
@@ -211,7 +254,8 @@ class User extends MY_AppController {
 		$getsubcat = $this->subcategory->getBy($condition,array('name'));
 
 		///////// get templets based on category////
-		$condition = "sub_cat_id = '".$subcatid."' and status=1";
+		//$condition = "sub_cat_id = '".$subcatid."' and status=1";
+		$condition = "sub_cat_id = '".$subcatid."' and status=1 and type!=3";
         $getproducts = $this->templetes_images->select_data('*',$condition);
 		?>
 		 <script>
@@ -237,42 +281,76 @@ class User extends MY_AppController {
 	      })
 
 	    });
+		$(document).ready(function() 
+	    {
+		   var owl = $("#owl-demo3");
+	      owl.owlCarousel({
+
+	      items : 1, //10 items above 1000px browser width
+	      itemsDesktop : [1000,1], //5 items between 1000px and 901px
+	      itemsDesktopSmall : [900,1], // 3 items betweem 900px and 601px
+	      itemsTablet: [600,1], //2 items between 600 and 0;
+	      itemsMobile : false // itemsMobile disabled - inherit from itemsTablet option
+	      
+	      });
+
+	      // Custom Navigation Events
+	      $(".next").click(function(){
+	        owl.trigger('owl.next');
+	      })
+	      $(".prev").click(function(){
+	        owl.trigger('owl.prev');
+	      })
+
+	    });
 	    </script>
+ <script type="text/javascript">
+	$(document).ready(function(){
+		$('.tab-content-w').hide().fadeIn();
+		$('.popup-nav li a').bind('click', function(e){
+			$('.popup-nav li a.active').removeClass('active');
+			$('.tab-content-w:visible').hide();
+			$(this.hash).show();
+			$(this).addClass('active');
+			e.preventDefault();
+		}).filter(':first').click();
+		$('.popup-nav li a').bind('click', function(e){
+			$(this.hash).hide().fadeIn().addClass('active');
+		})
+	});
+</script>
       <h3>You Have Previewing <span> <?php echo $getsubcat->name;?></span></h3>
         <div class="popup-nav">
           <ul>
-              <li><a href="#" class="active">iOS Mobile App</a></li>
-                <li><a href="#"> Website</a></li>
+              <li><a href="#demo2" class="active">iOS Mobile App</a></li>
+                <li><a href="#demo3"> Website</a></li>
             </ul>
         </div>
        
-        
-        <div id="demo2">
-            <?php 
+        <?php 
             if(count($getproducts)>0)
             {
             ?>
+        <div id="demo2" class="tab-content-w">
+            
             <div id="owl-demo2" class="owl-carousel">
             <?php 
             $template_id='';
-            foreach($getproducts as $getproducts)
+            foreach($getproducts as $getproductslist)
             {
-            	$template_id = $getproducts->template_id;
+            	$template_id = $getproductslist->template_id;
+            	if($getproductslist->type==1)
+            	{
+
+
              ?>
-             <div class="item templateselect"  id="<?php echo $getproducts->template_id?>">
-                <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.'galleryimage/'.$getproducts->image_name;?>" alt="">
-                    <div class="overlay-chuch">
-                    	<!-- //<h3><?php echo $getproducts->temlete_name;?></h3> -->
-                        <!-- <p><?php echo $getproducts->tag_line;?></p> -->
-                        
-                        <!-- <div class="btn-bott">
-                            <a href="#" class="sign-in" style="background: <?php echo $getproducts->color_code; ?>!important; color: <?php echo $getproducts->text_color; ?>!important;">Sign In</a>
-                            <a href="#" class="sign-up" style="background: <?php echo $getproducts->color_code; ?>!important; color: <?php echo $getproducts->text_color; ?>!important;">Sign In</a>
-                        </div> -->
-                    </div>
+             <div class="item templateselect"  id="<?php echo $getproductslist->template_id?>">
+                <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.'galleryimage/'.$getproductslist->image_name;?>" alt="">
+                    
                 </div>
                 
               <?php
+                  }
               }
               ?>
             </div>
@@ -280,14 +358,52 @@ class User extends MY_AppController {
                 <a class="prev">Previous</a>
                 <a class="next">Next</a>
             </div>
-            <?php 
+           
+        </div>
+        
+        <input type="hidden" name="selectedtemplate" value="<?php echo $template_id;?>">
+        
+        <div id="demo3" class="tab-content-w">
+              <div id="owl-demo3" class="owl-carousel">
+              <?php 
+                
+            foreach($getproducts as $getproducts)
+            {
+            	$template_id = $getproducts->template_id;
+            	if($getproducts->type==2)
+            	{
+
+
+             ?>
+             <div class="item templateselect"  id="<?php echo $getproducts->template_id?>">
+                <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.'galleryimage/'.$getproducts->image_name;?>" alt="">
+                   
+                </div>
+                
+              <?php
+                  }
+              }
+              ?>
+              </div>
+              <div class="customNavigation">
+                <a class="btn prev">Previous</a>
+                <a class="btn next">Next</a>
+              </div>
+            
+
+    </div>
+     <?php 
             }
             ?>
+        	
         </div>
-         <input type="hidden" name="selectedtemplate" value="<?php echo $template_id;?>">
+        
+        
+        
+         
         <h4>ABOUT</h4>
         <p>Forget Ebay and other forms of advertising for your property that costs you hard earned money. Why not do it all for free? Investment Assets Properties have ready several locations around the world to take your free listings for any luxury property.</p>
-        <div class="row"><a href="<?php echo SITE_URL?>aboutus" class="active mor-detil">More Details</a>
+        <div class="row"><a href="<?php echo SITE_URL?>user/moreinfo/<?php echo $subcatid;?>" class="active mor-detil">More Details</a>
         <a href="javascript::void(0);" class="active" onclick="settemplete()">Start</a></div>
         <div class="social-popup social-popup2">
           <h5>LIKE WHAT YOU SEE ? SHARE IT</h5>
@@ -462,7 +578,14 @@ class User extends MY_AppController {
 					$userData = $this->input->post();
 				    @extract($userData );
 				    // print_r($userData);
-					$this->form_validation->set_rules('tempname', 'Name', 'trim|required|xss_clean');
+				    if($this->input->post('tempname') != $gettempData->temlete_name)
+				    {
+					   $is_unique =  '|is_unique[templetes.temlete_name]';
+					} else {
+						
+					   $is_unique =  '';
+					}
+					$this->form_validation->set_rules('tempname', 'Template name', 'trim|required|xss_clean'.$is_unique);
 					$this->form_validation->set_rules('tagline', 'Tag line', 'trim|required|xss_clean|max_length[50]');
 					$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
 					if($this->form_validation->run())
@@ -580,7 +703,7 @@ class User extends MY_AppController {
 
 			}
 			$getvideos = $this->training_videos->getsearchvideo($condition);
-			echo $this->db->last->query();
+			//echo $this->db->last->query();
 
 		}
 		else
@@ -610,8 +733,6 @@ class User extends MY_AppController {
 				$condition = "id in ".'('.$subcatidList.')'."";
 				$this->load->model("subcategory");
 				$subcategoryList = $this->subcategory->getlist($condition);
-
-
 			}
 			$this->data['subcategoryList'] = $subcategoryList;
 			$this->data['getvideos'] = $getvideos;
@@ -779,6 +900,31 @@ class User extends MY_AppController {
 			$gettempData = $this->templetes->getBy($condition);
 			if($gettempData)
 			{
+				//////////////set template id in user table//////
+				$this->load->model("user_modal");
+				$userloginid= $this->session->userdata('UserId');
+				$conditioncheck = array('ChurchId'=>0,'id'=>$userloginid);
+				$checkuser = $this->user_modal->getBy($conditioncheck);
+				if($checkuser)
+				{
+					$upadteData = array('ChurchId'=>$value);
+					$upadte = $this->user_modal->updateDetails($conditioncheck,$upadteData);
+
+				}
+				else
+				{
+					$conditioncheck = array('id'=>$userloginid);
+					$checkuser = $this->user_modal->getBy($conditioncheck);
+					$userData = array('email'=>$checkuser->email,
+									  'name'=>$checkuser->name,
+									  'ChurchId'=>$value,
+									  'token'=>md5(time().''.$checkuser->email),
+									  'mobile'=>$checkuser->mobile,
+									  'password'=>$checkuser->password,
+									  'first_login'=>0,
+									  'created_at'=>date('Y-m-d H:i:s'));
+					$insert = $this->db->insert('users',$userData );
+				}
 				$this->data['gettempData'] = $gettempData;
 				$this->data['view_file'] = 'web/checkpreview';
 				$this->data['templete_id'] = $value;
@@ -794,6 +940,60 @@ class User extends MY_AppController {
 
 		}
 	}
+
+	public function setpreview()
+	{
+		if (!$this->input->is_ajax_request()) 
+		{
+		   exit('No direct script access allowed');
+
+		}
+		if(!$this->session->userdata('logged_in'))
+		{
+			exit('No direct script access allowed');
+		}
+		    $templateid = $this->input->post('templateid');
+
+			$this->load->model("templetes");
+			$condition = array('id'=>$templateid);
+			$gettempData = $this->templetes->getBy($condition);
+			if($gettempData)
+			{
+				?>
+				   <h3>You Have Previewing <span> <?php echo $gettempData->temlete_name;?></span></h3>
+			       
+        <div class="webcontent">
+                	
+                    <div class="crousal1">         
+                    <div class="divine">
+                    <div class="imgbox">
+                    <img class="templeteimgclass" src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gettempData->background_image;?>" alt="">
+                    <div class="overlay-chuch">
+                      <h3 class="templetename"><?php echo $gettempData->temlete_name;?></h3>
+                        <p class="templetetag"><?php echo $gettempData->tag_line;?></p>
+                        <div class="btn-bott">
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important;">Sign In</a>
+                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important;">Sign In</a>
+                         </div>
+                        <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>">
+                    </div>
+                        
+                    </div>
+                    </div>
+             
+
+                    </div>
+            </div>
+				<?php 
+				
+			}
+			else
+			{
+				echo 'pawan';
+
+		    }
+		}
+	
 
 	//////////// user home page////////////
 	public function profile()
@@ -899,27 +1099,39 @@ class User extends MY_AppController {
 			$this->load->model("user_modal");
             $userloginid= $this->session->userdata('UserId');
             $condition = array('id'=>$userloginid);
+            $getuserdata = $this->user_modal->getBy($condition);
             if($this->input->post('changepassword'))
 			{
+				$this->form_validation->set_rules('oldpassword', 'Old Password', 'trim|required|xss_clean');
 				$this->form_validation->set_rules('npassword', 'New Password', 'trim|required|xss_clean');
 		        $this->form_validation->set_rules('repassword', 'Confirm Password', 'trim|required|xss_clean');
 		        $this->form_validation->set_error_delimiters('<span class="error-msg"">', '</span>');
 		        if($this->form_validation->run())
 				{
-					$upadteData = array('password'=>md5($this->input->post('npassword')));
-					$upadte = $this->user_modal->updateDetails($condition,$upadteData);
-					//echo $this->db->last_query();
-					if($upadte)
+					if($getuserdata->password==md5($this->input->post('oldpassword')))
 					{
-						$msg='Update';
-						$this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
+						$upadteData = array('password'=>md5($this->input->post('npassword')));
+						$upadte = $this->user_modal->updateDetails($condition,$upadteData);
+						//echo $this->db->last_query();
+						if($upadte)
+						{
+							$msg='Update';
+							$this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
+
+						}
+						else
+						{
+							$msg="some technical issue";
+							$this->session->set_userdata( array('msg'=>$msg,'class' => 'error'));
+						}
 
 					}
 					else
 					{
-						$msg="some technical issue";
+						$msg="Old password don't match";
 						$this->session->set_userdata( array('msg'=>$msg,'class' => 'error'));
 					}
+					
 					//redirect(SITE_URL.'user/profile');
 				}
             
@@ -949,8 +1161,19 @@ class User extends MY_AppController {
             $getuserdata=$this->user_modal->getBy($condition);
             $this->load->model("templetes");
             $templatedata = $this->templetes->getBy(array('id'=>$templateid));
+            //////// get user registration///////
+            $totalcount=0;
+            $condition =array('admin_type'=>'A');
+            $select="count(id) as totalcount";
+            $getcount=$this->user_modal->getBy($condition,$select);
+            if($getcount)
+            {
+            	$totalcount=$getcount->totalcount;
+
+            }
 
 			$this->data['getuserdata'] = $getuserdata;
+			$this->data['totalcount'] = $totalcount;
 			$this->data['templatedata'] = $templatedata;
 			$this->data['view_file'] = 'user/edittemplate';
 			$this->load->view('layouts/testDefault', $this->data); 
@@ -1221,6 +1444,7 @@ class User extends MY_AppController {
 				{
 					$imagename = $image_name['file_name'];
 					$updateArray = array('profile_image'=>$imagename);
+					$condition = array('email'=>$getuserdata->email);
 					$upadte = $this->user_modal->updateDetails($condition,$updateArray);
 					//echo $this->db->last_query();
 					if($upadte)
@@ -1253,7 +1477,28 @@ class User extends MY_AppController {
 				$updateArray = array('name'=>$feildname);
 				if($feildfor=='useremail')
 				{
-					$updateArray = array('email'=>$feildname);
+					if($getuserdata->email==$feildname)
+					{
+						$updateArray = array('email'=>$feildname);
+
+					}
+					else
+					{
+						$checkcond ="email ='".$feildname."'";
+					    $checkdata=$this->user_modal->getBy($checkcond);
+					    if($checkdata)
+					    {
+					    	$status['status']='emailexit';
+					    	echo json_encode($status);
+					    	exit();
+
+					    }
+					    else
+					    {
+					    	$updateArray = array('email'=>$feildname);
+					    }
+					}
+					
 				}
 				if($feildfor=='usermobile')
 				{
@@ -1273,11 +1518,6 @@ class User extends MY_AppController {
 		}
           echo json_encode($status);
 	}
-
-	
-
-
-
 
 	
 }

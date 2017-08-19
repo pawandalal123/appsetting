@@ -1,14 +1,14 @@
 <!--------------- header ---------------->
 <?php
 
-if($this->uri->segment(1)=='' || $this->uri->segment(1)=='services' || $this->uri->segment(1)=='contact')
+if($this->uri->segment(1)=='' || $this->uri->segment(1)=='services' || $this->uri->segment(1)=='contact' || $this->uri->segment(1)=='aboutus')
 {
     ?>
     <div class="header">
   <div class="box">
       <div class="logo"><a href="<?php echo SITE_URL;?>"><img src="<?php echo WEBROOT_PATH_IMAGES;?>logo-header.png" alt=""></a></div>
         <div class="header-right">
-            <div class="search"></div>
+            <div class="search"><a href="<?php echo SITE_URL;?>user/templates"></a></div>
             <div class="toggle-menu"></div>
             <div class="navigation">
                 <ul>
@@ -64,7 +64,7 @@ else
   <div class="box">
       <div class="logo"><a href="<?php echo SITE_URL;?>"><img src="<?php echo WEBROOT_PATH_IMAGES;?>logo.png" alt=""></a></div>
         <div class="header-right">
-            <div class="search"></div>
+            <div class="search"><a href="<?php echo SITE_URL;?>user/templates"></a></div>
             <div class="toggle-menu"></div>
             <div class="navigation">
                 <ul>

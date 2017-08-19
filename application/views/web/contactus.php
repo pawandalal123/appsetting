@@ -10,7 +10,7 @@
         	<div class="textbox">
             	<h3>Let's <span>Get</span> Started</h3>
                 <p>Looking cautiously round, to ascertain that they were not overheard, the two hags cowered nearer to the fire, and chuckled heartily.</p>
-                <a href="#">View Templates</a>
+                <a href="<?php echo SITE_URL?>user/templates">View Templates</a>
             </div>
             
             <form method="post">

@@ -1,3 +1,22 @@
+<script>
+   $(document).ready(function() {
+  $("#owl-demo").owlCarousel({
+ 
+      navigation : true, // Show next and prev buttons
+      slideSpeed : 300,
+      paginationSpeed : 400,
+      singleItem:true
+ 
+      // "singleItem:true" is a shortcut for:
+      // items : 1, 
+      // itemsDesktop : false,
+      // itemsDesktopSmall : false,
+      // itemsTablet: false,
+      // itemsMobile : false
+ 
+  });
+ });
+    </script>  
 <!--------------- showcase ---------------->
 <div class="showcase about-show">
 	<img src="<?php echo WEBROOT_PATH_IMAGES;?>showcase3.jpg" alt="">
@@ -83,7 +102,7 @@
         	<div class="textbox">
             	<h3>Let's <span>Get</span> Started</h3>
                 <p>Looking cautiously round, to ascertain that they were not overheard, the two hags cowered nearer to the fire, and chuckled heartily.</p>
-                <a href="#">View Templates</a>
+                <a href="<?php echo SITE_URL; ?>user/templates">View Templates</a>
             </div>
             
             <form method="post">

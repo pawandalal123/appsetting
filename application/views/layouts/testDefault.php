@@ -29,16 +29,27 @@ var WEBROOT_PATH = '<?php echo SITE_URL; ?>';
         $(".web-overlay2").remove()
 
     });
-$(".sign-in").hover(function()
-{
-    var color = $('.hovercolor').val();
-  $(this).css("background-color",color)
-});
+// $(".sign-in").hover(function()
+// {
+//     var color = $('.hovercolor').val();
+//   $(this).css("background-color",color)
+// });
     
 });
 function modelbox(body)
 {
     var template = '<div class="web-overlay2"><div class="inner-web"><div class="close"></div>'+
+                   '<div class="content">'+body+'</div>'+
+                '</div></div>';
+                $(".web-overlay2").fadeIn();
+                $(".web-overlay2").show();
+                 $('body').append(template);
+           
+}
+
+function modelboxsmall(body)
+{
+    var template = '<div class="web-overlay2 small"><div class="inner-web"><div class="close"></div>'+
                    '<div class="content">'+body+'</div>'+
                 '</div></div>';
                 $(".web-overlay2").fadeIn();

@@ -52,6 +52,20 @@
                                
                                </div>
                     </div>
+                    <div class="color-plate">
+                    	<ul>
+                        	<li style="background:#231f20"  class="updatecolor" id="#231f20"></li>
+                            <li style="background:#404042"  class="updatecolor" id="#404042"></li>
+                            <li style="background:#58575c"  class="updatecolor" id="#58575c"></li>
+                            <li style="background:#6d6e72"  class="updatecolor" id="#6d6e72"></li>
+                            <li style="background:#808185"  class="updatecolor" id="#808185"></li>
+                            <li style="background:#949599"  class="updatecolor" id="#949599"></li>
+                            <li style="background:#a7a8ac"  class="updatecolor" id="#a7a8ac"></li>
+                            <li style="background:#bcbdc1"  class="updatecolor" id="#bcbdc1"></li>
+                            <li style="background:#d1d2d4"  class="updatecolor" id="#d1d2d4"></li>
+                            <li style="background:#e5e6e8"  class="updatecolor" id="#e5e6e8"></li>
+                        </ul>
+                    </div>
                     <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>">
                     
                 </div>
@@ -89,6 +103,7 @@
                           </div>
                         
                     </div>
+                     
                     </div>
 
      
@@ -101,6 +116,20 @@
             </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $(document).on('click','.updatecolor',function()
+        {
+           // alert();
+            var updatecolor = $(this).attr('id');
+            $('.sign-in').css('background',updatecolor);
+            $('.sign-up').css('background',updatecolor);
+            $('.colorforback').val(updatecolor);
+
+        });
+    });
+</script>
 
 
 

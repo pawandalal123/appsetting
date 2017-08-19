@@ -19,7 +19,7 @@
             </div>
             <div class="review-menu">
             	<ul>
-                    <li><a href="<?php echo SITE_URL.'user/edittemplate'.$templatedata->id ?>">Overview</a></li>
+                    <li><a href="<?php echo SITE_URL.'user/edittemplate/'.$templatedata->id ?>">Overview</a></li>
                      <li><a href="<?php echo SITE_URL.'user/modification/'.$templatedata->id ?>" class="active">Modifications</a></li>
                      <li><a href="<?php echo SITE_URL.'user/reportbug/'.$templatedata->id ?>">Report Bug</a></li>
                     <li><a href="#">Help</a></li>

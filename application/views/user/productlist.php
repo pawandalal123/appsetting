@@ -26,7 +26,7 @@
                 	<div class="col1"></div>
                 	<div class="col1">Product Id</div>
                     <div class="col1">Subscription</div>
-                    <div class="col1">Remaining Time</div>
+                    <div class="col1">Templtename</div>
                     <div class="col1">Settings</div>
                 </div>
                 <?php
@@ -35,10 +35,10 @@
 
                ?>
                 <div class="row">
-                	<div class="col1 kipty"><?php echo $templist['tempname'];?></div>
+                	<div class="col1 kipty"><?php echo $templist['tempfor'];?></div>
                 	<div class="col1"><?php echo $key;?></div>
                     <div class="col1"><?php echo $templist['subscription'];?></div>
-                    <div class="col1"><?php echo $templist['remaining_days'];?> Days</div>
+                    <div class="col1"><?php echo $templist['tempname'];?></div>
                     <div class="col1">
                     <?php 
                     $lastupadte = $templist['last_updated_page'] ?  $templist['last_updated_page'] : 'edittemplate';

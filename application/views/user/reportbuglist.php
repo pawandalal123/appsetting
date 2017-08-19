@@ -39,7 +39,7 @@ jQuery(document).ready(function(){
         <div class="report-menu">
                 <ul>
                     <li><a href="<?php echo SITE_URL.'user/reportbug/'.$templatedata->id ?>" >Request a Bug</a></li>
-                    <li><a href="<?php echo SITE_URL.'user/reportbuglist/'.$templatedata->id ?>" class="active">Previously Submitted<sup>2</sup></a></li>
+                    <li><a href="<?php echo SITE_URL.'user/reportbuglist/'.$templatedata->id ?>" class="active">Previously Submitted<sup><?php echo count($getbuglist);?></sup></a></li>
                 </ul>
           </div>
           

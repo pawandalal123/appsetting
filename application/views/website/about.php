@@ -3,13 +3,13 @@
 	<img class="bannerimageabout" src="<?php  echo WEBROOT_PATH_SITE_UPLODE.$aboutdata->banner_image;?>" alt="god">
     
 	<div class="about-text">
-    	<div class="showcase-title"><h2 id="banner_heading"><?php echo $aboutdata->banner_heading?></h2>
+    	<div class="showcase-title"><h2 id="about_banner_heading"><?php echo $aboutdata->banner_heading?></h2>
         <span  href="javascript:void();" class="maketextable edit-file" rel="h2">Edit</span></div>
         <div class="text-edit"><p id="banner_text"><?php echo $aboutdata->banner_text?></p>
         <span  href="javascript:void();" class="maketextable edit-file" rel="p">Edit</span></div>
     </div>
     
-    <div class="fileUpload btn showcase-img">
+    <div class="fileUpload btn showcase-img colorclass">
         <span>Upload</span>
         <input type="file" name="background_image" id="<?php echo $aboutdata->app_id;?>" rel="abountimage" class="none upload">
     </div>
@@ -43,10 +43,16 @@
             	<div class="imgbox">
                 	<img class="center_left_image" src="<?php  echo WEBROOT_PATH_SITE_UPLODE.$aboutdata->center_left_image;?>" alt="god">
                     <div class="title-overlay">
-                    	<h4>Family Praying</h4>
-                        <span>Main Pray Area</span>
+                    	       <div class="key-title">
+                    <h4 id="center_left_heading"><?php echo $aboutdata->center_left_heading;?></h4>
+                    <span  href="javascript:void();" class="maketextable edit-file" rel="h4">Edit</span>
                     </div>
-                    <div class="fileUpload btn keypoint-img">
+                        <div  class="key-title">
+                        <h4 id="center_left_heading_text"><?php echo $aboutdata->center_left_heading_text;?></h4>
+                        <span  href="javascript:void();" class="maketextable edit-file" rel="h4" style="margin-top: 35px;">Edit</span>
+                        </div>
+                    </div>
+                    <div class="fileUpload btn keypoint-img colorclass">
                         <span>Upload</span>
                         <input type="file" name="background_image" id="<?php echo $aboutdata->app_id;?>" rel="center_left_image" class="none upload">
                     </div>
@@ -57,10 +63,16 @@
                 <div class="imgbox right">
                 	<img class="center_right_image" src="<?php  echo WEBROOT_PATH_SITE_UPLODE.$aboutdata->center_right_image;?>" alt="god">
                     <div class="title-overlay">
-                    	<h4>Family Praying</h4>
-                        <span>Main Pray Area</span>
+                 <div class="key-title">
+                    <h4 id="center_right_heading"><?php echo $aboutdata->center_right_heading;?></h4>
+                    <span  href="javascript:void();" class="maketextable edit-file" rel="h4">Edit</span>
                     </div>
-                    <div class="fileUpload btn keypoint-img">
+                    	<div  class="key-title">
+                        <h4 id="center_right_heading_text"><?php echo $aboutdata->center_right_heading_text;?></h4>
+                        <span  href="javascript:void();" class="maketextable edit-file" rel="h4" style="margin-top: 35px;">Edit</span>
+                        </div>
+                    </div>
+                    <div class="fileUpload btn keypoint-img colorclass">
                         <span>Upload</span>
                         <input type="file" name="background_image" id="<?php echo $aboutdata->app_id;?>" rel="center_right_image" class="none upload">
                     </div>
@@ -71,7 +83,7 @@
     </div>
     <div class="author">
     	<div class="imgbox"><img class="bootom_right_image" src="<?php  echo WEBROOT_PATH_SITE_UPLODE.$aboutdata->bootom_right_image;?>">
-        <div class="fileUpload btn author-img">
+        <div class="fileUpload btn author-img colorclass">
             <span>Upload</span>
             <input type="file" name="background_image" id="<?php echo $aboutdata->app_id;?>" rel="bootom_right_image" class="none upload">
         </div>

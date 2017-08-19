@@ -27,24 +27,43 @@ class Website extends MY_AppController {
 		$this->load->model("Webindex");
 		$condition = array('app_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
+		$this->load->model("templetes");
+        $conditiontemp = array('id'=>$id);
+		$gettempData= $this->templetes->getBy($conditiontemp);
+		$colorcode=$gettempData->color_code;
 		if($chechhometemp)
 		{
+			if($chechhometemp->button_color!='')
+			{
+				$colorcode=$chechhometemp->button_color;
+
+			}
+			else
+			{
+				$update = $this->Webindex->updateDetails($condition,array('button_color'=>$gettempData->color_code));
+			}
+			
 			$this->data['homedata'] = $chechhometemp;
 
 		}
 		else
 		{
 			//////// insert values for app id//////
+			
 			$condition = array('is_default'=>0);
 			$getdefaulttemp = $this->Webindex->getBy($condition);
 			$insertArray  = array('app_id'=>$id,
 				                  'user_id'=>$this->session->userdata('UserId'),
 				                  'banner_image'=>$getdefaulttemp->banner_image,
+				                  'button_color'=>$gettempData->color_code,
 				                  'side_image'=>$getdefaulttemp->side_image,
 				                  'logo'=>$getdefaulttemp->logo,
 				                  'keypoint_first_text'=>$getdefaulttemp->keypoint_first_text,
 				                  'keypoint_second_text'=>$getdefaulttemp->keypoint_second_text,
 				                  'keypoint_third_text'=>$getdefaulttemp->keypoint_third_text,
+				                  'keypoint_first_heading'=>$getdefaulttemp->keypoint_first_heading,
+				                  'keypoint_second_heading'=>$getdefaulttemp->keypoint_second_heading,
+				                  'keypoint_third_heading'=>$getdefaulttemp->keypoint_third_heading,
 				                  'keypoint_first_image'=>$getdefaulttemp->keypoint_first_image,
 				                  'keypoint_second_image'=>$getdefaulttemp->keypoint_second_image,
 				                  'keypoint_third_image'=>$getdefaulttemp->keypoint_third_image,
@@ -58,6 +77,7 @@ class Website extends MY_AppController {
 				                  'contact_main_heading'=>$getdefaulttemp->contact_main_heading,
 				                  'contact_right_heading'=>$getdefaulttemp->contact_right_heading,
 				                  'contact_right_text'=>$getdefaulttemp->contact_right_text,
+				                  'contact_email'=>$getdefaulttemp->contact_email,
 				                  'donate_banner'=>$getdefaulttemp->donate_banner,
 				                  'donate_banner_heading'=>$getdefaulttemp->donate_banner_heading,
 				                  'donate_banner_text'=>$getdefaulttemp->donate_banner_text,
@@ -68,10 +88,38 @@ class Website extends MY_AppController {
 				                  'home_bootom_image'=>$getdefaulttemp->home_bootom_image,
 				                  'created_at'=>date('Y-m-d H:i:s'));
 			$insert =  $this->Webindex->AdduserData($insertArray);
+			$getdefaulttemp->button_color=$gettempData->color_code;
+
+			/////////// insert about///////
+			$this->load->model("wesite_about");
+			$condition = array('is_default'=>0);
+			$getdefaulttempabout = $this->wesite_about->getBy($condition);
+			$insertArrayabout = array('app_id'=>$id,
+				                  'user_id'=>$this->session->userdata('UserId'),
+				                  'banner_image'=>$getdefaulttempabout->banner_image,
+				                  'bootom_right_image'=>$getdefaulttempabout->bootom_right_image,
+				                  'point_first_heading'=>$getdefaulttempabout->point_first_heading,
+				                  'point_second_heading'=>$getdefaulttempabout->point_second_heading,
+				                  'point_third_heading'=>$getdefaulttempabout->point_third_heading,
+				                  'point_first_text'=>$getdefaulttempabout->point_first_text,
+				                  'point_second_text'=>$getdefaulttempabout->point_second_text,
+				                  'point_third_text'=>$getdefaulttempabout->point_third_text,
+				                  'top_heading_text'=>$getdefaulttempabout->top_heading_text,
+				                  'center_right_image'=>$getdefaulttempabout->center_right_image,
+				                  'center_left_image'=>$getdefaulttempabout->center_left_image,
+				                  'banner_heading'=>$getdefaulttempabout->banner_heading,
+				                  'banner_text'=>$getdefaulttempabout->banner_text,
+				                  'bootom_first_heading'=>$getdefaulttempabout->bootom_first_heading,
+				                  'bootom_second_heading'=>$getdefaulttempabout->bootom_second_heading,
+				                  'bootom_first_text'=>$getdefaulttempabout->bootom_first_text,
+				                  'bootom_second_text'=>$getdefaulttempabout->bootom_second_text,
+				                  'created_at'=>date('Y-m-d H:i:s'));
+			$insertabout =  $this->wesite_about->AdduserData($insertArrayabout);
 			$this->data['homedata'] = $getdefaulttemp;
 		}
 	
         // print_r($productArray);
+        $this->data['colorcode'] =$colorcode;
 		$this->data['titlehome']='Landing Page Home';
 		$this->data['templete_id'] = $id;
 		$this->data['view_file'] = 'website/index';
@@ -222,14 +270,28 @@ class Website extends MY_AppController {
 			$content = str_replace("[banner_heading]", $banner_heading, $content);
 			$content = str_replace("[footer_text]", $footer_text, $content);
 			$content = str_replace("[image_tag]", $image_tag, $content);
+
 			$content = str_replace("[keypoint_first_image]", $keypoint_first_image, $content);
 			$content = str_replace("[keypoint_second_image]", $keypoint_second_image, $content);
 			$content = str_replace("[keypoint_third_image]", $keypoint_third_image, $content);
+
+			$content = str_replace("[keypoint_first_heading]", $chechhometemp->keypoint_first_heading, $content);
+			$content = str_replace("[keypoint_first_text]", $chechhometemp->keypoint_first_text, $content);
+
+			$content = str_replace("[keypoint_second_heading]", $chechhometemp->keypoint_second_heading, $content);
+			$content = str_replace("[keypoint_second_text]", $chechhometemp->keypoint_second_text, $content);
+
+			$content = str_replace("[keypoint_third_heading]", $chechhometemp->keypoint_third_heading, $content);
+			$content = str_replace("[keypoint_third_image]", $chechhometemp->keypoint_third_image, $content);
+
 			$content = str_replace("[testomonial_text]", $testomonial_text, $content);
 			$content = str_replace("[testomonial_by]", $testomonial_by, $content);
+
 			$content = str_replace("[side_image]", $side_image, $content);
 			$content = str_replace("[banner_image]", $banner_image, $content);
 			$content = str_replace("[home_bootom_image]", $home_bootom_image, $content);
+
+			$content = str_replace("[color_code]", $chechhometemp->button_color, $content);
 			// $content = str_replace("##category##", $product, $content);
 			//echo $content;
 			// Get the content that is in the buffer and put it in your file //
@@ -264,8 +326,14 @@ class Website extends MY_AppController {
 		$this->load->model("wesite_about");
 		$condition = array('app_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
+		$colorcode='';
 		if($chechhometemp)
 		{
+			if($chechhometemp->button_color!='')
+			{
+				$colorcode=$chechhometemp->button_color;
+			}
+			
 			$this->data['homedata'] = $chechhometemp;
 			$checkabout = $this->wesite_about->getBy($condition);
 			if($checkabout)
@@ -311,6 +379,7 @@ class Website extends MY_AppController {
 		}
 	
         // print_r($productArray);
+        $this->data['colorcode']=$colorcode;
 		$this->data['titlehome']='Landing Page Home';
 		$this->data['templete_id'] = $id;
 		$this->data['view_file'] = 'website/about';
@@ -463,6 +532,13 @@ class Website extends MY_AppController {
 
 			$content = str_replace("[bootom_second_text]", $bootom_second_text, $content);
 			$content = str_replace("[bootom_first_text]", $bootom_first_text, $content);
+
+
+			$content = str_replace("[center_left_heading]", $chechhometemp->center_left_heading);
+			$content = str_replace("[center_left_heading_text]", $chechhometemp->center_left_heading_text);
+
+			$content = str_replace("[center_right_heading]", $chechhometemp->center_right_heading);
+			$content = str_replace("[center_right_heading_text]", $chechhometemp->center_right_heading_text);
 			// $content = str_replace("##category##", $product, $content);
 			//echo $content;
 			// Get the content that is in the buffer and put it in your file //
@@ -495,8 +571,10 @@ class Website extends MY_AppController {
 		$this->load->model("Webindex");
 		$condition = array('app_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
+		$colorcode='';
 		if($chechhometemp)
 		{
+			$colorcode=$chechhometemp->button_color;
 			$this->data['homedata'] = $chechhometemp;
 
 		}
@@ -507,8 +585,7 @@ class Website extends MY_AppController {
 			exit();
 		
 		}
-	
-        // print_r($productArray);
+	    $this->data['colorcode'] = $colorcode;
 		$this->data['titlehome']='Landing Page Home';
 		$this->data['view_file'] = 'website/contact';
 		$this->data['templete_id'] = $id;
@@ -528,15 +605,16 @@ class Website extends MY_AppController {
 		}
 		if($this->input->post('saveandpay'))
 		{
-			$this->input->post('savehome');
-			redirect('website/subscription/'.$id);
-
+			$this->savedonate($id);
+			redirect('website/choosedomain/'.$id);
 		}
 		$this->load->model("Webindex");
 		$condition = array('app_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
+		$colorcode='';
 		if($chechhometemp)
 		{
+			$colorcode=$chechhometemp->button_color;
 			$this->data['homedata'] = $chechhometemp;
 
 		}
@@ -549,6 +627,7 @@ class Website extends MY_AppController {
 		}
 	
         // print_r($productArray);
+        $this->data['colorcode'] = $colorcode;
 		$this->data['titlehome']='Landing Page Home';
 		$this->data['view_file'] = 'website/donate';
 		$this->data['templete_id'] = $id;
@@ -573,7 +652,7 @@ class Website extends MY_AppController {
 			////////// copy images//////////
 			if($chechhometemp->logo)
 			{
-				echo 'pawan dalal';
+				//echo 'pawan dalal';
 				if (!file_exists($maindir.'/images/'.$chechhometemp->logo)) 
 				{
 					$source = 'assets/website/uplode/'.$chechhometemp->logo;
@@ -609,6 +688,8 @@ class Website extends MY_AppController {
 			$content = str_replace("[tag_right_text]", $righttext, $content);
 			$content = str_replace("[footer_text]", $righttext, $content);
 			$content = str_replace("[image_tag]", $image_tag, $content);
+			$content = str_replace("[contact_email]", $chechhometemp->contact_email, $content);
+			$content = str_replace("[color_code]", $chechhometemp->button_color, $content);
 			// $content = str_replace("##category##", $product, $content);
 			//echo $content;
 			// Get the content that is in the buffer and put it in your file //
@@ -701,6 +782,7 @@ class Website extends MY_AppController {
 
 			$content = str_replace("[footer_text]", $footer_text, $content);
 			$content = str_replace("[image_tag]", $image_tag, $content);
+			$content = str_replace("[color_code]", $chechhometemp->button_color, $content);
 			// $content = str_replace("##category##", $product, $content);
 			//echo $content;
 			// Get the content that is in the buffer and put it in your file //
@@ -712,6 +794,246 @@ class Website extends MY_AppController {
 
 		}
 
+	}
+
+	////////// view website demo///////
+	public function demopage($id)
+	{
+		if(!$this->session->userdata('logged_in'))
+		{
+			redirect(SITE_URL);
+		}
+		if($id)
+		{
+			
+			$loginuser=$this->session->userdata('UserId');
+		    $this->load->model("templetes");
+		    $condition = array('id'=>$id,'user_id'=>$loginuser);
+			$gettempData = $this->templetes->getBy($condition);
+			$this->load->model("subscription_plan");
+			$subscriptionData=$this->subscription_plan->getBy(array('status'=>1,'sub_cat_id'=>$gettempData->sub_cat_id));
+			if($gettempData)
+			{
+				if($this->input->post('saveandpay'))
+				{
+					$this->load->model("payments");
+		            $checkpayment  =  $this->payments->getBy(array('app_id'=>$id));
+		            if($checkpayment)
+		            {
+		            	$updatearray = array(
+						                 'plan_id'=>$subscriptionData->id,
+						                 'user_id'=>$loginuser,
+						                 'amount'=>$subscriptionData->price,
+						                 'payment_date'=>date('Y-m-d H:i:s')
+						                 );
+		            	$updatedata = $this->payments->updateDetails(array('app_id'=>$id),$updatearray);
+		            	$makeplan=$checkpayment->id;
+
+		            }
+		            else
+		            {
+		            	 $insertArray = array('app_id'=>$id,
+						                 'plan_id'=>$subscriptionData->id,
+						                 'user_id'=>$loginuser,
+						                 'amount'=>$subscriptionData->price,
+						                 'created_at'=>date('Y-m-d H:i:s'),
+						                 'payment_date'=>date('Y-m-d H:i:s')
+						                 );
+		                   $makeplan = $this->payments->AdduserData($insertArray);
+
+		            }
+				           
+							redirect('website/checkout/'.$makeplan);
+				}
+				$this->data['subscriptionData'] = $subscriptionData;
+				$this->data['gettempData'] = $gettempData;
+				$this->data['view_file'] = 'web/selectdemo';
+				$this->load->view('layouts/testDefault', $this->data); 
+
+			}
+			else
+			{
+
+			}
+			
+		}
+		else
+		{
+
+		}
+	
+        // print_r($productArray);
+        
+	}
+
+	public function viewdemo($id,$pagename=false)
+	{
+		$this->data['pagename']='home';
+		if(!$this->session->userdata('logged_in'))
+		{
+			redirect(SITE_URL);
+		}
+	
+		$this->load->model("Webindex");
+		$condition = array('app_id'=>$id);
+		$chechhometemp = $this->Webindex->getBy($condition);
+		$this->load->model("templetes");
+        $conditiontemp = array('id'=>$id);
+		$gettempData= $this->templetes->getBy($conditiontemp);
+		$colorcode=$gettempData->color_code;
+		if($chechhometemp->button_color!='')
+		{
+			$colorcode=$chechhometemp->button_color;
+		}
+		if($chechhometemp)
+		{
+			if($chechhometemp->button_color!='')
+			{
+				$colorcode=$chechhometemp->button_color;
+
+			}
+			switch ($pagename) 
+			{
+				case 'about':
+				$this->load->model("wesite_about");
+		        $condition = array('app_id'=>$id);
+				$checkabout = $this->wesite_about->getBy($condition);
+				$this->data['aboutdata'] = $checkabout;
+					$view_file='website/about';
+					break;
+					case 'contact':
+					$view_file='website/contact';
+					break;
+					case 'contact':
+					$view_file='website/donate';
+					break;
+
+				
+				default:
+					$view_file='website/index';
+					break;
+			}
+			
+			$this->data['homedata'] = $chechhometemp;
+			$this->data['pagename'] = $pagename;
+			$this->data['colorcode'] =$colorcode;
+			$this->data['titlehome']='Landing Page Home';
+			$this->data['inviewmode']=1;
+			$this->data['templete_id'] = $id;
+			$this->data['view_file'] = $view_file;
+			$this->load->view('layouts/seconddefault', $this->data); 
+
+		}
+		else
+		{
+			
+		}
+	
+        // print_r($productArray);
+        
+	}
+
+	//////////// payment function ////
+	public function choosedomain($id)
+	{
+		if(!$this->session->userdata('logged_in'))
+		{
+			redirect(SITE_URL);
+		}
+		if($id)
+		{
+			$loginuser=$this->session->userdata('UserId');
+		    $this->load->model("templetes");
+		    $condition = array('id'=>$id,'user_id'=>$loginuser);
+			$gettempData = $this->templetes->getBy($condition);
+			$this->load->model("subscription_plan");
+			$subscriptionData=$this->subscription_plan->getBy(array('status'=>1,'sub_cat_id'=>$gettempData->sub_cat_id));
+			if($gettempData)
+			{
+				if($this->input->post('saveandpay'))
+				{
+
+					$this->form_validation->set_rules('choosedomain', 'Domain type', 'trim|required|xss_clean'.$is_unique);
+					if($this->input->post('choosedomain')==1)
+					{
+						if($this->input->post('subdomainname') != $gettempData->domain_name)
+					    {
+						   $is_unique =  '|is_unique[templetes.domain_name]';
+						} else {
+							
+						   $is_unique =  '';
+						}
+						$this->form_validation->set_rules('subdomainname', 'Subdomain', 'trim|required|xss_clean|max_length[50]');
+					}
+					$this->form_validation->set_error_delimiters('<p class="error">', '</p>');
+					if($this->form_validation->run())
+					{
+						$upadteData = array('domain_type'=>$this->input->post('choosedomain'));
+						if($this->input->post('choosedomain')==1)
+						{
+							$upadteData['domain_name'] = $this->input->post('subdomainname');
+						}
+						$upadte = $this->templetes->updateDetails($condition,$upadteData);
+						if($upadte)
+						{
+							$this->load->model("payments");
+				            $checkpayment  =  $this->payments->getBy(array('app_id'=>$id));
+				            if($checkpayment)
+				            {
+				            	$updatearray = array(
+								                 'plan_id'=>$subscriptionData->id,
+								                 'user_id'=>$loginuser,
+								                 'amount'=>$subscriptionData->price,
+								                 'payment_date'=>date('Y-m-d H:i:s')
+								                 );
+				            	$updatedata = $this->payments->updateDetails(array('app_id'=>$id),$updatearray);
+				            	$makeplan=$checkpayment->id;
+
+				            }
+				            else
+				            {
+				            	 $insertArray = array('app_id'=>$id,
+								                 'plan_id'=>$subscriptionData->id,
+								                 'user_id'=>$loginuser,
+								                 'amount'=>$subscriptionData->price,
+								                 'created_at'=>date('Y-m-d H:i:s'),
+								                 'payment_date'=>date('Y-m-d H:i:s')
+								                 );
+				                   $makeplan = $this->payments->AdduserData($insertArray);
+
+				            }
+				           
+							redirect('website/checkout/'.$makeplan);
+
+						}
+						else
+						{
+							$msg="some technical issue";
+							$this->session->set_userdata( array('msg'=>$msg,'class' => 'error'));
+						}
+
+					}
+
+				}
+				
+				$this->data['subscriptionData'] = $subscriptionData;
+				
+				$this->data['gettempData'] = $gettempData;
+				$this->data['view_file'] = 'web/choosedomain';
+				$this->load->view('layouts/testDefault', $this->data); 
+
+			}
+			else
+			{
+
+			}
+			
+		}
+		else
+		{
+
+		}
+		
 	}
 
 //////////// payment function ////
@@ -778,6 +1100,54 @@ class Website extends MY_AppController {
 					$this->data['payments'] = $payments;
 					$this->data['plan_data'] = $this->subscription_plan->getBy(array('id'=>$payments->plan_id));
 					$this->data['view_file'] = 'web/checkout';
+				    $this->load->view('layouts/testDefault', $this->data); 
+				}
+				else
+				{
+					echo '';
+
+				}
+		  }
+		  else{
+		  	echo '';
+
+		  }
+			
+		}
+		else
+		{
+
+		}
+
+	}
+
+	////////////// payment final page/////
+	public function makepayment($id)
+	{
+		if(!$this->session->userdata('logged_in'))
+		{
+			redirect(SITE_URL);
+		}
+		if($id)
+		{
+			//echo 'jfh';
+			$loginuser=$this->session->userdata('UserId');
+			$this->load->model("payments");
+			$payments = $this->payments->getBy(array('id'=>$id));
+			if($payments)
+			{
+
+			    $this->load->model("templetes");
+			    $condition = array('id'=>$payments->app_id,'user_id'=>$loginuser);
+				$gettempData = $this->templetes->getBy($condition);
+				//echo $this->db->last_query();
+				if($gettempData)
+				{
+					//echo 'dalal';
+					$this->load->model("subscription_plan");
+					$this->data['payments'] = $payments;
+					$this->data['plan_data'] = $this->subscription_plan->getBy(array('id'=>$payments->plan_id));
+					$this->data['view_file'] = 'web/makepayment';
 				    $this->load->view('layouts/testDefault', $this->data); 
 				}
 				else
@@ -889,7 +1259,7 @@ class Website extends MY_AppController {
 		@extract($userdata);
 		$status['status']='error';
 		$condition = array('app_id'=>$id);
-		$feildsArray = array('contact_main_heading','index_banner_head','footertext','index_banner_text','testmo_text','testmo_by','donate_right_heading','donate_right_text','donate_banner_heading','donate_center_text','donate_banner_text','donate_center_heading','contact_right_heading','contact_right_text','home_keypoint_first','home_keypoint_second','home_keypoint_third');
+		$feildsArray = array('banner_heading','contact_main_heading','index_banner_head','footertext','index_banner_text','testmo_text','testmo_by','donate_right_heading','donate_right_text','donate_banner_heading','donate_center_text','donate_banner_text','donate_center_heading','contact_right_heading','contact_right_text','home_keypoint_first','home_keypoint_second','home_keypoint_third','contactemail','keypoint_first_heading','keypoint_second_heading','keypoint_third_heading');
 		if(in_array($feildfor,$feildsArray))
 		{
 			//echo 'pawan';
@@ -902,13 +1272,29 @@ class Website extends MY_AppController {
 				{
 					$updatedata=array('keypoint_first_text'=>$feildname);
 				}
+				if($feildfor=='keypoint_first_heading')
+				{
+					$updatedata=array('keypoint_first_heading'=>$feildname);
+				}
+				if($feildfor=='contactemail')
+				{
+					$updatedata=array('contact_email'=>$feildname);
+				}
 				if($feildfor=='home_keypoint_second')
 				{
 					$updatedata=array('keypoint_second_text'=>$feildname);
 				}
+				if($feildfor=='keypoint_second_heading')
+				{
+					$updatedata=array('keypoint_second_heading'=>$feildname);
+				}
 				if($feildfor=='home_keypoint_third')
 				{
 					$updatedata=array('keypoint_third_text'=>$feildname);
+				}
+				if($feildfor=='keypoint_third_heading')
+				{
+					$updatedata=array('keypoint_third_heading'=>$feildname);
 				}
 				if($feildfor=='footertext')
 				{
@@ -968,6 +1354,7 @@ class Website extends MY_AppController {
 		}
 		else
 		{
+			   $updatedata=array('banner_heading'=>$feildname);
 			   if($feildfor=='aboutmainheading')
 				{
 					$updatedata=array('top_heading_text'=>$feildname);
@@ -1012,6 +1399,22 @@ class Website extends MY_AppController {
 				if($feildfor=='bootom_second_text')
 				{
 					$updatedata=array('bootom_second_text'=>$feildname);
+				}
+				if($feildfor=='center_left_heading')
+				{
+					$updatedata=array('center_left_heading'=>$feildname);
+				}
+				if($feildfor=='center_left_heading_text')
+				{
+					$updatedata=array('center_left_heading_text'=>$feildname);
+				}
+				if($feildfor=='center_right_heading')
+				{
+					$updatedata=array('center_right_heading'=>$feildname);
+				}
+				if($feildfor=='center_right_heading_text')
+				{
+					$updatedata=array('center_right_heading_text'=>$feildname);
 				}
 				
 				$update = $this->wesite_about->updateDetails($condition,$updatedata);
@@ -1150,6 +1553,67 @@ class Website extends MY_AppController {
 	     }
 		echo json_encode($status);
 
+	}
+
+	public function getcoloroption()
+	{
+		?>
+	<link rel="stylesheet" href="<?php echo WEBROOT_PATH_CSS;?>tinycolorpicker.css" type="text/css" media="screen"/>
+    <script src="<?php echo WEBROOT_PATH_JS;?>tinycolorpicker.js"></script>
+    <script type="text/javascript">
+          $(document).ready(function()
+          {
+          	alert();
+          	var $picker = document.getElementById("colorPicker")
+            ,   picker  = tinycolorpicker($picker);
+          });
+
+    </script>
+		<h3>Change color option</span></h3>
+			       
+        <div class="webcontent">
+        <div class="column">
+            	<div class="hightight">
+                	
+                           <div class="imgbox" style="margin-left: -150px; height: 192px" >
+                            <div id="colorPicker">
+                                <a class="color"><div class="colorInner"></div></a>
+                                <div class="track"></div>
+                                <ul class="dropdown"><li></li></ul>
+                            
+                               
+                               </div>
+                    </div>
+                    <div class="color-plate">
+                    	<ul>
+                        	<li style="background:#231f20"  class="updatesitecolor" id="#231f20"></li>
+                            <li style="background:#404042"  class="updatesitecolor" id="#404042"></li>
+                            <li style="background:#58575c"  class="updatesitecolor" id="#58575c"></li>
+                            <li style="background:#6d6e72"  class="updatesitecolor" id="#6d6e72"></li>
+                            <li style="background:#808185"  class="updatesitecolor" id="#808185"></li>
+                            <li style="background:#949599"  class="updatesitecolor" id="#949599"></li>
+                            <li style="background:#a7a8ac"  class="updatesitecolor" id="#a7a8ac"></li>
+                            <li style="background:#bcbdc1"  class="updatesitecolor" id="#bcbdc1"></li>
+                            <li style="background:#d1d2d4"  class="updatesitecolor" id="#d1d2d4"></li>
+                            <li style="background:#e5e6e8"  class="updatesitecolor" id="#e5e6e8"></li>
+                        </ul>
+                    </div>
+            </div>
+            </div>
+            </div>
+		<?php
+	}
+
+	public function updatecolor()
+	{
+		$this->load->model("Webindex");
+		$condition = array('app_id'=>$this->input->post('templateid'));
+		$chechhometemp = $this->Webindex->getBy($condition);
+		if($chechhometemp)
+		{
+		   $update = $this->Webindex->updateDetails($condition,array('button_color'=>$this->input->post('button_color')));
+
+	    }
 	}
 			
 

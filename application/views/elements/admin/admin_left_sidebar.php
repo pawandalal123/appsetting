@@ -1,16 +1,5 @@
 <style>
-.modal{ 
-  position: fixed; 
-  display: block!important;
-  top: 0; 
-  right: 0; 
-  bottom: 0; 
-  left: 0; 
-  /*z-index: 1040; */
-  overflow-y: auto; 
-  background: rgba(0, 0, 0, 0.7); 
-  -webkit-transition: opacity .15s linear; transition: opacity .15s linear; 
-} 
+
   .owl-item.active
   {
     max-width: 430px!important;

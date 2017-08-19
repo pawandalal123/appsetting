@@ -5,9 +5,9 @@
         <span  href="javascript:void();" class="maketextable edit-file" rel="h2">Edit</span></div>
         <div class="edit-text"><p id="donate_banner_text"><?php echo $homedata->donate_banner_text;?></p>
         <span  href="javascript:void();" class="maketextable edit-file" rel="p">Edit</span></div>
-        <a href="#">Donate Now</a>
+        <a href="#" class="colorclass">Donate Now</a>
     </div>
-    <div class="fileUpload btn showcase-img">
+    <div class="fileUpload btn showcase-img colorclass">
         <span>Upload</span>
         <input type="file" name="background_image" rel="donatebannerimage" class="none upload">
     </div>
@@ -42,7 +42,7 @@
                         <label><input name="" type="checkbox" class="checkbox" value=""> Custom</label>
                     </div>
                     <div class="row">
-                        <input type="submit" class="submit-btn" value="Submit">
+                        <input type="submit" class="submit-btn colorclass" value="Submit">
                         <span class="left">Your Data is Secured.</span>
                     </div>
                 </div>

@@ -40,24 +40,24 @@
 <?php echo form_error("subcat"); ?>
 </div>
 </div>
-<div class="form-group">
+<!-- <div class="form-group">
 <label class="col-md-3 control-label" for="example-text-input">Title<span class="err">*</span></label>
 <div class="col-md-9">
 <input type="text" id="videotitle" name="videotitle" class="form-control validate[required]" placeholder="Enter Video Name"  value="<?php echo @$editdata->video_title;?>" />
 <?php //echo form_error("videourl"); ?>
 </div>
-</div>
+</div> -->
 <div class="form-group">
-<label class="col-md-3 control-label" for="example-text-input">Youtube link<span class="err">*</span></label>
+<label class="col-md-3 control-label" for="example-text-input">Image<span class="err">*</span></label>
 <div class="col-md-9">
 <input type="file" id="videourl" name="attachment" class="form-control validate[required]" />
-<?php echo form_error("videourl"); ?>
+<?php echo form_error("attachment"); ?>
 </div>
 </div>
 
 <div class="form-group form-actions">
 <div class="col-md-9 col-md-offset-3">
-<input type="submit" id="submit" class="btn btn-sm btn-primary" name="savevideo"  value="Submit"/>
+<input type="submit" id="submit" class="btn btn-sm btn-primary" name="saveimage"  value="Submit"/>
 
 </div>
 
@@ -91,17 +91,17 @@ $c++;
 <tr>
 <td class="text-center"><?php echo $c;?></td>
 
-<td><?php echo $result->video_link?></td>
+<td><img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.'galleryimage/'.$result->image_name?>" width="200px;" height="200px;"></td>
 <td><?php echo $result->created_at?></td>
 <td class="text-center">
 <div class="btn-group">
 <?php if($result->status==1){?>
-<a href="<?php echo SITE_URL.'admin/activeDeactivevideo';?>/<?php echo $result->id;?>/Active" title="Activated" ><img src="<?php echo WEBROOT_PATH_IMAGES_admin;?>green_icon.png" alt="Activated" /></a>
+<a href="<?php echo SITE_URL.'admin/activeDeactiimages';?>/<?php echo $result->id;?>/Active" title="Activated" ><img src="<?php echo WEBROOT_PATH_IMAGES_admin;?>green_icon.png" alt="Activated" /></a>
 <?php } else{?>
-<a href="<?php echo SITE_URL.'admin/activeDeactivevideo';?>/<?php echo $result->id;?>/deActive" title="Deactivated" ><img src="<?php echo WEBROOT_PATH_IMAGES_admin;?>red_icon.png" alt="Deactivated" /></a>
+<a href="<?php echo SITE_URL.'admin/activeDeactiimages';?>/<?php echo $result->id;?>/deActive" title="Deactivated" ><img src="<?php echo WEBROOT_PATH_IMAGES_admin;?>red_icon.png" alt="Deactivated" /></a>
 <?php }?>
 </div>
-<a href="<?php echo SITE_URL.'admin/training';?>/<?php echo $result->id;?>">Edit</a>
+<a href="<?php echo SITE_URL.'admin/galleryimages';?>/<?php echo $result->id;?>">Edit</a>
 </td>
 
 

@@ -9,10 +9,10 @@
        <div class="show-edit"><p id="index_banner_text"><?php echo $homedata->banner_text;?></p>
        <span  href="javascript:void();" class="maketextable edit-file show-text" rel="p">Edit</span>
        </div>
-        <a href="#">Google.Play</a>
+        <!-- <a href="#">Google.Play</a> -->
     </div>
-<div class="fileUpload btn showcase-img">
-    <span>Upload</span>
+<div class="fileUpload btn showcase-img colorclass">
+    <span >Upload</span>
     <input type="file" name="background_image" rel="homebannerimage" class="none upload">
 </div>
 </div>
@@ -26,9 +26,9 @@
                     <span>Upload</span>
                     <input type="file" name="background_image" rel="keypoint_first_image" class="none upload">
                 </div>
-                <div class="main-title"><h2>God  first</h2>
+                <div class="main-title"><h2 id="keypoint_first_heading"><?php echo $homedata->keypoint_first_heading;?></h2>
                 <span  href="javascript:void();" class="maketextable edit-file" rel="h2">Edit</span></div>
-                <div class="edit-text"><p id="home_keypoint_first">Doctus temporibus ius no, nec tollit conceptam definiebas te. Alii appetere dissentias. Doctus temporibus</p>
+                <div class="edit-text"><p id="home_keypoint_first"><?php echo $homedata->keypoint_first_text;?></p>
                 <span  href="javascript:void();" class="maketextable edit-file" rel="p">Edit</span></div>
             </div>
             <div class="col1">
@@ -37,9 +37,10 @@
                     <span>Upload</span>
                     <input type="file" name="background_image" rel="keypoint_second_image" class="none upload">
                 </div>
-                <div class="main-title"><h2>Burn Candles</h2>
+                <div class="main-title"><h2 id="keypoint_second_heading"><?php echo $homedata->keypoint_second_heading;?></h2>
                 <span  href="javascript:void();" class="maketextable edit-file" rel="h2">Edit</span></div>
-                <div class="edit-text"><p id="home_keypoint_second">Vel et munere expetenda honestatis. Ex sonet audiam Vel et munere expetenda honestatis. Ex sonet audiam set amet</p>
+                <div class="edit-text">
+                <p id="home_keypoint_second"><?php echo $homedata->keypoint_second_text;?></p>
                 <span  href="javascript:void();" class="maketextable edit-file" rel="p">Edit</span></div>
             </div>
             <div class="col1">
@@ -48,9 +49,9 @@
                     <span>Upload</span>
                     <input type="file" name="background_image" rel="keypoint_third_image" class="none upload">
                 </div>
-                <div class="main-title"><h2>Follow the Path</h2>
+                <div class="main-title"><h2 id="keypoint_third_heading"><?php echo $homedata->keypoint_third_heading;?></h2>
                 <span  href="javascript:void();" class="maketextable edit-file" rel="h2">Edit</span></div>
-                <div class="edit-text"><p id="home_keypoint_third">Graeco aperiri nec no. Mea iusto detraxit an. Essent patrioque id. Graeco aperiri nec no. At ancillae dissentias eos</p>
+                <div class="edit-text"><p id="home_keypoint_third"><?php echo $homedata->keypoint_third_text;?></p>
                 <span  href="javascript:void();" class="maketextable edit-file" rel="p">Edit</span></div>
             </div>
         </div>
@@ -64,7 +65,7 @@
         </div>
         <div class="imgbox">
         <img class="homeside" src="<?php  echo WEBROOT_PATH_SITE_UPLODE;?><?php echo $homedata->side_image;?>" alt="god">
-        	 <div class="fileUpload btn clients-img">
+        	 <div class="fileUpload btn clients-img colorclass">
                 <span>Upload</span>
                 <input type="file" name="background_image" rel="homesideimage" class="none upload">
             </div>
@@ -91,12 +92,12 @@
                 <input type="text" class="input">
              </div>
              <div class="row btn">
-                <input type="submit" class="signup-btn" value="Sign Up">
+                <input type="submit" class="signup-btn colorclass" value="Sign Up">
              </div>
              <div class="terms">By Sign Up, you agree to our Terms and Data Policy</div>
         </div>
         
-      <div class="fileUpload btn showcase-img">
+      <div class="fileUpload btn showcase-img colorclass">
             <span>Upload</span>
             <input type="file" name="background_image" rel="homebottomimage" class="none upload">
         </div>  

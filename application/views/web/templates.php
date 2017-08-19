@@ -71,44 +71,7 @@ function maketempletelist(subcatid)
 }
 
 
-function settemplete(templeteid)
-{
-    //alert('');
-    var templeteid = $('input[name=selectedtemplate]').val();
-    if(templeteid!='')
-    {
-       $.post(WEBROOT_PATH+'user/settemplete',{'templeteid':templeteid},function(data,status)
-        {
-          
-           if(data.status=='success')
-           {
-              if(data.islogin=='yes')
-              {
-                  //alert();
-                  window.location.href=WEBROOT_PATH+'user/setcolor/'+data.temoleteid;
 
-              }
-              else
-              {
-                  //alert('pawan');
-                  window.location.href=WEBROOT_PATH+'userlogin/login';
-              }
-
-           }
-        
-        },'json').fail(function(response)
-        {
-                          
-                          });
-
-    }
-    else
-    {
-      alert('Please select template');
-    }
-
-
-}
 
 
 
@@ -143,7 +106,7 @@ $(document).ready(function(){
         if(count($productArray)>0)
         {
         ?>
-        <div class="tab tablist">
+        <div class="tab tablist" id="searchbox">
           <div class="tabnav">
               <ul>
               <?php 
@@ -153,11 +116,10 @@ $(document).ready(function(){
                     <li><a href="#newest<?php echo $key;?>"><?php echo $key;?></a></li>
                     <?php } ?>
                 </ul>
-                <div class="search-box">
+                <div class="search-box" >
                 	 <input type="submit" value="search" class="search" />
                     <input type="text" placeholder="SEARCH" class="input2" id="makesubcatlist" autocomplete="off">
                 </div>
-                
             </div>
             
             <?php 

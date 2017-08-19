@@ -19,7 +19,7 @@ $(document).ready(function(){
     $('.templetename').text(nameval);
 
   });
-  $('input[name=tagline]').keyup(function()
+  $('.taglinetext').keyup(function()
   {
     var nameval = $(this).val();
     $('.templetetag').text(nameval);
@@ -76,22 +76,24 @@ $(document).ready(function(){
           <input type="text" class="text-box" placeholder="" name="tempname" value="<?php echo $gettempData->temlete_name;?>">
           <?php echo form_error('tempname');?>
           <label class="grey">Tag Line</label>
-          <textarea placeholder="" name="tagline"  name="tagline" class="text-box"><?php echo $gettempData->tag_line?></textarea>
+          <textarea placeholder="" class="taglinetext"  name="tagline" class="text-box"><?php echo $gettempData->tag_line?></textarea>
          <!--  <input type="text" class="text-box" placeholder="" name="tagline" value="<?php echo $gettempData->tag_line?>"> -->
           <?php echo form_error('tagline');?>
+            <div class="btn-row">
+        
+        <!-- <a href="#">Save And Exit</a> -->
+        <input class="save-exit" type="submit" name="savedetails" value="Save And Exit">
+        <input class="save-exit" type="submit" name="savedetails" value="Next">
+        <!-- <a href="#" class="grey">Next</a></div> -->
+        
+    </div>
         </div>   
             
           </div>
         </div>
     
       </div>
-      <div class="btn-row">
-        
-        <!-- <a href="#">Save And Exit</a> -->
-        <input class="save-exit" type="submit" name="savedetails" value="Save And Exit">
-        <input class="save-exit" type="submit" name="savedetails" value="Next">
-        <!-- <a href="#" class="grey">Next</a></div> -->
-        </form>
-    </div>
+    
+    </form>
   </div>
 </div>

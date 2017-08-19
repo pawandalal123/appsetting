@@ -64,6 +64,7 @@ $(document).ready(function()
             var feildfor = $(this).parent().attr('id')
             var id = $('input[name=update_for]').val(); //$(this).parent().attr('rel');
             var feildname = $(this).val();
+            var oldvalue = '';
            //return false;
             var err=0;
            //return false;
@@ -75,6 +76,7 @@ $(document).ready(function()
             }
             if(feildfor=='useremail')
             {
+              oldvalue = $('.oldemail').val();
               var emailRegex = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/);
               var valid = emailRegex.test(feildname);
               if(!valid)
@@ -98,12 +100,24 @@ $(document).ready(function()
             if(err==0)
             {
               $(this).parent().text(feildname);
+              
               $.post(WEBROOT_PATH+'user/updateprofile',{'feildfor':feildfor,'id':id,'feildname':feildname},function(data,status)
               {
                   if(data.status=='success')
                   {
+                    if(feildfor=='useremail')
+                    {
+                      $('.oldemail').val(feildname);
+                    }
                     
                     //swal({ title: "Done", text: "Successfully Created", type: "success" });
+                  }
+                  else if(data.status=='emailexit')
+                  {
+                    $('#useremail').text(oldvalue);
+                    alert('Email alredy exit');
+                    return false;
+
                   }
                   else
                   {
@@ -123,7 +137,10 @@ $(document).ready(function()
             var toedit =$(this).attr('rel');
              var t = $(this).prevAll(toedit).first().text();
              var type = $(this).prevAll(toedit).first().attr('id');
-             if(type=='index_banner_text' || type=='testmo_text' || type=='point_first_text' || type=='point_second_text' || type=='point_third_text' || type=='banner_text' || type=='point_first_text' || type=='point_second_text' || type=='point_third_text' || type=='home_keypoint_first' || type=='home_keypoint_second' || type=='home_keypoint_third')
+             if(type=='index_banner_text' || type=='testmo_text' || type=='point_first_text' || type=='point_second_text' || type=='point_third_text' || type=='banner_text' 
+              || type=='point_first_text' || type=='point_second_text' || type=='point_third_text' || type=='home_keypoint_first' 
+              || type=='home_keypoint_second' || type=='home_keypoint_third'  || type=='bootom_first_text' || type=='bootom_second_text'  || type=='contact_right_text' 
+              || type=='donate_banner_text' || type=='donate_center_text' || type=='donate_right_text' || type=='footertext')
              {
                 var editableText = $('<textarea />',{'class' : 'editable'});
                 editableText.val(t);
@@ -399,3 +416,43 @@ $(document).ready(function()
          $('input').focus();
 
     }
+
+    function settemplete(templeteid)
+{
+    //alert('');
+    var templeteid = $('input[name=selectedtemplate]').val();
+    //alert(templeteid);
+    if(templeteid!='')
+    {
+       $.post(WEBROOT_PATH+'user/settemplete',{'templeteid':templeteid},function(data,status)
+        {
+          
+           if(data.status=='success')
+           {
+              if(data.islogin=='yes')
+              {
+                  //alert();
+                  window.location.href=WEBROOT_PATH+'user/setcolor/'+data.temoleteid;
+
+              }
+              else
+              {
+                  //alert('pawan');
+                  window.location.href=WEBROOT_PATH+'userlogin/login';
+              }
+
+           }
+        
+        },'json').fail(function(response)
+        {
+                          
+                          });
+
+    }
+    else
+    {
+      alert('Please select template');
+    }
+
+
+}
