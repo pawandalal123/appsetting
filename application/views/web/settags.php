@@ -42,7 +42,8 @@ $(document).ready(function(){
         <li><a href="<?php echo SITE_URL?>user/setcolor/<?php echo $gettempData->id; ?>" class="active next">1</a></li>
         <li><a href="<?php echo SITE_URL?>user/settags/<?php echo $gettempData->id; ?>" class="active ">2</a></li>
         <li><a href="<?php echo SITE_URL?>user/setimage/<?php echo $gettempData->id; ?>" class="">3</a></li>
-        <li><a href="<?php echo SITE_URL?>user/preview/<?php echo $gettempData->id; ?>">4</a></li>
+        <li><a href="<?php echo SITE_URL?>user/setaddress/<?php echo $gettempData->id; ?>"  class="">4</a></li>
+        <li><a href="<?php echo SITE_URL?>user/preview/<?php echo $gettempData->id; ?>">5</a></li>
       </ul>
       <h3>Customize The iOS<span>*</span> App Screens</h3>
       <span>Choose an elemant from the screen to customize it.</span> </div>
@@ -60,7 +61,7 @@ $(document).ready(function(){
                         <p class="templetetag"><?php echo $gettempData->tag_line;?></p>
                         <div class="btn-bott">
                         <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; ">Sign In</a>
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; ">Sign In</a>
+                        <a href="#" class="sign-in-second" style="color: <?php echo $gettempData->text_color; ?>!important; ">Sign Up</a>
                         </div>
                         <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>">
                     </div>

@@ -21,6 +21,7 @@
 	define('WEBROOT_PATH_sell', SITE_URL.'upload/Document/');
 	define('WEBROOT_PATH_UPLOAD_IMAGES', SITE_URL.'upload/');
     define('SITE_DEFAULT_TITLE', 'App Seeting');
+    define('FROM_EMAIL', 'pawan.dalal123@gmail.com');
 
     define('WEBROOT_PATH_SITE_JS', SITE_URL.'assets/website/js/');
     define('WEBROOT_PATH_SITE_IMAGES', SITE_URL.'assets/website/images/');

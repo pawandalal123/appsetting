@@ -68,32 +68,30 @@ class UserLogin extends MY_AppController {
 				$where="email = '".$userLoginDetails['useremail']."' and password='".md5($userLoginDetails['password'])."' and first_login=1";
 				$this->form_validation->set_rules('useremail', 'email', 'required');
                 $this->form_validation->set_rules('password', 'password', 'required');
-                $CheckLoginQuery = $this->db->where($where)
-		 		                     ->get('users');	
+                
 				//echo $this->db->last_query();
 				$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
                 if ($this->form_validation->run())
                  {
-					 if($CheckLoginQuery->num_rows() > 0)
+                 	$this->load->model("user_modal");
+                 	$CheckLoginQuery = $this->user_modal->getBy($where);	
+					 if($CheckLoginQuery)
 					 {
-							$CheckLoginData = $CheckLoginQuery->row();
+							$CheckLoginData = $CheckLoginQuery;
 					       $newdata = array(
                          //  'username'  => 'johndoe',
-						   'UserId'     => $CheckLoginData->id,
-                           'email'     => $CheckLoginData->email_id,
-						   'mobile'    => $CheckLoginData->mobile_no,
-						   'emailstatus'     => $CheckLoginData->email_status,
-						   'mobilestatus'    => $CheckLoginData->mobile_status,
-						   'DisplayName'    => $CheckLoginData->profile_name,
-						   'DisplayAddress'    => $CheckLoginData->permanent_address,
-                           'logged_in' => TRUE
+									   'UserId'     => $CheckLoginData->id,
+			                           'email'     => $CheckLoginData->email,
+									  
+			                           'logged_in' => TRUE
                                  );
                             $this->session->set_userdata($newdata);
                             if($this->session->userdata('templete_id'))
 							{
 								$this->load->model("templetes");
+								$this->load->model("template__default");
 								$condition = array('id'=>$this->session->userdata('templete_id'));
-								$gettempData = $this->templetes->getBy($condition);
+								$gettempData = $this->template__default->getBy($condition);
 								if($gettempData)
 								{
 									$insertData = array('temlete_name'=>$gettempData->temlete_name,
@@ -101,7 +99,6 @@ class UserLogin extends MY_AppController {
 										                'color_code'=>$gettempData->color_code,
 										                'tag_line'=>$gettempData->tag_line,
 										                'user_id'=>$CheckLoginData->id,
-										                'is_default'=>1,
 										                'cat_id'=>$gettempData->cat_id,
 										                'sub_cat_id'=>$gettempData->sub_cat_id,
 										                'created_at'=>date('Y-m-d H:i:s'));
@@ -136,7 +133,7 @@ class UserLogin extends MY_AppController {
 				$userData = $this->input->post();
 				@extract($userData );
 				$this->form_validation->set_rules('username', 'Name', 'required');
-				$this->form_validation->set_rules('useremail', 'Email ', 'required|is_unique[users.email]');
+				$this->form_validation->set_rules('useremail', 'Email ', 'required|is_unique[3app_customers__main_info.email]');
 				$this->form_validation->set_rules('usermobile', 'Mobile', 'required|callback_numeric_dash');
 				$this->form_validation->set_rules('password', 'Password', 'required');
 				//echo $this->db->last_query();
@@ -151,10 +148,17 @@ class UserLogin extends MY_AppController {
 					'password'=>$newPass ,
 					'first_login'=>1,
 					'created_at'=>date('Y-m-d H:i:s'));
-					$insert = $this->db->insert('users',$userData );
+					$this->load->model("user_modal");
+					 $insert = $this->user_modal->AdduserData($userData );
 
 					//////////// set mail to user///
 					$this->load->model('common');
+					
+					unset($userData['first_login']);
+					unset($userData['created_at']);
+					unset($userData['mobile']);
+					$userData['sign_up_date']=date('Y-m-d');
+					
 					$to=$useremail;
 					$from=FROM_EMAIL;
 					$subject='Register successfully';
@@ -185,23 +189,23 @@ class UserLogin extends MY_AppController {
   </tr>
 </table>';
 					$sendmail = $this->common->sendemail($to,$from,$subject,$body);
-					$userLoginId = $this->db->insert_id();
+					$userLoginId = $insert;
+					// $userData['church_user_ID']=$userLoginId;
+					
 					$newdata = array(
 					//  'username'  => 'johndoe',
 					'UserId'     => $userLoginId,
 					'email'     => $useremail,
-					'mobile'    => $usermobile,
-					'emailstatus'     => 'Pending',
-					'mobilestatus'    => $usermobile,
-					'DisplayName'    => $username,
 					'logged_in' => TRUE
 					);
 					$this->session->set_userdata($newdata);
 					if($this->session->userdata('templete_id'))
 					{
+
 						$this->load->model("templetes");
+						$this->load->model("template__default");
 						$condition = array('id'=>$this->session->userdata('templete_id'));
-						$gettempData = $this->templetes->getBy($condition);
+						$gettempData = $this->template__default->getBy($condition);
 						if($gettempData)
 						{
 							$insertData = array('temlete_name'=>$gettempData->temlete_name,
@@ -209,15 +213,19 @@ class UserLogin extends MY_AppController {
 							                    'color_code'=>$gettempData->color_code,
 							                    'tag_line'=>$gettempData->tag_line,
 							                    'user_id'=>$userLoginId,
-							                    'is_default'=>1,
 							                    'cat_id'=>$gettempData->cat_id,
 							                    'sub_cat_id'=>$gettempData->sub_cat_id,
 							                    'created_at'=>date('Y-m-d H:i:s'));
 							$tempid = $this->templetes->AdduserData($insertData);
 							if($tempid)
 							{
-								
-							 redirect(SITE_URL.'user/setcolor/'.$tempid);
+								$userData['admin_id']=$userLoginId;
+								$userData['template_id']=$tempid;
+								$this->load->model('productusers');
+								$userData['product_id']=$this->session->userdata('templete_id');
+						        $insert = $this->productusers->AdduserData($userData);
+
+							    redirect(SITE_URL.'user/setcolor/'.$tempid);
 
 							}
 						}
@@ -248,12 +256,7 @@ public function numeric_dash($string)
 							   $newdata = array(
 								 //  'username'  => 'johndoe',
 								   'UserId'     => $this->session->userdata('UserId'),
-								   'email'     =>$this->session->userdata('email_id'),
-								   'mobile'    => $this->session->userdata('mobile_no'),
-								   'emailstatus'     =>$this->session->userdata('email_status'),
-								   'mobilestatus'    => $this->session->userdata('mobile_status'),
-								   'DisplayName'    => $this->session->userdata('profile_name'),
-								   'DisplayAddress'    =>$this->session->userdata('permanent_address'),
+								   'email'     =>$this->session->userdata('email'),
 								   'logged_in' => TRUE
 										 );
 							  

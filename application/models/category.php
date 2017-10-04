@@ -4,7 +4,7 @@ class Category extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
-		$this->table='categories';
+		$this->table='product_template__categories';
 		parent::__construct();	
 	}
 

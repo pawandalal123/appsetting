@@ -4,7 +4,7 @@ class Training_videos extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
-		$this->table='training_videos';
+		$this->table='product_template__training_videos';
 		parent::__construct();	
 	}
 
@@ -54,7 +54,7 @@ function select_data($cols='*',$where=false,$where_or=false,$where_in=false) {
 		{
 			$this->db->where($condition);
 		}
-		$pageData = $this->db->join('subcategories' , 'training_videos.sub_cat_id=subcategories.id')
+		$pageData = $this->db->join('product_template__subcategories' , 'product_template__training_videos.sub_cat_id=product_template__subcategories.id')
 		                     ->get($this->table)->result();
 
 		return $pageData;

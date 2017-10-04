@@ -77,6 +77,7 @@ $(document).ready(function()
 
       if ((file = this.files[0])) 
       {
+        $('#page_hide').show()
           img = new Image();
           img.onload = function() 
           {
@@ -90,6 +91,11 @@ $(document).ready(function()
                 alert('invalid file !');
                 formerr++;
                 return false;
+            }
+            else if(imgheight > 800)
+            {
+              alert('Please select smaller size image,the best size 232*400 dimensions.');
+
             }
             else
             {
@@ -107,13 +113,14 @@ $(document).ready(function()
                     dataType: 'json',
                       success: function (response) {
                           //alert(response.detailsubmit);
+                          $('#page_hide').hide()
                           if(response.status=='success')
                           {
                             $('.templeteimgclass').attr('src',response.imagelink);
                             if(imgwidth > maxwidth && imgheight > maxheight)
                             {
                                 modelbox('');
-                               $('.content').html('<h3>You Have Previewing <span> Crop Image</span></h3><div class="imgbox" style="height:300px;"><div class="item crop-images"><img src="'+response.imagelink+'" alt="" id="photo"><input type="hidden" name="image_name" id="image_name" value="'+response.imagename+'"  /></div></div>');
+                               $('.content').html('<h3>You Have Previewing <span> Crop Image</span></h3><div class="imgbox" style="max-height:800px;"><div class="item crop-images"><img src="'+response.imagelink+'" alt="" id="photo" ><input type="hidden" name="image_name" id="image_name" value="'+response.imagename+'"  /></div></div>');
                                // $('img#photo').imgAreaSelect(
                                //      { maxWidth: 300, maxHeight: 600, handles: true,
                                //      onSelectEnd: getSizes
@@ -132,6 +139,7 @@ $(document).ready(function()
                           }
                       },
                       error: function (response) {
+                        $('#page_hide').hide()
                          alert('some technical issue.');
                           
                       }
@@ -140,6 +148,7 @@ $(document).ready(function()
           };
           img.onerror = function() 
           {
+            
               alert( "not a valid file: ");
           };
           img.src = _URL.createObjectURL(file);
@@ -203,6 +212,7 @@ function getSizes(c)
             $.post(WEBROOT_PATH+'user/upload_thumbnail',{"templeteid":id,"img":img,"t":t,"x1":x1,"y1":y1,"thumb_width":thumb_width,"thumb_height":thumb_height},function(data,status)
            {
                 $(".web-overlay2").remove()
+                $('.templeteimgclass').attr('src',data);
                              //$("#cropimage").hide();
                     //  var imgSrc = SITE_URL+"upload/Document/"+userId+"/"+data;
                     //   $("#thumbs").html("");
@@ -238,7 +248,8 @@ $(document).ready(function () {
                 <li><a href="<?php echo SITE_URL?>user/setcolor/<?php echo $gettempData->id; ?>" class="active next">1</a></li>
                 <li><a href="<?php echo SITE_URL?>user/settags/<?php echo $gettempData->id; ?>" class="next">2</a></li>
                 <li><a href="<?php echo SITE_URL?>user/setimage/<?php echo $gettempData->id; ?>" class="active">3</a></li>
-                <li><a href="<?php echo SITE_URL?>user/preview/<?php echo $gettempData->id; ?>">4</a></li>
+                <li><a href="<?php echo SITE_URL?>user/setaddress/<?php echo $gettempData->id; ?>">4</a></li>
+                <li><a href="<?php echo SITE_URL?>user/preview/<?php echo $gettempData->id; ?>">5</a></li>
             </ul>
             <h3>Customize The App Screens</h3>
             <span>Choose an elemant from the screen to customize it.</span>
@@ -255,7 +266,7 @@ $(document).ready(function () {
                         <p class="templetetag"><?php echo $gettempData->tag_line;?></p>
                         <div class="btn-bott">
                         <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; ">Sign In</a>
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; ">Sign In</a>
+                        <a href="#" class="sign-in-second" style="color: <?php echo $gettempData->text_color; ?>!important; ">Sign Up</a>
                          </div>
                         <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>">
                     </div>
@@ -290,7 +301,7 @@ $(document).ready(function () {
                 ?>
                 <form accept="" method="post">
                   <input class="save-exit" type="submit" name="savedetails" value="Save And Exit">
-                  <a href="<?php echo SITE_URL;?>user/preview/<?php echo $gettempData->id;?>" class="save-exit">Next</a>
+                  <a href="<?php echo SITE_URL;?>user/setaddress/<?php echo $gettempData->id;?>" class="button">Next</a>
                 </form>
                 
                 </div>
@@ -311,8 +322,8 @@ if(count($gelimageArray)>0)
             <?php foreach($gelimageArray as $gelimageArray)
             {
             ?>
-                <div class="item imagefromgel" rel="<?php echo $gelimageArray->background_image;?>">
-                <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$gelimageArray->background_image;?>" rel="<?php echo $gelimageArray->background_image;?>"></div>
+                <div class="item imagefromgel" rel="<?php echo $gelimageArray->image_name;?>">
+                <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.'galleryimage/'.$gelimageArray->image_name;?>" rel="<?php echo $gelimageArray->image_name;?>"></div>
                 <?php
             } ?>
               

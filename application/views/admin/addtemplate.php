@@ -65,17 +65,18 @@
 
 <div class="form-group">
 <label class="col-md-3 control-label" for="example-text-input">IOS preview Image<span class="err">*</span></label>
-<div class="col-md-9">
+<div class="col-md-9 previewimages">
 <input type="file" id="videourl" name="iosfiles[]" class="form-control validate[required]" />
-<?php echo form_error("iosfiles"); ?>
 </div>
+
+<a class="addmorepreeview" id="2" rel="previewimages">Add more</a>
 </div>
 
 <div class="form-group">
 <label class="col-md-3 control-label" for="example-text-input">Website Image<sspan class="err">*</span></label>
 <div class="col-md-9">
-<input type="file" id="videourl" name="websitefiles[]" class="form-control validate[required]" />
-<?php echo form_error("websitefiles"); ?>
+<input type="file" id="videourl" name="fileField[]" class="form-control validate[required]" />
+
 </div>
 </div>
 
@@ -90,6 +91,14 @@
 
 <script type="text/javascript">
 $(document).ready(function() { 
+  var counter=$('.addmorepreeview').attr('id');
+    $('.addmorepreeview').click(function()
+    {
+      var html='<div class="col-md-9 previewimages"><input type="file" id="videourl" name="iosfiles[]" class="form-control validate[required]" /></div>';
+            $('.previewimages:last').after(html);
+      counter++;
+      //alert(counter);
+    })
   
   $("#addcategory").validate({
                 rules: {

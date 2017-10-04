@@ -4,7 +4,7 @@ class Templetes_images extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
-		$this->table='templetes_images';
+		$this->table='product_template__preview_images';
 		parent::__construct();	
 	}
 

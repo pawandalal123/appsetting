@@ -4,7 +4,7 @@ class User_messages extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
-		$this->table='user_messages';
+		$this->table='3app_customers__bugs_or_enhancement_request';
 		parent::__construct();	
 	}
 

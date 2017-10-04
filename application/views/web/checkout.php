@@ -16,69 +16,24 @@
         
         <div class="account-process" id="first">
         	
-            <!-- <div class="change-package"><a href="#"> <  Change Package </a></div>
-            <div class="row second">
-            	<div class="box">
-                	<div class="col-left">
-                    	<h4>BASIC</h4>
-                        <div class="price"><strong><?php echo $plan_data->price;?> <sup>$</sup></strong> / month</div>
-                        <p>Up to 100 Users <br/>Other Factor</p>
-                    </div>
-                    <div class="col-right">
-                    <?php if($plan_data->default_installation_price)
-                    {  
-                        ?>
-                        <div class="radio-box">
-                        <label>
-                        <input type="radio" class="radio" name="installtiontype" value="1" <?php if($payments->installtion_type==1) {  echo 'checked';} ?>> DEFAULT INSTALLATION  ( + <?php echo $plan_data->default_installation_price?> $ )</label>
-                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p>
-                    
-                        </div>
-                        <?php } ?>
-                    	
-                        <div class="radio-box">
-                        <label><input type="radio" class="radio" name="installtiontype" value="2" <?php if($payments->installtion_type==2) {  echo 'checked';} ?>> STANDALONE INSTALLATION  ( + <?php echo $plan_data->standerd_price?> $ )</label>
-                        <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
-                        <div class="total-amo">
-                        	<h3>TOTAL AMOUNT</h3>
-                            <?php 
-                            $price = $plan_data->price;
-                            if($payments->installtion_type==1)
-                            {
-                                $price+= $plan_data->default_installation_price;
-
-                            }
-                            if($payments->installtion_type==2)
-                            {
-                                $price+= $plan_data->standerd_price;
-
-                            }
-                            ?>
-                            <h4><?php echo $price;?> $</h4>
-                        </div>
-                        <a href="#" class="next-btn">next</a>
-                    </div>
-                </div>
-            </div> -->
-            
-            <div class="change-package"><a href="<?php echo SITE_URL.'website/subscription/'.$payments->app_id;?>"> <  Change Instllation Type </a></div>
+           <!--  <div class="change-package"><a href="<?php echo SITE_URL.'website/subscription/'.$payments->app_id;?>"> <  Change Instllation Type </a></div> -->
             <div class="row third">
             	<div class="box">
                 	<div class="col-left">
                     	<h4>BASIC</h4>
                         <div class="price"><strong><?php echo $plan_data->price;?> <sup>$</sup></strong> / month</div>
-                        <p>Up to <?php echo $plan_data->max_installtion;?> Users <br/>Other Factor</p>
-                        <p><strong>INSTALLATION  ( + <?php echo $plan_data->default_installation_price?> $ )</strong> (Default - Pay it Now)</p>
+                        <p>Up to <?php echo $plan_data->max_users;?> Users <br/>Other Factor</p>
+                        <p><!-- <strong>INSTALLATION  ( + <?php echo $plan_data->default_installation_price?> $ )</strong> --> (Default - Pay it Now)</p>
                     </div>
                     <div class="col-right">
                     	<h2>YOUR ORDER</h2>
                     	<div class="radio-box">
-                    	<label class="padd25"> DEFAULT INSTALLATION  ( + <?php echo $plan_data->default_installation_price?> $ ) - PAY IT NOW</label>
+                    	<!-- <label class="padd25"> DEFAULT INSTALLATION  ( + <?php echo $plan_data->default_installation_price?> $ ) - PAY IT NOW</label> -->
                         <p><strong>This is a one time fee.</strong> Small description about installation, and how it makes their life easier, estimated time to do the installation. </p></div>
                     
                         <div class="total-amo">
                         	<h3>TOTAL AMOUNT</h3>
-                            <h4><?php echo $plan_data->price+$plan_data->default_installation_price; ?>$</h4>
+                            <h4><?php echo $plan_data->price; ?>$</h4>
                             <input type="text" class="coupan" placeholder="I Have A Coupon">
                         </div>
                         <a href="<?php echo SITE_URL.'website/makepayment/'.$payments->id?>" class="next-btn">next</a>

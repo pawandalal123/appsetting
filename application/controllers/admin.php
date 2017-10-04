@@ -48,8 +48,8 @@ public function login()
 		$login_id = $this->input->post('login_id');
 		$pass  = md5($this->input->post('login_password'));
      // If the user is valid, redirect to the dashboard
-		$this->load->model("user_modal");
-	if( $login_id && $pass && $this->user_modal->validate_user($login_id,$pass))
+		
+	if( $login_id && $pass && $this->admin_model->validate_user($login_id,$pass))
 	 {
 		 redirect('/admin/dashboard');	   
 	}
@@ -91,12 +91,13 @@ public function dashboard(){
 // admin all action/process start from here
 
 // view_admin function load the respective view on default layout
-public function view_admin(){
+public function view_admin()
+{
 	 $this->validateAdmin();
 		
 	 $where=array('user_type'=>1);
-	 $this->load->model("user_modal");
-     $adminData=$this->user_modal->select_data('*',$where);
+	 $this->load->model("admin_model");
+     $adminData=$this->admin_model->select_data('*',$where);
 	 $this->data['rows']  = $adminData;
 
 	 $this->data['view_file']  = 'admin/view_admin';
@@ -110,6 +111,52 @@ public function view_admin(){
 // activeDeactiveAdmin active or deactive the row of given parameter depending on status_mode
 //parameter is Id of the record to be active or deactive
 public function activeDeactiveAdmin($adminId = false,$status_mode=false)
+{
+	$this->load->model("admin_model");
+	  $where=array("id"=>$adminId);
+	if($status_mode=='deActive')
+	{
+	    $cols=array("status"=>1);
+		$msgStatus='Activated';
+	 } 
+	 else if($status_mode=='Active')
+	 {
+		 $cols=array("status"=>0);
+		 $msgStatus='Deactivated';
+	 }
+	 ///////check user//////
+	 $checkuser= $this->admin_model->getBy($where,array('user_type'));
+	 if($checkuser)
+	 {
+	 	 $affected_row=$this->admin_model->updateDetails($where,$cols);
+		 if($affected_row)
+		 {
+				  $msg="$msgStatus Successfully";
+				  $this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
+				  
+		 }
+		 else
+		 {
+	              $msg=" Status Not Changed !";
+				  $this->session->set_userdata( array('msg'=>$msg,'class' => 'err'));
+				  // redirect('/admin/view_admin','refresh');
+		 }
+		
+		  	redirect('/admin/view_admin','refresh');
+		  
+
+	 }
+	 else
+	 {
+	 	$msg=" Status Not Changed !";
+	   $this->session->set_userdata( array('msg'=>$msg,'class' => 'err'));
+	   redirect('/admin/view_admin','refresh');
+		 
+	 }
+	
+}
+
+public function activeDeactiveuser($adminId = false,$status_mode=false)
 {
 	$this->load->model("user_modal");
 	  $where=array("id"=>$adminId);
@@ -140,22 +187,16 @@ public function activeDeactiveAdmin($adminId = false,$status_mode=false)
 				  $this->session->set_userdata( array('msg'=>$msg,'class' => 'err'));
 				  // redirect('/admin/view_admin','refresh');
 		 }
-		 if($checkuser->type==0)
-		  {
+		 
 		  	redirect('/admin/users','refresh');
-
-		  }
-		  else
-		  {
-		  	redirect('/admin/view_admin','refresh');
-		  }
+		  
 
 	 }
 	 else
 	 {
 	 	$msg=" Status Not Changed !";
 	   $this->session->set_userdata( array('msg'=>$msg,'class' => 'err'));
-	   redirect('/admin/view_admin','refresh');
+	   redirect('/admin/users','refresh');
 		 
 	 }
 	
@@ -282,7 +323,8 @@ public function activeDeactiveCategory($catId = false,$status_mode=false)
 			 $cols=array("status"=>0);
 			 $msgStatus='Deactivated';
 		}
-	      $affected_row=$this->admin_model->active_deactive_db('category',$cols,$where);
+	      // $affected_row=$this->admin_model->active_deactive_db('category',$cols,$where);
+		   $affected_row= $this->category->updateDetails($where,$cols);
 	     if($affected_row){
 				  $msg="$msgStatus Successfully";
 				  $this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
@@ -311,9 +353,9 @@ public function subcategory($catid=false)
 	    }
 	    $this->load->model("category");
 	    $this->data['catrow']=$this->category->select_data(array('id','name'),array('status'=>1));
-	    $catData = $this->db->select('subcategories.id,subcategories.status,subcategories.name,subcategories.created_at,categories.name as catname')
-									 ->join('categories' , 'categories.id=subcategories.category_id','left')
-									 ->get('subcategories')
+	    $catData = $this->db->select('price,max_users,product_template__subcategories.id,product_template__subcategories.status,product_template__subcategories.name,product_template__subcategories.created_at,product_template__categories.name as catname')
+									 ->join('product_template__categories' , 'product_template__categories.id=product_template__subcategories.category_id','left')
+									 ->get('product_template__subcategories')
 									 ->result();
 									 
 	    // $catData=$this->category->select_data();
@@ -323,7 +365,8 @@ public function subcategory($catid=false)
 		$catdetails='';
 		if($catid)
 		{
-			$catdetails = $this->category->getBy(array('id'=>$catid));
+			$this->load->model("subcategory");
+			$catdetails = $this->subcategory->getBy(array('id'=>$catid));
 		}
 		$this->data['catdetails']=$catdetails;
 		$this->data['view_file']  = 'admin/view_subcat';
@@ -344,6 +387,8 @@ public function add_subcategory($subcatid=false)
 		$userData = $this->input->post();
 	   @extract($userData );
 		$insertData=array('name' => $subcatename,
+			              'price' => $amount,
+			              'max_users' => $maxinstall,
 					     'category_id'=>$cat,
 				         'status'=>$status,
 				         'created_by'=>$this->session->userdata('id'),
@@ -376,7 +421,30 @@ public function add_subcategory($subcatid=false)
 }
 
 
-
+//activeDeactiveCategory() action active or deactive the specified category on the basis of $status_mode	
+public function activeDeactivesubCategory($catId = false,$status_mode=false)
+	{
+	  $where=array("cat_id"=>$catId);
+	 if($status_mode=='deActive'){
+			$cols=array("status"=>1);
+			$msgStatus='Activated';
+	   } else if($status_mode=='Active'){
+			 $cols=array("status"=>0);
+			 $msgStatus='Deactivated';
+		}
+		$this->load->model("subcategory");
+	      $affected_row=$this->subcategory->updateDetails($where,$cols);
+	     if($affected_row){
+				  $msg="$msgStatus Successfully";
+				  $this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
+				  redirect('/admin/category','refresh');
+			}else{
+			  
+				  $msg=" Status Not Changed !";
+				  $this->session->set_userdata( array('msg'=>$msg,'class' => 'err'));
+				  redirect('/admin/category','refresh');
+			  }
+ }
 
 
 	public function users()
@@ -408,29 +476,29 @@ public function deleteUser($userId = false)
 		  }
 }
 //activeDeactiveUser() action active or deactive the specified user details on the basis of $status_mode
-public function activeDeactiveUser($user_id = false,$status_mode=false)
-{
-	 $where=array("id"=>$user_id);
-	 if($status_mode=='deActive'){
-			 $cols=array("profile_status"=>'Active');
-			 $msgStatus='Unblocked';
-	   } else if($status_mode=='Active'){
-			 $cols=array("profile_status"=>'Blocked');
-			 $msgStatus='Blocked';
-		}
+// public function activeDeactiveUser($user_id = false,$status_mode=false)
+// {
+// 	 $where=array("id"=>$user_id);
+// 	 if($status_mode=='deActive'){
+// 			 $cols=array("profile_status"=>'Active');
+// 			 $msgStatus='Unblocked';
+// 	   } else if($status_mode=='Active'){
+// 			 $cols=array("profile_status"=>'Blocked');
+// 			 $msgStatus='Blocked';
+// 		}
 		
-	  $affected_row=$this->admin_model->active_deactive_db('user_signup',$cols,$where);
-	  if($affected_row){
-			  $msg="User $msgStatus Successfully";
-			  $this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
-			  redirect('/admin/users','refresh');
-	  }else{
+// 	  $affected_row=$this->admin_model->active_deactive_db('user_signup',$cols,$where);
+// 	  if($affected_row){
+// 			  $msg="User $msgStatus Successfully";
+// 			  $this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
+// 			  redirect('/admin/users','refresh');
+// 	  }else{
 			  
-             $msg="User Status Not Changed !";
-			  $this->session->set_userdata( array('msg'=>$msg,'class' => 'err'));
-			  redirect('/admin/users','refresh');
-			}
-}
+//              $msg="User Status Not Changed !";
+// 			  $this->session->set_userdata( array('msg'=>$msg,'class' => 'err'));
+// 			  redirect('/admin/users','refresh');
+// 			}
+// }
 
 
 
@@ -1024,7 +1092,7 @@ public function updateplan()
 public function addtemplate($templateid=false)
 {
 	$this->validateAdmin();
-	$this->load->model("templetes");
+	$this->load->model("template__default");
 	if($this->input->post('savetemplate'))
 	{
 		$this->savetemplate();
@@ -1038,7 +1106,7 @@ public function addtemplate($templateid=false)
 }
 public function savetemplate($templateid=false)
 {
-	$this->load->model("templetes");
+	$this->load->model("template__default");
 	$this->form_validation->set_rules('cat', 'Category', 'trim|required|xss_clean');
 	$this->form_validation->set_rules('subcat', 'Subcategory Name', 'trim|required|xss_clean');
 	$this->form_validation->set_rules('templatetitle', 'Template name', 'trim|required|xss_clean');
@@ -1083,15 +1151,29 @@ public function savetemplate($templateid=false)
 		        if($templateid)
 				{
 					unset($insertData['created_at']);
-					$lastId=$this->templetes->updateDetails(array('id'=>$templateid),$insertData);
+					$lastId=$this->template__default->updateDetails(array('id'=>$templateid),$insertData);
+					$image=array_filter($_FILES['iosfiles']['name']);
+					$uplodeimages = $this->updatedealImages($image,'iosfiles',$templateid,$subcat);
+
+					/////// for website/////
+					$imagewebsite=array_filter($_FILES['fileField']['name']);
+					$uplodeimagesweb = $this->updatedealImages($imagewebsite,'fileField',$templateid,$subcat);
 					$mesage='Updated';
 
 				}
 				else
 				{
-					$lastId=$this->templetes->AdduserData($insertData);
+					$lastId=$this->template__default->AdduserData($insertData);
 					$mesage='Created';
+					$image=array_filter($_FILES['iosfiles']['name']);
+				    $uplodeimages = $this->updatedealImages($image,'iosfiles',$lastId,$subcat);
+
+				    /////// for website/////
+					$imagewebsite=array_filter($_FILES['fileField']['name']);
+					$uplodeimagesweb = $this->updatedealImages($imagewebsite,'fileField',$lastId,$subcat);
 				}
+				///////// uplode image for ios/////
+
 				if(isset($mesage))
 				{
 					$msg=$mesage." successfully";
@@ -1117,14 +1199,19 @@ public function savetemplate($templateid=false)
 public function templetelist($type=false)
 {
 	    $this->validateAdmin();
+	    $this->load->model("template__default");
 	    $this->load->model("templetes");
-	    $condition=array('is_default'=>0);
+	    $condition=array();
 	    if($type=='users')
 	    {
-	    	$condition=array('is_default'=>1);
+	    	 $catData=$this->template__default->select_data('*',array());
 
 	    }
-	    $catData=$this->templetes->select_data('*',$condition);
+	    else
+	    {
+	    	$catData=$this->templetes->select_data('*',$condition);
+	    }
+	    $catData=$this->template__default->select_data('*',$condition);
 		$this->data['rows']  = $catData;
 		$this->data['view_file']  = 'admin/templetelist';
 		$this->load->view('layouts/admin/admin_default', $this->data); 
@@ -1144,20 +1231,43 @@ public function activeDeactivetemp($templateid = false,$status_mode=false)
 			 $msgStatus='Deactivated';
 	  }
 	  $this->load->model("templetes");
-	$affected_row=$this->templetes->updateDetails($where,$cols);
-	if($affected_row)
-	{
+	  $affected_row=$this->templetes->updateDetails($where,$cols);
+	 if($affected_row)
+	 {
+	 	if($status_mode=='deActive')
+	 	{
+	 		
+		    $templatedata=$this->templetes->getBy(array('id'=>$templateid));
+		    /////////get userdetails/////
+		    $where = array('id'=>$templatedata->user_id);
+		    $userdetails = $this->db->where($where)
+		 		          ->get('users')->row();
+	 		$this->load->model("productusers");
+	 		$condition = array('email'=>$userdetails->email);
+	 		$checkuser = $this->productusers->getBy($condition);
+	 		if(!$checkuser || empty($checkuser))
+	 		{
+	 			$datainsert = array('church_user_ID'=>$userdetails->id,
+	 				                'name'=>$userdetails->name,
+	 				                'email'=>$userdetails->email,
+	 				                'password'=>$userdetails->password,
+	 				                'token'=>$userdetails->token,
+	 				                'sign_up_date'=>date('Y-m-d',strtotime($userdetails->created_at)),
+	 				                'status'=>1);
+	 			$updateuser = $this->productusers->AdduserData($datainsert);
+
+	 		}
+	 	}
 		$msg="$msgStatus Successfully";
 		$this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
 		redirect($_SERVER['HTTP_REFERER']);
-	}
-	else
-	{
-
+	 }
+	 else
+	 {
 		$msg=" Status Not Changed !";
 		$this->session->set_userdata( array('msg'=>$msg,'class' => 'err'));
 	    redirect($_SERVER['HTTP_REFERER']);
-	}
+	 }
 }
 
 public function modificationlist()
@@ -1288,4 +1398,58 @@ public function makereply()
 		echo 'success';
 
 	}
+
+	public function updatedealImages($data = array() , $fieldName = 'fileField' , $productId,$subcatid){
+
+		if(count($data) > 0)
+		{		 
+			$this->load->model("templetes_images");
+			foreach($data as $key => $insertimage){					
+				$_FILES['fileField'.$key]['name']= $_FILES[$fieldName]['name'][$key];
+				$_FILES['fileField'.$key]['type']= $_FILES[$fieldName]['type'][$key];
+				$_FILES['fileField'.$key]['tmp_name']= $_FILES[$fieldName]['tmp_name'][$key];
+				$_FILES['fileField'.$key]['error']= $_FILES[$fieldName]['error'][$key];
+				$_FILES['fileField'.$key]['size']= $_FILES[$fieldName]['size'][$key];
+				$name = $insertimage;
+				$up_path='upload/galleryimage';
+				$input_name ='fileField'.$key;
+				$image_name = $this->uploadimage($up_path,$input_name,$insertimage);
+				if($image_name['error']==true)
+				{
+
+				}
+				else
+				{
+					if($fieldName=='iosfiles')
+					{
+						$insertData=array('image_name'=>$image_name['file_name'],
+									      'sub_cat_id'=>$subcatid,
+									      'template_id'=>$productId,
+								          'type'=>1,
+								          'status'=>1,
+								          'created_by'=>$this->session->userdata('id'),
+								          'created_at'=>date('Y-m-d H:i:s')
+						         );
+					}
+					else
+					{
+						$insertData=array('image_name'=>$image_name['file_name'],
+									      'sub_cat_id'=>$subcatid,
+									      'template_id'=>$productId,
+								          'type'=>2,
+								          'status'=>1,
+								          'created_by'=>$this->session->userdata('id'),
+								          'created_at'=>date('Y-m-d H:i:s')
+						         );
+
+					}
+					$Insertimages = $this->templetes_images->AdduserData($insertData);
+
+				}
+			}
+		}
+
+	}
+
+
 } // controller end here 

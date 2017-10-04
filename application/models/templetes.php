@@ -4,7 +4,7 @@ class Templetes extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
-		$this->table='templetes';
+		$this->table='product_template__ios_mobile';
 		parent::__construct();	
 	}
 

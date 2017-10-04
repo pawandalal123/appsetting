@@ -4,7 +4,7 @@ class Contactus extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
-		$this->table='contact_list';
+		$this->table='core_site__contact_list';
 		parent::__construct();	
 	}
 

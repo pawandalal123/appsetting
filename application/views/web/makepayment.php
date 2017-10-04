@@ -118,9 +118,9 @@
                 	<div class="col-left">
                     	<h4>BASIC</h4>
                         <div class="price"><strong><?php echo $plan_data->price;?>  <sup>$</sup></strong> / month</div>
-                        <p>Up to <?php echo $plan_data->max_installtion;?> Users <br/>Other Factor</p>
-                        <p><strong>INSTALLATION  ( + <?php echo $plan_data->default_installation_price; ?> $ )</strong> (Default - Pay it Now)<strong>15% OFF COUPON APPLIED</strong></p>
-                        <a href="#" class="price-btn"><?php echo $plan_data->price+$plan_data->default_installation_price; ?> $</a>
+                        <p>Up to <?php echo $plan_data->max_users;?> Users <br/>Other Factor</p>
+                        <p><!-- <strong>INSTALLATION  ( + <?php echo $plan_data->default_installation_price; ?> $ )</strong> --> (Default - Pay it Now)<strong>15% OFF COUPON APPLIED</strong></p>
+                        <a href="#" class="price-btn"><?php echo $plan_data->price; ?> $</a>
                     </div>
                     <div class="col-right">
                     	<span class="credit-info">Your Credit card information is encryted</span>

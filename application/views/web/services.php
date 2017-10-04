@@ -125,26 +125,21 @@ function settempletesubcat(subcatid)
                 </div>
             </div>
             <?php 
-            if(count($planlist)>0)
+            if($planlist)
             {
                 ?>
         	<ul>
-            <input type="hidden" name="selectedtemplate" value="<?php echo $template_id;?>">
-            <?php 
-            foreach($planlist as $planlist)
-            {
-                ?>
+            <!-- <input type="hidden" name="selectedtemplate" value="<?php echo $template_id;?>"> -->
+           
             	<li class="basic">
                     <div class="iner-box">
-                        <h4><?php echo $planlist->plan_name;?></h4>
+                        <h4><?php echo $planlist->name;?></h4>
                         <div class="price"><strong><?php echo $planlist->price;?> <sup>$</sup></strong> / month</div>
-                        <p>Up to <?php echo $planlist->max_installtion?> Users <br/>Other Factor</p>
-                        <a href="#" onclick="settempletesubcat(<?php echo $planlist->sub_cat_id;?>)">SELECT</a>
+                        <p>Up to <?php echo $planlist->max_users?> Users <br/>Other Factor</p>
+                        <a href="#" onclick="settempletesubcat(<?php echo $planlist->id;?>)">SELECT</a>
                     </div>
                 </li>
-                <?php 
-            }
-                ?>
+                
       
             </ul>
             <?php 

@@ -2,9 +2,12 @@
 
 class User_modal extends CI_Model {
 	// public $table;
+	protected $id='customer_ID';
+	protected $email='customer_email';
 	public function __construct()
 	 {
-		$this->table='users';
+		$this->table='3app_customers__main_info';
+
 		parent::__construct();	
 	}
 
@@ -44,6 +47,7 @@ function select_data($cols='*',$where=false,$where_or=false,$where_in=false) {
 			$conditions['email']=$email;
 			$conditions['password']=$password;
 			$conditions['user_type']=1;
+			$conditions['first_login']=1;
 			$conditions['status']=1;
 			$login  =  $this->db->select('id, email,name')
 		    			 ->from($this->table)

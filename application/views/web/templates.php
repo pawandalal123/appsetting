@@ -109,6 +109,7 @@ $(document).ready(function(){
         <div class="tab tablist" id="searchbox">
           <div class="tabnav">
               <ul>
+              <li><a href="#newestpopular">POPULAR</a></li>
               <?php 
               foreach($productArray as $key=>$valArray)
               {
@@ -121,8 +122,37 @@ $(document).ready(function(){
                     <input type="text" placeholder="SEARCH" class="input2" id="makesubcatlist" autocomplete="off">
                 </div>
             </div>
-            
+     
+           
+            <div class="tab-content tabshowhide" id="newestpopular">
+ <ul>
             <?php 
+            foreach($productArray as $key=>$valArray)
+              {
+                ?>
+             
+              <?php 
+              foreach($valArray as $subcatid=>$templeteval)
+              {
+                ?>
+             
+                    <li>
+                        <div class="imgbox">
+                            <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$templeteval['background_image']?>" alt="" style="width: 270px; height: 270px;">
+                            <div class="overlay"><h4><?php echo $templeteval['temlete_name'];?></h4><span><?php echo $templeteval['tag_line'];?></span></div>
+                        </div>
+                        <a href="javascript::void(0);" <?php if($subcatid==1)  {?> onclick="maketempletelist('<?php echo $subcatid;?>')" <?php } ?>><?php if($subcatid==1)  {?> Preview <?php } else { echo 'Coming Soon';} ?></a>
+                    </li>
+                    <?php } ?>
+              
+                <?php 
+              }
+                ?>
+                  </ul>
+            </div>
+
+            <?php 
+         
 
               foreach($productArray as $key=>$valArray)
               {
@@ -140,7 +170,7 @@ $(document).ready(function(){
                             <img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES.$templeteval['background_image']?>" alt="" style="width: 270px; height: 270px;">
                             <div class="overlay"><h4><?php echo $templeteval['temlete_name'];?></h4><span><?php echo $templeteval['tag_line'];?></span></div>
                         </div>
-                        <a href="javascript::void(0);" <?php if($subcatid==1)  {?> onclick="maketempletelist('<?php echo $subcatid;?>')" <?php } ?>>Preview</a>
+                        <a href="javascript::void(0);" <?php if($subcatid==1)  {?> onclick="maketempletelist('<?php echo $subcatid;?>')" <?php } ?>><?php if($subcatid==1)  {?> Preview <?php } else { echo 'Coming Soon';} ?></a>
                     </li>
                     <?php } ?>
                 </ul>

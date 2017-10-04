@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 <!--------------- google font Lato ---------------->
 
-<script type="text/javascript" src="<?php echo WEBROOT_PATH_SITE_JS;?>jquery.min.js"></script>
+<script type="text/javascript" src="http://www.shaadisaath.com/assets/js/jquery.min.js"></script>
 <script type="text/javascript" src="<?php echo WEBROOT_PATH_JS;?>websitecommon.js"></script>
 <style type="text/css">
 	
@@ -58,8 +58,9 @@ function modelboxsmall(body)
 <div id="page_hide">
 <img src="<?php echo WEBROOT_PATH_IMAGES;?>AjaxLoader.gif"/>
 		</div>
- <?php echo $this->load->view('/elements/website/commonheader');?>
+ 
  <div class="mainclass">
+ <?php echo $this->load->view('/elements/website/commonheader');?>
  <?php echo $this->load->view($view_file);?> 
  <?php echo $this->load->view('/elements/website/commonfooter');?> 
  </div>

@@ -4,7 +4,7 @@ class Wesite_about extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
-		$this->table='website_template_about';
+		$this->table='product_template__website_template_about';
 		parent::__construct();	
 	}
 

@@ -25,7 +25,7 @@ class Website extends MY_AppController {
 			redirect(SITE_URL.'website/about/'.$id);
 		}
 		$this->load->model("Webindex");
-		$condition = array('app_id'=>$id);
+		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
 		$this->load->model("templetes");
         $conditiontemp = array('id'=>$id);
@@ -52,12 +52,14 @@ class Website extends MY_AppController {
 			
 			$condition = array('is_default'=>0);
 			$getdefaulttemp = $this->Webindex->getBy($condition);
-			$insertArray  = array('app_id'=>$id,
+			$insertArray  = array('product_id'=>$id,
 				                  'user_id'=>$this->session->userdata('UserId'),
 				                  'banner_image'=>$getdefaulttemp->banner_image,
 				                  'button_color'=>$gettempData->color_code,
 				                  'side_image'=>$getdefaulttemp->side_image,
 				                  'logo'=>$getdefaulttemp->logo,
+				                  'logo_type'=>$getdefaulttemp->logo_type,
+				                  'logo_text'=>$gettempData->temlete_name,
 				                  'keypoint_first_text'=>$getdefaulttemp->keypoint_first_text,
 				                  'keypoint_second_text'=>$getdefaulttemp->keypoint_second_text,
 				                  'keypoint_third_text'=>$getdefaulttemp->keypoint_third_text,
@@ -89,12 +91,13 @@ class Website extends MY_AppController {
 				                  'created_at'=>date('Y-m-d H:i:s'));
 			$insert =  $this->Webindex->AdduserData($insertArray);
 			$getdefaulttemp->button_color=$gettempData->color_code;
+			$getdefaulttemp->logo_text=$gettempData->temlete_name;
 
 			/////////// insert about///////
 			$this->load->model("wesite_about");
 			$condition = array('is_default'=>0);
 			$getdefaulttempabout = $this->wesite_about->getBy($condition);
-			$insertArrayabout = array('app_id'=>$id,
+			$insertArrayabout = array('product_id'=>$id,
 				                  'user_id'=>$this->session->userdata('UserId'),
 				                  'banner_image'=>$getdefaulttempabout->banner_image,
 				                  'bootom_right_image'=>$getdefaulttempabout->bootom_right_image,
@@ -129,9 +132,9 @@ class Website extends MY_AppController {
 	public function saveindex($id)
 	{
 		//ob_start();
-		$maindir=$this->session->userdata('UserId').$id;
+		$maindir='user_website/'.$this->session->userdata('UserId').$id;
 		$this->load->model("Webindex");
-		$condition = array('app_id'=>$id);
+		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
 		if($chechhometemp)
 		{
@@ -324,7 +327,7 @@ class Website extends MY_AppController {
 		}
 		$this->load->model("Webindex");
 		$this->load->model("wesite_about");
-		$condition = array('app_id'=>$id);
+		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
 		$colorcode='';
 		if($chechhometemp)
@@ -345,7 +348,7 @@ class Website extends MY_AppController {
 			{
 				$condition = array('is_default'=>0);
 				$getdefaulttemp = $this->wesite_about->getBy($condition);
-				$insertArray  = array('app_id'=>$id,
+				$insertArray  = array('product_id'=>$id,
 					                  'user_id'=>$this->session->userdata('UserId'),
 					                  'banner_image'=>$getdefaulttemp->banner_image,
 					                  'bootom_right_image'=>$getdefaulttemp->bootom_right_image,
@@ -388,10 +391,10 @@ class Website extends MY_AppController {
 	public function saveabout($id)
 	{
 		//ob_start();
-		$maindir=$this->session->userdata('UserId').$id;
+		$maindir='user_website/'.$this->session->userdata('UserId').$id;
 		$this->load->model("wesite_about");
 		$this->load->model("Webindex");
-		$condition = array('app_id'=>$id);
+		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->wesite_about->getBy($condition);
 		if($chechhometemp)
 		{
@@ -477,7 +480,7 @@ class Website extends MY_AppController {
 			$content = file_get_contents(SITE_URL.'assets/website/about-us.html', false, $context);
 			$this->load->model("Webindex");
 			// $this->load->model("wesite_about");
-			// $condition = array('app_id'=>$id);
+			// $condition = array('product_id'=>$id);
 			
 			// include('pay.php');
 			// $content = ob_get_contents();
@@ -569,7 +572,7 @@ class Website extends MY_AppController {
 			redirect(SITE_URL.'website/donate/'.$id);
 		}
 		$this->load->model("Webindex");
-		$condition = array('app_id'=>$id);
+		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
 		$colorcode='';
 		if($chechhometemp)
@@ -609,7 +612,7 @@ class Website extends MY_AppController {
 			redirect('website/choosedomain/'.$id);
 		}
 		$this->load->model("Webindex");
-		$condition = array('app_id'=>$id);
+		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
 		$colorcode='';
 		if($chechhometemp)
@@ -636,9 +639,10 @@ class Website extends MY_AppController {
 	public function savecontact($id)
 	{
 		//ob_start();
-		$maindir=$this->session->userdata('UserId').$id;
+		//$maindir=$this->session->userdata('UserId').$id;
+		$maindir='user_website/'.$this->session->userdata('UserId').$id;
 		$this->load->model("Webindex");
-		$condition = array('app_id'=>$id);
+		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
 		if($chechhometemp)
 		{
@@ -705,9 +709,10 @@ class Website extends MY_AppController {
 	public function savedonate($id)
 	{
 		//ob_start();
-		$maindir=$this->session->userdata('UserId').$id;
+		//$maindir=$this->session->userdata('UserId').$id;
+		$maindir='user_website/'.$this->session->userdata('UserId').$id;
 		$this->load->model("Webindex");
-		$condition = array('app_id'=>$id);
+		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
 		if($chechhometemp)
 		{
@@ -810,8 +815,8 @@ class Website extends MY_AppController {
 		    $this->load->model("templetes");
 		    $condition = array('id'=>$id,'user_id'=>$loginuser);
 			$gettempData = $this->templetes->getBy($condition);
-			$this->load->model("subscription_plan");
-			$subscriptionData=$this->subscription_plan->getBy(array('status'=>1,'sub_cat_id'=>$gettempData->sub_cat_id));
+			$this->load->model("subcategory");
+			$subscriptionData=$this->subcategory->getBy(array('id'=>$gettempData->sub_cat_id));
 			if($gettempData)
 			{
 				if($this->input->post('saveandpay'))
@@ -832,7 +837,7 @@ class Website extends MY_AppController {
 		            }
 		            else
 		            {
-		            	 $insertArray = array('app_id'=>$id,
+		            	 $insertArray = array('product_id'=>$id,
 						                 'plan_id'=>$subscriptionData->id,
 						                 'user_id'=>$loginuser,
 						                 'amount'=>$subscriptionData->price,
@@ -875,7 +880,7 @@ class Website extends MY_AppController {
 		}
 	
 		$this->load->model("Webindex");
-		$condition = array('app_id'=>$id);
+		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
 		$this->load->model("templetes");
         $conditiontemp = array('id'=>$id);
@@ -896,7 +901,7 @@ class Website extends MY_AppController {
 			{
 				case 'about':
 				$this->load->model("wesite_about");
-		        $condition = array('app_id'=>$id);
+		        $condition = array('product_id'=>$id);
 				$checkabout = $this->wesite_about->getBy($condition);
 				$this->data['aboutdata'] = $checkabout;
 					$view_file='website/about';
@@ -946,8 +951,8 @@ class Website extends MY_AppController {
 		    $this->load->model("templetes");
 		    $condition = array('id'=>$id,'user_id'=>$loginuser);
 			$gettempData = $this->templetes->getBy($condition);
-			$this->load->model("subscription_plan");
-			$subscriptionData=$this->subscription_plan->getBy(array('status'=>1,'sub_cat_id'=>$gettempData->sub_cat_id));
+			$this->load->model("subcategory");
+			$subscriptionData=$this->subcategory->getBy(array('id'=>$gettempData->sub_cat_id));
 			if($gettempData)
 			{
 				if($this->input->post('saveandpay'))
@@ -977,7 +982,7 @@ class Website extends MY_AppController {
 						if($upadte)
 						{
 							$this->load->model("payments");
-				            $checkpayment  =  $this->payments->getBy(array('app_id'=>$id));
+				            $checkpayment  =  $this->payments->getBy(array('product_id'=>$id));
 				            if($checkpayment)
 				            {
 				            	$updatearray = array(
@@ -986,13 +991,13 @@ class Website extends MY_AppController {
 								                 'amount'=>$subscriptionData->price,
 								                 'payment_date'=>date('Y-m-d H:i:s')
 								                 );
-				            	$updatedata = $this->payments->updateDetails(array('app_id'=>$id),$updatearray);
+				            	$updatedata = $this->payments->updateDetails(array('product_id'=>$id),$updatearray);
 				            	$makeplan=$checkpayment->id;
 
 				            }
 				            else
 				            {
-				            	 $insertArray = array('app_id'=>$id,
+				            	 $insertArray = array('product_id'=>$id,
 								                 'plan_id'=>$subscriptionData->id,
 								                 'user_id'=>$loginuser,
 								                 'amount'=>$subscriptionData->price,
@@ -1090,15 +1095,16 @@ class Website extends MY_AppController {
 			{
 
 			    $this->load->model("templetes");
-			    $condition = array('id'=>$payments->app_id,'user_id'=>$loginuser);
+			    $condition = array('id'=>$payments->product_id,'user_id'=>$loginuser);
 				$gettempData = $this->templetes->getBy($condition);
 				//echo $this->db->last_query();
 				if($gettempData)
 				{
 					//echo 'dalal';
-					$this->load->model("subscription_plan");
+					$this->load->model("subcategory");
+					// $this->load->model("subscription_plan");
 					$this->data['payments'] = $payments;
-					$this->data['plan_data'] = $this->subscription_plan->getBy(array('id'=>$payments->plan_id));
+					$this->data['plan_data'] = $this->subcategory->getBy(array('id'=>$gettempData->sub_cat_id));
 					$this->data['view_file'] = 'web/checkout';
 				    $this->load->view('layouts/testDefault', $this->data); 
 				}
@@ -1138,15 +1144,16 @@ class Website extends MY_AppController {
 			{
 
 			    $this->load->model("templetes");
-			    $condition = array('id'=>$payments->app_id,'user_id'=>$loginuser);
+			    $condition = array('id'=>$payments->product_id,'user_id'=>$loginuser);
 				$gettempData = $this->templetes->getBy($condition);
 				//echo $this->db->last_query();
 				if($gettempData)
 				{
 					//echo 'dalal';
-					$this->load->model("subscription_plan");
+					// $this->load->model("subscription_plan");
+					$this->load->model("subcategory");
 					$this->data['payments'] = $payments;
-					$this->data['plan_data'] = $this->subscription_plan->getBy(array('id'=>$payments->plan_id));
+					$this->data['plan_data'] = $this->subcategory->getBy(array('id'=>$gettempData->sub_cat_id));
 					$this->data['view_file'] = 'web/makepayment';
 				    $this->load->view('layouts/testDefault', $this->data); 
 				}
@@ -1176,7 +1183,7 @@ class Website extends MY_AppController {
 
 		   exit('No direct script access allowed');
 		}
-		$templateid = $this->input->post('app_id');
+		$templateid = $this->input->post('product_id');
 		$plan_id = $this->input->post('plan_id');
 		$loginuser=$this->session->userdata('UserId');
 		$this->load->model("templetes");
@@ -1190,7 +1197,7 @@ class Website extends MY_AppController {
 			{
 				$this->load->model("payments");
 				$result['response']['bookingstatus']='success';
-				$insertArray = array('app_id'=>$templateid,
+				$insertArray = array('product_id'=>$templateid,
 					                 'plan_id'=>$plan_id,
 					                 'user_id'=>$loginuser,
 					                 'amount'=>$subscriptionData->price,
@@ -1258,8 +1265,8 @@ class Website extends MY_AppController {
 		$userdata = $this->input->post();
 		@extract($userdata);
 		$status['status']='error';
-		$condition = array('app_id'=>$id);
-		$feildsArray = array('banner_heading','contact_main_heading','index_banner_head','footertext','index_banner_text','testmo_text','testmo_by','donate_right_heading','donate_right_text','donate_banner_heading','donate_center_text','donate_banner_text','donate_center_heading','contact_right_heading','contact_right_text','home_keypoint_first','home_keypoint_second','home_keypoint_third','contactemail','keypoint_first_heading','keypoint_second_heading','keypoint_third_heading');
+		$condition = array('product_id'=>$id);
+		$feildsArray = array('banner_heading','contact_main_heading','index_banner_head','footertext','index_banner_text','testmo_text','testmo_by','donate_right_heading','donate_right_text','donate_banner_heading','donate_center_text','donate_banner_text','donate_center_heading','contact_right_heading','contact_right_text','home_keypoint_first','home_keypoint_second','home_keypoint_third','contactemail','keypoint_first_heading','keypoint_second_heading','keypoint_third_heading','logotext');
 		if(in_array($feildfor,$feildsArray))
 		{
 			//echo 'pawan';
@@ -1268,6 +1275,10 @@ class Website extends MY_AppController {
 			if($checkhomtemp)
 			{
 				$updatedata=array('banner_heading'=>$feildname);
+				if($feildfor=='logotext')
+				{
+					$updatedata=array('logo_text'=>$feildname,'logo_type'=>1);
+				}
 				if($feildfor=='home_keypoint_first')
 				{
 					$updatedata=array('keypoint_first_text'=>$feildname);
@@ -1436,7 +1447,7 @@ class Website extends MY_AppController {
 	    // die;
 		$this->load->model("wesite_about");
 		$this->load->model("Webindex");
-		$condition = array('app_id'=>$id);
+		$condition = array('product_id'=>$id);
 		if($upadtefor=='abountimage' || $upadtefor=='bootom_right_image' || $upadtefor=='center_left_image' || $upadtefor=='center_right_image')
 		{
 			$name = @$fileField;
@@ -1507,7 +1518,7 @@ class Website extends MY_AppController {
 				}
 				if($upadtefor=='logoupdate')
 				{
-					$updateArray = array('logo'=>$imagename);
+					$updateArray = array('logo'=>$imagename,'logo_type'=>2);
 
 				}
 				if($upadtefor=='donatebannerimage')
@@ -1555,17 +1566,124 @@ class Website extends MY_AppController {
 
 	}
 
+	public function upload_thumbnail()
+      {
+      	if (!$this->input->is_ajax_request()) 
+		{
+		   exit('No direct script access allowed');
+		}
+		$this->load->model("wesite_about");
+		$this->load->model("Webindex");
+      	$targ_w = $this->input->post('thumb_width');
+      	$targ_h = $this->input->post('thumb_height');
+		$jpeg_quality = 90;
+		$src=$this->input->post('img');
+		$new_name =rand(0,99999)."updated".$src; // Thumbnail image name
+	
+		$path = 'assets/website/uplode/';
+  
+
+		$w=$this->input->post('thumb_width');
+		$h=$this->input->post('thumb_height');
+		$x1=$this->input->post('x1');
+		$y1=$this->input->post('y1');
+		$img_r = imagecreatefromjpeg($path.$src);
+		$dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+		imagecopyresampled($dst_r,$img_r,0,0,$x1,$y1,
+		$targ_w,$targ_h,$w,$h);
+
+
+		// header('Content-type: image/jpeg');
+		$templeteid = $this->input->post('templeteid');
+		$upadtefor = $this->input->post('upadtefor');
+		imagejpeg($dst_r,$path.$new_name,$jpeg_quality);
+		$condition = array('product_id'=>$templeteid);
+		$updateArray = array('banner_image'=>$new_name);
+		if($upadtefor=='homesideimage')
+		{
+			$updateArray = array('side_image'=>$new_name);
+		}
+		if($upadtefor=='logoupdate')
+		{
+			$updateArray = array('logo'=>$new_name,'logo_type'=>2);
+
+		}
+		if($upadtefor=='donatebannerimage')
+		{
+			$updateArray = array('donate_banner'=>$new_name);
+
+		}
+		if($upadtefor=='homebottomimage')
+		{
+			$updateArray = array('home_bootom_image'=>$new_name);
+
+		}
+		if($upadtefor=='keypoint_first_image')
+		{
+			$updateArray = array('keypoint_first_image'=>$new_name);
+
+		}
+		if($upadtefor=='keypoint_second_image')
+		{
+			$updateArray = array('keypoint_second_image'=>$new_name);
+
+		}
+		if($upadtefor=='keypoint_third_image')
+		{
+			$updateArray = array('keypoint_third_image'=>$new_name);
+
+		}
+		$upadte = $this->Webindex->updateDetails($condition,$updateArray);
+		//echo $this->db->last_query();
+		if($upadte)
+		{
+			$status['imagename']=$new_name;
+			$status['imagelink']=WEBROOT_PATH_SITE_UPLODE.$new_name;
+			$status['status']='success';
+		}
+		else
+		{
+			//echo 'dasdsad';
+			$status['status']='error';
+
+		}
+		echo json_encode($status);
+      }
+
 	public function getcoloroption()
 	{
 		?>
-	<link rel="stylesheet" href="<?php echo WEBROOT_PATH_CSS;?>tinycolorpicker.css" type="text/css" media="screen"/>
-    <script src="<?php echo WEBROOT_PATH_JS;?>tinycolorpicker.js"></script>
-    <script type="text/javascript">
+	   <link href="<?php echo WEBROOT_PATH_CSS;?>bootstrap-colorpicker.min.css" rel="stylesheet">
+	    <link href="<?php echo WEBROOT_PATH_CSS;?>bootstrap-colorpicker-plus.css" rel="stylesheet">
+	    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	    <script src="<?php echo WEBROOT_PATH_JS;?>bootstrap-colorpicker.min.js"></script>
+	    <script src="<?php echo WEBROOT_PATH_JS;?>bootstrap-colorpicker-plus.js"></script>
+	    <script type="text/javascript">
           $(document).ready(function()
           {
-          	alert();
-          	var $picker = document.getElementById("colorPicker")
-            ,   picker  = tinycolorpicker($picker);
+          	var demo3 = $('.colorpickerplus-embed .colorpickerplus-container');
+          	$('.input-group-btn').hide();
+	        demo3.colorpickerembed();
+	        demo3.on('changeColor', function(e,color)
+	        {
+	        	var templateid = $('input[name=templateid]').val();
+	           
+	            if(color)
+	            {
+	                 $.post(WEBROOT_PATH+'website/updatecolor',{'templateid':templateid,'button_color':color},function(data,status)
+	                {
+	                    $('.colorclass').css('background',color);
+	                    $('.maketextable').css('background',color);
+	                    window.location.reload();
+	                });
+
+	            }
+	            else
+	            {
+	               alert('Please enter valid color code.');
+	            }
+	                   
+	        });
           });
 
     </script>
@@ -1575,28 +1693,25 @@ class Website extends MY_AppController {
         <div class="column">
             	<div class="hightight">
                 	
-                           <div class="imgbox" style="margin-left: -150px; height: 192px" >
-                            <div id="colorPicker">
-                                <a class="color"><div class="colorInner"></div></a>
-                                <div class="track"></div>
-                                <ul class="dropdown"><li></li></ul>
-                            
-                               
-                               </div>
+                           <div class="imgbox" >
+                           <div class="color-plate">
+                                    <div class="well">
+                                     <!-- <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>"> -->
+                         <!--  <input type="hidden" value="" id="demo3"/> -->
+                          <div class="colorpickerplus-embed">
+                            <div class="colorpickerplus-container"></div>
+                          </div>
+
+                       </div>
+                    </div>
                     </div>
                     <div class="color-plate">
-                    	<ul>
-                        	<li style="background:#231f20"  class="updatesitecolor" id="#231f20"></li>
-                            <li style="background:#404042"  class="updatesitecolor" id="#404042"></li>
-                            <li style="background:#58575c"  class="updatesitecolor" id="#58575c"></li>
-                            <li style="background:#6d6e72"  class="updatesitecolor" id="#6d6e72"></li>
-                            <li style="background:#808185"  class="updatesitecolor" id="#808185"></li>
-                            <li style="background:#949599"  class="updatesitecolor" id="#949599"></li>
-                            <li style="background:#a7a8ac"  class="updatesitecolor" id="#a7a8ac"></li>
-                            <li style="background:#bcbdc1"  class="updatesitecolor" id="#bcbdc1"></li>
-                            <li style="background:#d1d2d4"  class="updatesitecolor" id="#d1d2d4"></li>
-                            <li style="background:#e5e6e8"  class="updatesitecolor" id="#e5e6e8"></li>
-                        </ul>
+                    	   <div class="customize-detail">
+
+                    <input type="text" class="text-box" placeholder="eg.#ffffff" name="userdefinecode" value="">
+                    <a href="#" class="updatesitecolor">Apply</a>
+                    	
+                    </div>
                     </div>
             </div>
             </div>
@@ -1607,7 +1722,7 @@ class Website extends MY_AppController {
 	public function updatecolor()
 	{
 		$this->load->model("Webindex");
-		$condition = array('app_id'=>$this->input->post('templateid'));
+		$condition = array('product_id'=>$this->input->post('templateid'));
 		$chechhometemp = $this->Webindex->getBy($condition);
 		if($chechhometemp)
 		{

@@ -29,7 +29,7 @@ jQuery(document).ready(function(){
             </div>
             <div class="review-menu">
                 <ul>
-                    <li><a href="<?php echo SITE_URL.'user/edittemplate'.$templatedata->id ?>">Overview</a></li>
+                    <li><a href="<?php echo SITE_URL.'user/edittemplate/'.$templatedata->id ?>">Overview</a></li>
                      <li><a href="<?php echo SITE_URL.'user/modification/'.$templatedata->id ?>" >Modifications</a></li>
                      <li><a href="<?php echo SITE_URL.'user/reportbug/'.$templatedata->id ?>" class="active">Report Bug</a></li>
                     <li><a href="#">Help</a></li>

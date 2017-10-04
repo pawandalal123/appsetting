@@ -44,7 +44,7 @@ $c++; ?>
 <tr>
 <td class="text-center"><?php echo $c;?></td>
 
-<td><?php echo $result->name." ".$result->last_name;?></td>
+<td><?php echo $result->name;?></td>
 <td><?php echo $result->email;?></td>
 <td><?php echo $result->mobile;?></td>
 <!-- <td class="text-center"><img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES;?>profile_img/<?php echo $result->profile_image;?>" alt="avatar" class="img-circle" width="64" height="64" /></td> -->

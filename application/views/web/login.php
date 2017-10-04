@@ -8,6 +8,7 @@
                 <li><a href="#">2</a></li>
                 <li><a href="#">3</a></li>
                 <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
             </ul>
             <h3>Get Started By Entering Your Details</h3>
             <span>Choose an elemant from the screen to customize it.</span>

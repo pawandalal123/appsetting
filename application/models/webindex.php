@@ -4,7 +4,7 @@ class Webindex extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
-		$this->table='website_template_home';
+		$this->table='product_template__website_template_home';
 		parent::__construct();	
 	}
 

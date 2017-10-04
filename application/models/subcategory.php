@@ -4,7 +4,7 @@ class Subcategory extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
-		$this->table='subcategories';
+		$this->table='product_template__subcategories';
 		parent::__construct();	
 	}
 

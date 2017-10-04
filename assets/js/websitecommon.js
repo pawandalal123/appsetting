@@ -1,6 +1,154 @@
 $(document).ready(function()
     {
 
+
+        var _URL = window.URL || window.webkitURL;
+   $('input[name=background_image]').change(function()
+    {
+
+      var file, img;
+      var fileField  = this.files[0];
+       var id = $('input[name=template_id]').val();
+      var upadtefor = $(this).attr('rel');
+      var name = fileField.name;
+      var size = fileField.size;
+      img = new Image();
+      var imgwidth = 0;
+      var imgheight = 0;
+      var maxwidth = 232;
+      var maxheight = 391;
+      if ((file = this.files[0])) 
+      {
+        $('#page_hide').show()
+          img = new Image();
+          img.onload = function() 
+          {
+            imgwidth=this.width ;
+            imgheight=this.height;
+           
+            var formerr = 0;
+            var fileExt =  name.split('.').pop().toLowerCase();
+            if($.inArray(fileExt, ['gif','png','jpg','jpeg','svg','PNG','GIF']) == -1)
+            {
+              $('#page_hide').hide()
+                alert('invalid file !');
+                formerr++;
+                return false;
+            }
+            else
+            {
+              var form_data = new FormData();
+              form_data.append('fileField',fileField);
+              form_data.append('id',id);
+              form_data.append('upadtefor',upadtefor);
+              $.ajax({
+                    type: "POST",
+                    url: WEBROOT_PATH+'website/upatdeimge',
+                    data: form_data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                      success: function (response) {
+                         $('#page_hide').hide()
+                          //alert(response.detailsubmit);
+                          if(response.status=='success')
+                          {
+                            if(upadtefor=='abountimage')
+                            {
+                              $('.bannerimageabout').attr('src',response.imagelink);
+
+                            }
+                            else if(upadtefor=='homebannerimage')
+                            {
+                              $('.homebanner').attr('src',response.imagelink);
+
+                            }
+                             else if(upadtefor=='homesideimage')
+                            {
+                              $('.homeside').attr('src',response.imagelink);
+
+                            }
+                             else if(upadtefor=='logoupdate')
+                            {
+                              $('.logoupdate').attr('src',response.imagelink);
+
+                            }
+                            else if(upadtefor=='donatebannerimage')
+                            {
+                              $('.donatebanner').attr('src',response.imagelink);
+
+                            }
+                            else if(upadtefor=='bootom_right_image')
+                            {
+                              $('.bootom_right_image').attr('src',response.imagelink);
+
+                            }
+                            else if(upadtefor=='center_right_image')
+                            {
+                              $('.center_right_image').attr('src',response.imagelink);
+
+                            }
+                            else if(upadtefor=='center_left_image')
+                            {
+                              $('.center_left_image').attr('src',response.imagelink);
+
+                            }
+                            else if(upadtefor=='homebottomimage')
+                            {
+                              $('.homebottomimage').attr('src',response.imagelink);
+
+                            }
+                            else if(upadtefor=='keypoint_second_image')
+                            {
+                              $('.keypoint_second_image').attr('src',response.imagelink);
+
+                            }
+                            else if(upadtefor=='keypoint_first_image')
+                            {
+                              $('.keypoint_first_image').attr('src',response.imagelink);
+
+                            }
+                            else if(upadtefor=='keypoint_third_image')
+                            {
+                              $('.keypoint_third_image').attr('src',response.imagelink);
+
+                            }
+                            
+                            if(confirm("Do you want to crop image..!"))
+                            {
+                                modelbox('');
+                               $('.content').html('<h3>You Have Previewing <span> Crop Image</span></h3><div class="imgbox" style="height:300px;"><input class="imageupadtefor" type="hidden" value="'+upadtefor+'"><div class="item crop-images"><img src="'+response.imagelink+'" alt="" id="photo"><input type="hidden" name="image_name" id="image_name" value="'+response.imagename+'"  /></div></div>');
+                               $('img#photo').Jcrop({ handles: true,
+                                    onSelect: getSizesweb
+                                  });
+                            }
+
+                          }
+                          else
+                          {
+                            alert('some thing wrong with your input');
+
+                          }
+                      },
+                      error: function (response) {
+                         alert('some technical issue.');
+                          
+                      }
+                      });
+            }
+          };
+          img.onerror = function() 
+          {
+              alert( "not a valid file: ");
+          };
+          img.src = _URL.createObjectURL(file);
+      }
+     
+
+
+    });
+
       $(document).on('change','.categorychange',function()
       {
        // alert();
@@ -195,152 +343,7 @@ $(document).ready(function()
               },'json');
         }
     });
-    $('input[name=background_image]').change(function()
-    {
 
-      var file, img;
-      var fileField  = this.files[0];
-       var id = $('input[name=template_id]').val();
-      var upadtefor = $(this).attr('rel');
-      var name = fileField.name;
-      var size = fileField.size;
-      img = new Image();
-      var imgwidth = 0;
-      var imgheight = 0;
-      var maxwidth = 232;
-      var maxheight = 391;
-      if ((file = this.files[0])) 
-      {
-        $('#page_hide').show()
-          img = new Image();
-          img.onload = function() 
-          {
-            imgwidth=this.width ;
-            imgheight=this.height;
-           
-            var formerr = 0;
-            var fileExt =  name.split('.').pop().toLowerCase();
-            if($.inArray(fileExt, ['gif','png','jpg','jpeg','svg','PNG','GIF']) == -1)
-            {
-              $('#page_hide').hide()
-                alert('invalid file !');
-                formerr++;
-                return false;
-            }
-            else
-            {
-              var form_data = new FormData();
-              form_data.append('fileField',fileField);
-              form_data.append('id',id);
-              form_data.append('upadtefor',upadtefor);
-              $.ajax({
-                    type: "POST",
-                    url: WEBROOT_PATH+'website/upatdeimge',
-                    data: form_data,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    dataType: 'json',
-                      success: function (response) {
-                         $('#page_hide').hide()
-                          //alert(response.detailsubmit);
-                          if(response.status=='success')
-                          {
-                            if(upadtefor=='abountimage')
-                            {
-                              $('.bannerimageabout').attr('src',response.imagelink);
-
-                            }
-                            else if(upadtefor=='homebannerimage')
-                            {
-                              $('.homebanner').attr('src',response.imagelink);
-
-                            }
-                             else if(upadtefor=='homesideimage')
-                            {
-                              $('.homeside').attr('src',response.imagelink);
-
-                            }
-                             else if(upadtefor=='logoupdate')
-                            {
-                              $('.logoupdate').attr('src',response.imagelink);
-
-                            }
-                            else if(upadtefor=='donatebannerimage')
-                            {
-                              $('.donatebanner').attr('src',response.imagelink);
-
-                            }
-                            else if(upadtefor=='bootom_right_image')
-                            {
-                              $('.bootom_right_image').attr('src',response.imagelink);
-
-                            }
-                            else if(upadtefor=='center_right_image')
-                            {
-                              $('.center_right_image').attr('src',response.imagelink);
-
-                            }
-                            else if(upadtefor=='center_left_image')
-                            {
-                              $('.center_left_image').attr('src',response.imagelink);
-
-                            }
-                            else if(upadtefor=='homebottomimage')
-                            {
-                              $('.homebottomimage').attr('src',response.imagelink);
-
-                            }
-                            else if(upadtefor=='keypoint_second_image')
-                            {
-                              $('.keypoint_second_image').attr('src',response.imagelink);
-
-                            }
-                            else if(upadtefor=='keypoint_first_image')
-                            {
-                              $('.keypoint_first_image').attr('src',response.imagelink);
-
-                            }
-                            else if(upadtefor=='keypoint_third_image')
-                            {
-                              $('.keypoint_third_image').attr('src',response.imagelink);
-
-                            }
-                            
-                            // if(imgwidth > maxwidth && imgheight > maxheight)
-                            // {
-                            //     modelbox('');
-                            //    $('.content').html('<h3>You Have Previewing <span> Crop Image</span></h3><div class="imgbox" style="height:300px;"><div class="item crop-images"><img src="'+response.imagelink+'" alt="" id="photo"><input type="hidden" name="image_name" id="image_name" value="'+response.imagename+'"  /></div></div>');
-                            //    $('img#photo').imgAreaSelect(
-                            //         { maxWidth: 300, maxHeight: 600, handles: true,
-                            //         onSelectEnd: getSizes
-                            //     });
-                            // }
-
-                          }
-                          else
-                          {
-                            alert('some thing wrong with your input');
-
-                          }
-                      },
-                      error: function (response) {
-                         alert('some technical issue.');
-                          
-                      }
-                      });
-            }
-          };
-          img.onerror = function() 
-          {
-              alert( "not a valid file: ");
-          };
-          img.src = _URL.createObjectURL(file);
-      }
-     
-
-
-    });
 
   $('input[name=background_image_user]').change(function()
     {
@@ -409,6 +412,108 @@ $(document).ready(function()
         
 
     });
+function getSizesweb(c)
+  {
+    var x1 = c.x;
+    // var x2_axis = obj.x2;
+    var y1 = c.y;
+    // var y2_axis = obj.y2;
+    var thumb_width = c.w;
+    var thumb_height = c.h;
+    var id = $('input[name=template_id]').val();
+    var upadtefor = $('.imageupadtefor').val();
+    //alert(upadtefor);
+    
+    if(thumb_width> 0)
+      {
+        if(confirm("Do you want to save image..!"))
+          {
+            var img = $("#image_name").val();
+            var t= 'ajax';
+            $.post(WEBROOT_PATH+'website/upload_thumbnail',{"upadtefor":upadtefor,"templeteid":id,"img":img,"t":t,"x1":x1,"y1":y1,"thumb_width":thumb_width,"thumb_height":thumb_height},function(data,status)
+           {
+             if(data.status=='success')
+                          {
+                            if(upadtefor=='abountimage')
+                            {
+                              $('.bannerimageabout').attr('src',data.imagelink);
+
+                            }
+                            else if(upadtefor=='homebannerimage')
+                            {
+                              $('.homebanner').attr('src',data.imagelink);
+
+                            }
+                             else if(upadtefor=='homesideimage')
+                            {
+                              $('.homeside').attr('src',data.imagelink);
+
+                            }
+                             else if(upadtefor=='logoupdate')
+                            {
+                              $('.logoupdate').attr('src',data.imagelink);
+
+                            }
+                            else if(upadtefor=='donatebannerimage')
+                            {
+                              $('.donatebanner').attr('src',data.imagelink);
+
+                            }
+                            else if(upadtefor=='bootom_right_image')
+                            {
+                              $('.bootom_right_image').attr('src',data.imagelink);
+
+                            }
+                            else if(upadtefor=='center_right_image')
+                            {
+                              $('.center_right_image').attr('src',data.imagelink);
+
+                            }
+                            else if(upadtefor=='center_left_image')
+                            {
+                              $('.center_left_image').attr('src',data.imagelink);
+
+                            }
+                            else if(upadtefor=='homebottomimage')
+                            {
+                              $('.homebottomimage').attr('src',data.imagelink);
+
+                            }
+                            else if(upadtefor=='keypoint_second_image')
+                            {
+                              $('.keypoint_second_image').attr('src',data.imagelink);
+
+                            }
+                            else if(upadtefor=='keypoint_first_image')
+                            {
+                              $('.keypoint_first_image').attr('src',data.imagelink);
+
+                            }
+                            else if(upadtefor=='keypoint_third_image')
+                            {
+                              $('.keypoint_third_image').attr('src',data.imagelink);
+
+                            }
+                        }
+                $(".web-overlay2").remove()
+                             //$("#cropimage").hide();
+                    //  var imgSrc = SITE_URL+"upload/Document/"+userId+"/"+data;
+                    //   $("#thumbs").html("");
+                    // $("#thumbs").html("<img src="+imgSrc+" />");
+                    // $("#finalimage").html("");
+                    // $("#finalimage").html("<img src="+imgSrc+" />");
+                    // $('.button').show();
+          });
+            
+    };
+            
+          }
+      
+    else
+      alert("Please select portion..!");
+  }
+
+
     function maketextable(type)
     {
          var t = $(this).prevAll("h3").first().text();

@@ -10,6 +10,7 @@ class User extends MY_AppController {
 	public function index()
 	{
 		$this->load->model("templetes");
+		$this->load->model("template__default");
 		$this->load->model("category");
 		$catArray = array();
 		$productArray = array();
@@ -25,8 +26,8 @@ class User extends MY_AppController {
         	$getcatKey = array_keys($catArray);
         	$getcatKey = implode(',', $getcatKey);
         	
-        	$condition = "cat_id in (".$getcatKey.") and is_default=0 and status=1";
-        	$getproducts = $this->templetes->select_data('*',$condition);
+        	$condition = "cat_id in (".$getcatKey.") and status=1";
+        	$getproducts = $this->template__default->select_data('*',$condition);
         	// echo $this->db->last_query();
         	if(count($getproducts)>0)
         	{
@@ -54,7 +55,7 @@ class User extends MY_AppController {
 
 	public function templates()
 	{
-		$this->load->model("templetes");
+		$this->load->model("template__default");
 		$this->load->model("category");
 		$catArray = array();
 		$productArray = array();
@@ -70,8 +71,8 @@ class User extends MY_AppController {
         	$getcatKey = array_keys($catArray);
         	$getcatKey = implode(',', $getcatKey);
         	
-        	$condition = "cat_id in (".$getcatKey.") and is_default=0 and status=1";
-        	$getproducts = $this->templetes->select_data('*',$condition);
+        	$condition = "cat_id in (".$getcatKey.") and status=1";
+        	$getproducts = $this->template__default->select_data('*',$condition);
         	// echo $this->db->last_query();
         	if(count($getproducts)>0)
         	{
@@ -101,28 +102,25 @@ class User extends MY_AppController {
 	{
 		$idtomatch='';
 		$planlist=[];
-		
 	    $this->load->model("subcategory");
 	    $subcatdata=$this->subcategory->getlist(array('status'=>1));
 	    $this->data['subcatdata']  = $subcatdata;
-
-	    $this->load->model("subscription_plan");
 	    if($subcatid)
 	    {
-	    	//die;
+
 	    	$idtomatch=$subcatid;
-	    	$condition = array('sub_cat_id'=>$subcatid);
-	        $planlist = $this->subscription_plan->select_data('*',$condition);
+	    	$condition = array('id'=>$subcatid);
+	        $planlist = $this->subcategory->getBy($condition);
 	    }
 	    else
 	    {
 	    	$this->db->order_by('id','asc');
-	        $getplan = $this->subscription_plan->getBy(array('status'=>1));
+	        $getplan = $this->subcategory->getBy(array('status'=>1));
 	        if($getplan)
 	        {
 	        	$idtomatch=$getplan->sub_cat_id;
-	        	$condition = array('sub_cat_id'=>$getplan->sub_cat_id);
-	            $planlist = $this->subscription_plan->select_data('*',$condition);
+	        	// $condition = array('sub_cat_id'=>$getplan->sub_cat_id);
+	            $planlist = $getplan;
 
 	        }
 	    }
@@ -319,11 +317,22 @@ class User extends MY_AppController {
 		})
 	});
 </script>
+<script>
+$(document).ready(function(){
+    $(".close-web").click(function(){
+        $("#demo3").hide();
+		$("#demo2").show();
+		$(".popup-nav li.first a").addClass("active");
+		$(".popup-nav li.second a").removeClass("active");
+		return false;
+    });
+});
+</script>
       <h3>You Have Previewing <span> <?php echo $getsubcat->name;?></span></h3>
         <div class="popup-nav">
           <ul>
-              <li><a href="#demo2" class="active">iOS Mobile App</a></li>
-                <li><a href="#demo3"> Website</a></li>
+              <li class="first"><a href="#demo2" class="active">iOS Mobile App</a></li>
+                <li class="second"><a href="#demo3"> Website</a></li>
             </ul>
         </div>
        
@@ -364,6 +373,7 @@ class User extends MY_AppController {
         <input type="hidden" name="selectedtemplate" value="<?php echo $template_id;?>">
         
         <div id="demo3" class="tab-content-w">
+        <span class="close-web">Close</span>
               <div id="owl-demo3" class="owl-carousel">
               <?php 
                 
@@ -433,8 +443,9 @@ class User extends MY_AppController {
 		if($this->session->userdata('logged_in') && $this->session->userdata('logged_in')!='')
 		{
 			$this->load->model("templetes");
+			$this->load->model("template__default");
 			$condition = array('id'=>$templeteid);
-			$gettempData = $this->templetes->getBy($condition);
+			$gettempData = $this->template__default->getBy($condition);
 			if($gettempData)
 			{
 				$insertData = array('temlete_name'=>$gettempData->temlete_name,
@@ -444,7 +455,6 @@ class User extends MY_AppController {
 					                'color_code_hover'=>$gettempData->color_code_hover,
 					                'tag_line'=>$gettempData->tag_line,
 					                'user_id'=>$this->session->userdata('UserId'),
-					                'is_default'=>1,
 					                'cat_id'=>$gettempData->cat_id,
 					                'sub_cat_id'=>$gettempData->sub_cat_id,
 					                'created_at'=>date('Y-m-d H:i:s'));
@@ -470,8 +480,9 @@ class User extends MY_AppController {
 		$status['islogin']='no';
 		$subcatid  =$this->input->post('subcatid');
 		$this->load->model("templetes");
-		$condition = array('sub_cat_id'=>$subcatid,'is_default'=>0);
-		$gettempData = $this->templetes->getBy($condition);
+		$this->load->model("template__default");
+		$condition = array('sub_cat_id'=>$subcatid);
+		$gettempData = $this->template__default->getBy($condition);
 		if($gettempData)
 		{
 			$this->session->set_userdata(array(
@@ -486,7 +497,6 @@ class User extends MY_AppController {
 							                'color_code_hover'=>$gettempData->color_code_hover,
 							                'tag_line'=>$gettempData->tag_line,
 							                'user_id'=>$this->session->userdata('UserId'),
-							                'is_default'=>1,
 							                'cat_id'=>$gettempData->cat_id,
 							                'sub_cat_id'=>$gettempData->sub_cat_id,
 							                'created_at'=>date('Y-m-d H:i:s'));
@@ -560,6 +570,19 @@ class User extends MY_AppController {
 		}
 	}
 
+	////////////update color////
+	public function updatecolor()
+	{
+		$this->load->model("templetes");
+		$condition = array('id'=>$this->input->post('templateid'));
+		$chechhometemp = $this->templetes->getBy($condition);
+		if($chechhometemp)
+		{
+		   $update = $this->templetes->updateDetails($condition,array('color_code'=>$this->input->post('button_color')));
+
+	    }
+	}
+
 	public function settags($value)
 	{
 		if(!$this->session->userdata('logged_in'))
@@ -578,13 +601,15 @@ class User extends MY_AppController {
 					$userData = $this->input->post();
 				    @extract($userData );
 				    // print_r($userData);
-				    if($this->input->post('tempname') != $gettempData->temlete_name)
-				    {
-					   $is_unique =  '|is_unique[templetes.temlete_name]';
-					} else {
+				 //    if($this->input->post('tempname') != $gettempData->temlete_name)
+				 //    {
+					//    $is_unique =  '|is_unique[templetes.temlete_name]';
+					// } else 
+					// {
 						
-					   $is_unique =  '';
-					}
+					   
+					// }
+					$is_unique =  '';
 					$this->form_validation->set_rules('tempname', 'Template name', 'trim|required|xss_clean'.$is_unique);
 					$this->form_validation->set_rules('tagline', 'Tag line', 'trim|required|xss_clean|max_length[50]');
 					$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
@@ -636,6 +661,113 @@ class User extends MY_AppController {
 		}
 	}
 
+	////////////set address/////
+	public function setaddress($value)
+	{
+		if(!$this->session->userdata('logged_in'))
+		{
+			redirect(SITE_URL);
+		}
+		if($value)
+		{
+			$this->load->model("templetes");
+			
+			$this->load->model("country");
+			$condition = array('id'=>$value);
+			$gettempData = $this->templetes->getBy($condition);
+			if($gettempData)
+			{
+				if($this->input->post('savedetails') || $this->input->post('savenext'))
+				{
+					$userData = $this->input->post();
+				    @extract($userData );
+					$this->form_validation->set_rules('church_name', 'Church name', 'trim|required|xss_clean');
+					$this->form_validation->set_rules('pin', 'Tag line', 'trim|required|xss_clean|max_length[50]');
+					$this->form_validation->set_rules('address1', 'Address', 'trim|required');
+					$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
+					if($this->form_validation->run())
+					{
+						
+						
+						
+						// if($upadte)
+						// {
+							$this->load->model("contactmodal");
+							$conditionC=array('ChurchId'=>$value);
+							$checkcontact = $this->contactmodal->getBy($conditionC);
+							if($checkcontact)
+							{
+								$upadteData = array('church_name'=>$church_name,
+									                'pin'=>$pin,
+							                        'address'=>$address1,
+									                'address2'=>$address2,
+									                'city'=>$city,
+									                'state'=>$state,
+									                'country'=>$country);
+								$upadte = $this->contactmodal->updateDetails($conditionC,$upadteData);
+							}
+							else
+							{
+								$insredata = array('pin'=>$pin,
+									               'admin_id'=>$gettempData->user_id,
+									               'church_name'=>$church_name,
+									               'ChurchId'=>$value,
+									               'address'=>$address1,
+									               'address2'=>$address2,
+									               'city'=>$city,
+									               'state'=>$state,
+								                   'country'=>$country);
+								$upadte = $this->contactmodal->AdduserData($insredata);
+							}
+							if($this->input->post('savenext'))
+							{
+
+							$upadteData['last_updated'] = date('Y-m-d H:i:s');
+						    $upadteData['last_updated_page'] ='setaddress';
+						    $upadte = $this->templetes->updateDetails($condition,$upadteData);
+
+
+								redirect('userlogin/logout/');
+							}
+							redirect('user/preview/'.$value);
+						// }
+						// else
+						// {
+						// 	$msg="some technical issue";
+						// 	$this->session->set_userdata( array('msg'=>$msg,'class' => 'error'));
+						// }
+					}
+				}
+				$getstatelist=array();
+                if($gettempData->country!='')
+                {
+                	$this->load->model("state");
+					//$posdata = $this->input->post();
+					$condition = "name ='".$gettempData->country."'";
+					$countryid = $this->country->getBy($condition);
+
+					$condition = array('country_id'=>$countryid->id);
+					$getstatelist = $this->state->select_data($condition);
+					//echo $this->db->last_query();
+                }
+				$this->data['gettempData'] = $gettempData;
+				$this->data['countrylist'] = $this->country->select_data(array());
+				$this->data['getstatelist'] = $getstatelist;
+				$this->data['templete_id'] = $value;
+			    $this->data['view_file'] = 'web/setaddress';
+			    $this->load->view('layouts/testDefault', $this->data); 
+			}
+			else
+			{
+
+			}
+		}
+		else
+		{
+
+		}
+	}
+
 	public function setimage($value)
 	{
 		if(!$this->session->userdata('logged_in'))
@@ -669,7 +801,10 @@ class User extends MY_AppController {
 				
 
 				///////////// make gallery images////
-				$gelimageArray = $this->templetes->select_data(array('background_image'),array('status'=>1));
+				//$gelimageArray = $this->templetes->select_data(array('background_image'),array('status'=>1));
+				$this->load->model("templetes_images");
+				$condition = "sub_cat_id = '".$gettempData->sub_cat_id."' and status=1 and type=3";
+                $gelimageArray = $this->templetes_images->select_data('*',$condition);
 				$this->data['gelimageArray'] = $gelimageArray;
 				$this->data['gettempData'] = $gettempData;
 				$this->data['templete_id'] = $value;
@@ -694,7 +829,7 @@ class User extends MY_AppController {
 	{
 		$this->load->model("training_videos");
 		$this->db->order_by('total_views','desc');
-		$condition = 'training_videos.status = 1 and training_videos.type=1';
+		$condition = 'product_template__training_videos.status = 1 and product_template__training_videos.type=1';
 		if($this->input->is_ajax_request())
 		{
 			if($this->input->post('searchval'))
@@ -796,7 +931,16 @@ class User extends MY_AppController {
 				$upadte = $this->templetes->updateDetails($condition,$updateArray);
 				if($upadte)
 				{
-					$status['imagelink']=WEBROOT_PATH_UPLOAD_IMAGES.$imagename;
+						//echo 'pawan dalal';
+					    $maindir='upload';
+						if (!file_exists($maindir.'/'.$imagename)) 
+						{
+							$source = 'upload/galleryimage/'.$imagename;
+							copy($source,$maindir.'/'.$imagename);
+							
+						}
+					
+					$status['imagelink']=WEBROOT_PATH_UPLOAD_IMAGES.'galleryimage/'.$imagename;
 					$status['status']='success';
 
 				}
@@ -848,42 +992,68 @@ class User extends MY_AppController {
 
 	//////////// for croping image/////////////
 
+  //     public function upload_thumbnail()
+  //     {
+  //     	if (!$this->input->is_ajax_request()) 
+		// {
+		//    exit('No direct script access allowed');
+		// }
+  //     	$targ_w = 271;
+		// $targ_h = 391;
+		// $jpeg_quality = 90;
+		// $src=$this->input->post('img');
+		// $new_name =rand(0,99999)."updated".$src; // Thumbnail image name
+		// //echo $new_name;
+		// //echo $src;
+		// $path = "./upload/";
+  //       $this->load->model("templetes");
+		// // $src = 'demo_files/pool.jpg';
+		// //echo $src;
+
+		// $w=$this->input->post('thumb_width');
+		// $h=$this->input->post('thumb_height');
+		// $x1=$this->input->post('x1');
+		// $y1=$this->input->post('y1');
+		// $img_r = imagecreatefromjpeg($path.$src);
+		// $dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+		// imagecopyresampled($dst_r,$img_r,0,0,$x1,$y1,
+		// $targ_w,$targ_h,$w,$h);
+		// // header('Content-type: image/jpeg');
+		// imagejpeg($dst_r,$path.$new_name,$jpeg_quality);
+		// $templeteid=$this->input->post('templeteid');
+		// $result= array('background_image' =>$new_name);
+		// $condition = $this->db->where('id', $templeteid);
+		// $insertstatus=$this->templetes->updateDetails($condition,$result);
+		// echo  $new_name;
+  //     }
+
       public function upload_thumbnail()
       {
-      	if (!$this->input->is_ajax_request()) 
-		{
-		   exit('No direct script access allowed');
-		}
-      	$targ_w = 271;
-		$targ_h = 391;
-		$jpeg_quality = 90;
-		$src=$this->input->post('img');
-		$new_name =rand(0,99999)."updated".$src; // Thumbnail image name
-		//echo $new_name;
-		//echo $src;
-		$path = "./upload/";
-        $this->load->model("templetes");
-		// $src = 'demo_files/pool.jpg';
-		//echo $src;
-
-	
-
-		$w=$this->input->post('thumb_width');
+      	$w=$this->input->post('thumb_width');
 		$h=$this->input->post('thumb_height');
 		$x1=$this->input->post('x1');
 		$y1=$this->input->post('y1');
+      	$targ_w = $w;
+        $targ_h = $h;
+	    $jpeg_quality = 90;
+
+		//$src = 'demo_files/19396905_1222336754556022_4338928564129208785_n.jpg';
+		$src=$this->input->post('img');
+		$path = "./upload/";
+		$new_name =rand(0,99999)."updated".$src; // Thumbnail image name
+        $this->load->model("templetes");
+		
 		$img_r = imagecreatefromjpeg($path.$src);
-		$dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+		$dst_r = ImageCreateTrueColor($targ_w, $targ_h );
+
 		imagecopyresampled($dst_r,$img_r,0,0,$x1,$y1,
 		$targ_w,$targ_h,$w,$h);
-
-		// header('Content-type: image/jpeg');
 		imagejpeg($dst_r,$path.$new_name,$jpeg_quality);
 		$templeteid=$this->input->post('templeteid');
 		$result= array('background_image' =>$new_name);
 		$condition = $this->db->where('id', $templeteid);
 		$insertstatus=$this->templetes->updateDetails($condition,$result);
-		echo  $new_name;
+		echo WEBROOT_PATH_UPLOAD_IMAGES.$new_name;
       }
 
       /////////preview./////
@@ -903,28 +1073,99 @@ class User extends MY_AppController {
 				//////////////set template id in user table//////
 				$this->load->model("user_modal");
 				$userloginid= $this->session->userdata('UserId');
-				$conditioncheck = array('ChurchId'=>0,'id'=>$userloginid);
+				$conditioncheck = array('id'=>$userloginid);
 				$checkuser = $this->user_modal->getBy($conditioncheck);
-				if($checkuser)
-				{
-					$upadteData = array('ChurchId'=>$value);
-					$upadte = $this->user_modal->updateDetails($conditioncheck,$upadteData);
+				// if($checkuser)
+				// {
+					//$upadteData = array('template_id'=>$value,'admin_id'=>$userloginid,);
+					//$upadte = $this->user_modal->updateDetails($conditioncheck,$upadteData);
 
-				}
-				else
-				{
-					$conditioncheck = array('id'=>$userloginid);
-					$checkuser = $this->user_modal->getBy($conditioncheck);
-					$userData = array('email'=>$checkuser->email,
-									  'name'=>$checkuser->name,
-									  'ChurchId'=>$value,
-									  'token'=>md5(time().''.$checkuser->email),
-									  'mobile'=>$checkuser->mobile,
-									  'password'=>$checkuser->password,
-									  'first_login'=>0,
-									  'created_at'=>date('Y-m-d H:i:s'));
-					$insert = $this->db->insert('users',$userData );
-				}
+					 /////////////// insert 3app_customers__product_templates /////////
+					 $this->load->model('product_templates');
+					 $checktemlateinproduct = $this->product_templates->getby(array('customer_built_template_id'=>$gettempData->id));
+					 if(!$checktemlateinproduct)
+					 {
+					 	$inseradata = array('temlete_name'=>$gettempData->temlete_name,
+			        	                    'template_sub_category'=>$gettempData->sub_cat_id,
+			        	                    'customer_built_template_id'=>$gettempData->id);
+				        $inserttepmlate = $this->product_templates->AdduserData($inseradata);
+					 }
+					 /////////////// in prduct user table////////
+						$this->load->model('productusers');
+						$checkproductusers = $this->productusers->getBy(array('template_id'=>$value,
+							                                                  'admin_id'=>$userloginid));
+						if(!$checkproductusers)
+						{
+							$userData = array('email'=>$checkuser->email,
+								              'product_id'=>$this->session->userdata('templete_id'),
+										      'name'=>$checkuser->name,
+										      'token'=>md5(time().''.$checkuser->email),
+										      'admin_id'=>$userloginid,
+										      'password'=>$checkuser->password,
+										      'template_id'=>$gettempData->id,
+										      'sign_up_date'=>date('Y-m-d'));
+							$insertproduct = $this->productusers->AdduserData($userData);
+
+					    }
+				// }
+				// else
+				// {
+				// 	$conditioncheck = array('id'=>$userloginid);
+				// 	$userdetails = $this->user_modal->getBy($conditioncheck);
+
+				// 	//////////// check with template id////////
+				// 	$conditioncheck = array('admin_id'=>$userloginid,'template_id'=>$value);
+				// 	$checktemplate = $this->user_modal->getBy($conditioncheck);
+				// 	if(!$checktemplate)
+				// 	{
+				// 		$userData = array('email'=>$userdetails->email,
+				// 					      'name'=>$userdetails->name,
+				// 					      'template_id'=>$value,
+				// 					      'admin_id'=>$userloginid,
+				// 					      'token'=>md5(time().''.$checkuser->email),
+				// 					      'mobile'=>$userdetails->mobile,
+				// 					      'password'=>$userdetails->password,
+				// 					      'first_login'=>0,
+				// 					      'created_at'=>date('Y-m-d H:i:s'));
+				// 	    $insert = $this->user_modal->AdduserData($userData );
+
+					    
+				// 	}
+
+				// 	 /////////////// insert 3app_customers__product_templates /////////
+				// 	  $this->load->model('product_templates');
+				// 	 $checktemlateinproduct = $this->product_templates->getBy(array('customer_built_template_id'=>$gettempData->id));
+				// 	 if(!$checktemlateinproduct)
+				// 	 {
+				// 	 	$inseradata = array('temlete_name'=>$gettempData->temlete_name,
+			 //        	                    'template_sub_category'=>$gettempData->sub_cat_id,
+			 //        	                    'customer_built_template_id'=>$gettempData->id);
+				//         $inserttepmlate = $this->product_templates->AdduserData($inseradata);
+				// 	 }
+
+				// 	    /////////////// in prduct user table////////
+				// 		$this->load->model('productusers');
+				// 		$checkproductusers = $this->productusers->getBy(array('template_id'=>$value,
+				// 			                                                  'admin_id'=>$userloginid));
+				// 		if(!$checkproductusers)
+				// 		{
+				// 			$userData = array('email'=>$userdetails->email,
+				// 				              'product_id'=>$this->session->userdata('templete_id'),
+				// 						      'name'=>$userdetails->name,
+				// 						      'token'=>md5(time().''.$userdetails->email),
+				// 						      'admin_id'=>$userloginid,
+				// 						      'password'=>$userdetails->password,
+				// 						      'template_id'=>$gettempData->id,
+				// 						      'sign_up_date'=>date('Y-m-d'));
+				// 			$insertproduct = $this->productusers->AdduserData($userData);
+
+				// 	    }
+
+
+					
+					
+					 
+				// }
 				$this->data['gettempData'] = $gettempData;
 				$this->data['view_file'] = 'web/checkpreview';
 				$this->data['templete_id'] = $value;
@@ -973,7 +1214,7 @@ class User extends MY_AppController {
                         <p class="templetetag"><?php echo $gettempData->tag_line;?></p>
                         <div class="btn-bott">
                         <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important;">Sign In</a>
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important;">Sign In</a>
+                        <a href="#" class="sign-in-second" style="color: <?php echo $gettempData->text_color; ?>!important;">Sign Up</a>
                          </div>
                         <input type="hidden" class="hovercolor" name="colorhover" value="<?php echo $gettempData->color_code_hover; ?>">
                     </div>
@@ -994,7 +1235,55 @@ class User extends MY_AppController {
 		    }
 		}
 	
+	/* changes made by prabu*/
+	//////////// user home page////////////
+	public function subscription()
+	{
+		if(!$this->session->userdata('logged_in'))
+		{
+			redirect(SITE_URL);
+		}
+            
+            //echo $userloginid;
+			
+			$this->load->model("user_modal");
+			$userloginid= $this->session->userdata('UserId');
+            //echo $userloginid;
+			
+			$condition = array('id'=>$userloginid);
+            $getuserdata=$this->user_modal->getBy($condition);
+			
+			if($getuserdata)
+			{
+				///////////// make gallery images////
+				$this->data['getuserdata'] = $getuserdata;
+			    $this->data['view_file'] = 'user/subscription';
+			    $this->load->view('layouts/testDefault', $this->data); 
+			}
+			else
+			{
 
+			}
+	}
+	
+	public function freeze_account()
+	{
+		
+		//update status to zero
+		if(isset($_POST))
+		{
+			$status = $this->input->post("status");
+			$this->load->model("user_modal");
+			$userloginid = $this->session->userdata('UserId');
+			$condition = array('id'=>$userloginid);
+            $upadteData = array('status' => $status);
+			$upadte = $this->user_modal->updateDetails($condition,$upadteData);
+			$this->session->set_userdata('status',$status);
+		}
+		echo json_encode(array('response' => true));
+		
+	}
+	
 	//////////// user home page////////////
 	public function profile()
 	{
@@ -1037,15 +1326,17 @@ class User extends MY_AppController {
 			
 			$condition = array('id'=>$userloginid);
 			// $getuserdata = $this->user->getBy($condition,'*');
-			$this->db->where($condition);
-		    $getuserdata = $this->db->get('users')->row();
+			// $this->db->where($condition);
+		 //    $getuserdata = $this->db->get('core_site__users')->row();
+		    $this->load->model("user_modal");
+			$getuserdata = $this->user_modal->getBy($condition);
 		    $templateArray = array();
 		    $subcatArray=array();
 			
 			if($getuserdata)
 			{
 				$this->load->model("templetes");
-				$gettempletdata = $this->templetes->select_data('*',array('user_id'=>$getuserdata->id,'is_default'=>1));
+				$gettempletdata = $this->templetes->select_data('*',array('user_id'=>$getuserdata->id));
 				if(count($gettempletdata)>0)
 				{
 					$this->load->model("subcategory");
@@ -1517,6 +1808,35 @@ class User extends MY_AppController {
 
 		}
           echo json_encode($status);
+	}
+
+	public function getstate()
+	{
+		$data['status']='success';
+		$this->load->model("state");
+		//$posdata = $this->input->post();
+		$condition = array('country_id'=>$this->input->get('country'));
+		$getstatelist = $this->state->select_data($condition);
+		//echo $this->db->last_query();
+		if(count($getstatelist)>0)
+		{
+			foreach($getstatelist as $getstatelist)
+			{
+				$result[$getstatelist->id]=$getstatelist->name;
+
+			}
+			$data['result']=$result;
+			$data['msg']='record found';
+
+		}
+		else
+		{
+			$data['status']='error';
+			$data['msg']='No record found';
+
+		}
+		echo json_encode($data);
+
 	}
 
 	

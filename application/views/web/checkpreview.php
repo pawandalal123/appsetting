@@ -13,7 +13,8 @@
                 <li><a href="<?php echo SITE_URL?>user/setcolor/<?php echo $gettempData->id; ?>" class="next">1</a></li>
                 <li><a href="<?php echo SITE_URL?>user/settags/<?php echo $gettempData->id; ?>" class="next">2</a></li>
                 <li><a href="<?php echo SITE_URL?>user/setimage/<?php echo $gettempData->id; ?>" class="next">3</a></li>
-                <li><a href="<?php echo SITE_URL?>user/preview/<?php echo $gettempData->id; ?>" class="active">4</a></li>
+                 <li><a href="<?php echo SITE_URL?>user/setaddress/<?php echo $gettempData->id; ?>" class="next">4</a></li>
+                <li><a href="<?php echo SITE_URL?>user/preview/<?php echo $gettempData->id; ?>" class="active">5</a></li>
             </ul>
             <h3>Its done! Well Almost</h3>
             <span>Please select the highlight color and font</span>
@@ -41,7 +42,8 @@
                         <p><?php echo $gettempData->tag_line;?></p>
                         <div class="btn-bott">
                               <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important; ">Sign In</a>
-                        <a href="#" class="sign-in" style="background: <?php echo $gettempData->color_code; ?>!important ;">Sign In</a>
+                       
+                        <a href="#" class="sign-in-second" style="color: <?php echo $gettempData->text_color; ?>!important ;">Sign Up</a>
                         </div>
                    
                           </div>

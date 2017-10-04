@@ -30,5 +30,5 @@
                 <h3 id="username"><?php echo $getuserdata->name?></h3>
                  <a href="#" class="profileeditable" rel="h3">edit</a>
             </div>
-            <
+            
         </div>

@@ -42,16 +42,16 @@ $c++; ?>
 <tr>
 <td class="text-center"><?php echo $c;?></td>
 
-<td><?php echo $result->name." ".$result->last_name;?></td>
+<td><?php echo $result->name;?></td>
 <td><?php echo $result->email;?></td>
 <td><?php echo $result->mobile;?></td>
 <!-- <td class="text-center"><img src="<?php echo WEBROOT_PATH_UPLOAD_IMAGES;?>profile_img/<?php echo $result->profile_image;?>" alt="avatar" class="img-circle" width="64" height="64" /></td> -->
 <td class="text-center">
 <div class="btn-group">
 <?php if($result->status==1){?>
-<a href="<?php echo SITE_URL.'admin/activeDeactiveAdmin';?>/<?php echo $result->id;?>/Active" title="Activated" ><img src="<?php echo WEBROOT_PATH_IMAGES_admin;?>green_icon.png" alt="Activated" /></a>
+<a href="<?php echo SITE_URL.'admin/activeDeactiveuser';?>/<?php echo $result->id;?>/Active" title="Activated" ><img src="<?php echo WEBROOT_PATH_IMAGES_admin;?>green_icon.png" alt="Activated" /></a>
 <?php } else{?>
-<a href="<?php echo SITE_URL.'admin/activeDeactiveAdmin';?>/<?php echo $result->id;?>/deActive" title="Deactivated" ><img src="<?php echo WEBROOT_PATH_IMAGES_admin;?>red_icon.png" alt="Deactivated" /></a>
+<a href="<?php echo SITE_URL.'admin/activeDeactiveuser';?>/<?php echo $result->id;?>/deActive" title="Deactivated" ><img src="<?php echo WEBROOT_PATH_IMAGES_admin;?>red_icon.png" alt="Deactivated" /></a>
 <?php }?>
 </div>
 </td>

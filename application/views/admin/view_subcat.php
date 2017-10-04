@@ -22,8 +22,16 @@
               <option value="">--select--</option>
               <?php if(isset($catrow)){
 			
-              foreach($catrow as $cat){?>
-              <option value="<?php echo $cat->id;?>"><?php echo $cat->name;?></option>
+              foreach($catrow as $cat)
+                {
+                  $selected='';
+                  if($cat->id==@$catdetails->category_id)
+                  {
+                    $selected='selected';
+
+                  }
+                  ?>
+              <option value="<?php echo $cat->id;?>" <?php echo $selected;?>><?php echo $cat->name;?></option>
               <?php } }?>
               
             </select>
@@ -32,7 +40,19 @@
         <div class="form-group">
           <label class="col-md-3 control-label" for="example-file-input">Subcategory name<span class="err">*</span></label>
           <div class="col-md-9">
-            <input type="text" id="excelfile" name="subcatename" class="form-control validate[required]"  />
+            <input type="text" id="excelfile" name="subcatename" class="form-control validate[required]" value="<?php echo @$catdetails->name;?>"  />
+          </div>
+        </div>
+         <div class="form-group">
+          <label class="col-md-3 control-label" for="example-file-input">Susbcription Amount<span class="err">*</span></label>
+          <div class="col-md-9">
+            <input type="text" id="excelfile" name="amount" class="form-control validate[required,custom[integer]]" value="<?php echo @$catdetails->price;?>"  />
+          </div>
+        </div>
+         <div class="form-group">
+          <label class="col-md-3 control-label" for="example-file-input">Max install<span class="err">*</span></label>
+          <div class="col-md-9">
+            <input type="text" id="excelfile" name="maxinstall" class="form-control validate[required,custom[integer]]"  value="<?php echo @$catdetails->max_users;?>" />
           </div>
         </div>
         <div class="modal-footer">
@@ -52,6 +72,8 @@
 <th class="text-center">ID</th>
 <th>Subcategory </th>
 <th>Category </th>
+<th>Amount </th>
+<th>Max install </th>
 <th>Status</th>
 <th class="text-center">Created at</th>
 
@@ -73,16 +95,18 @@ $c++;
 
 <td><?php echo $result->name;?></td>
 <td><?php echo $result->catname;?></td>
+<td><?php echo $result->price;?></td>
+<td><?php echo $result->max_users;?></td>
 
 <td class="text-center">
 <div class="btn-group">
 <?php if($result->status==1){?>
-<a href="<?php echo SITE_URL.'admin/activeDeactiveCategory';?>/<?php echo $result->id;?>/Active" title="Activated" ><img src="<?php echo WEBROOT_PATH_IMAGES_admin;?>green_icon.png" alt="Activated" /></a>
+<a href="<?php echo SITE_URL.'admin/activeDeactivesubCategory';?>/<?php echo $result->id;?>/Active" title="Activated" ><img src="<?php echo WEBROOT_PATH_IMAGES_admin;?>green_icon.png" alt="Activated" /></a>
 <?php } else{?>
-<a href="<?php echo SITE_URL.'admin/activeDeactiveCategory';?>/<?php echo $result->id;?>/deActive" title="Deactivated" ><img src="<?php echo WEBROOT_PATH_IMAGES_admin;?>red_icon.png" alt="Deactivated" /></a>
+<a href="<?php echo SITE_URL.'admin/activeDeactivesubCategory';?>/<?php echo $result->id;?>/deActive" title="Deactivated" ><img src="<?php echo WEBROOT_PATH_IMAGES_admin;?>red_icon.png" alt="Deactivated" /></a>
 <?php }?>
 </div>
-<a href="<?php echo SITE_URL.'admin/category';?>/<?php echo $result->id;?>">Edit</a>
+<a href="<?php echo SITE_URL.'admin/subcategory';?>/<?php echo $result->id;?>">Edit</a>
 </td>
 <td><?php echo $result->created_at?></td>
 

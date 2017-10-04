@@ -16,9 +16,9 @@
                 	<textarea name="" cols="" rows="" class="textarea" placeholder="Write your message here..."></textarea>
                 </div>
                 <div class="row">
-                	<div class="right">
+                	<div class="right contactemail">
                     <a id="contactemail"><?php echo $homedata->contact_email;?></a>
-                    <span  href="javascript:void();" class="maketextable" rel="a">Edit</span>
+                    <span  href="javascript:void();" class="maketextable edit-file" rel="a">Edit</span>
                     </div>
                 	<input type="submit" class="submit-btn colorclass" value="Submit">
                 </div>

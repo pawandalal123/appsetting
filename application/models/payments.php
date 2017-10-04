@@ -4,7 +4,7 @@ class Payments extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
-		$this->table='paymnets';
+		$this->table='3app_customers__payments';
 		parent::__construct();	
 	}
 
