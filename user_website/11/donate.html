@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>landing page</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+
+<!--------------- style css ---------------->
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<!--------------- style css ---------------->
+
+<!--------------- google font Lato ---------------->
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700" rel="stylesheet">
+<!--------------- google font Lato ---------------->
+
+<!--------------- js ---------------->
+<script src="js/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("select.select").each(function() {
+        var e = $(this).attr("title");
+        if ($("option:selected", this).val() != "") e = $("option:selected", this).text();
+        $(this).css({
+            "z-index": 10,
+            opacity: 0,
+            "-khtml-appearance": "none"
+        }).after('<span class="select">' + e + "</span>").change(function() {
+            val = $("option:selected", this).text();
+            $(this).next().text(val)
+        })
+    })
+});
+</script>
+<!--------------- js ---------------->
+<style type="text/css">
+    .buttoncolor
+    {
+         background: #f62f5e !important;
+    }
+</style>
+</head>
+<body>
+
+<div class="main-header">
+<div class="header-top">
+	<div class="main-logo"><a href="#"><img src="images/main-logo.png"></a></div>
+    <div class="header-right">
+    	<div class="navigation">
+        	<ul>
+            	<li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#" class="donate buttoncolor">Donate</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="showcase2">
+	<img src="images/img-showcase.jpg" alt="god">
+	<div class="donate-text">
+    	<h2>Donate</h2>
+        <p>Menandri maluisset hendrerit ne mei. Ei timeam bonorum eam, ne ubique graece eleifend mea. Sea dicit viris dicant in. Id pri facete hendrerit, mei disputando voluptatibus ne, mei te legere</p>
+        <a href="#">Donate Now</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="donate-text">
+    	<div class="box">
+        	<h3>Why Donate</h3>
+            <p>Dicta viris prodesset an nam, vel indoctum qualisque ne. Te delenit mentitum verterem vel, qui ne quaeque vivendo Duo modo possim liberavisse te, error essent set amet per lorem ipsum</p>
+        </div>
+    </div>
+    <div class="donat-column">
+    	<div class="donateform">
+        	<div class="inner-form">
+            	<h3>Donate Now</h3>
+                <div class="padding">
+                	<div class="row">
+                    	<label>Your Name</label>
+                    	<input type="text" class="input">
+                    </div>
+                    <div class="row">
+                    	<label>Email Adress</label>
+                    	<input type="text" class="input">
+                    </div>
+                    <div class="row check">
+                    	<label class="amount">Amount</label>
+                    	<label><input name="" type="checkbox" class="checkbox" value=""> $ 10</label>
+                        <label><input name="" type="checkbox" class="checkbox" value=""> $ 50</label>
+                        <label><input name="" type="checkbox" class="checkbox" value=""> $ 100</label>
+                        <label><input name="" type="checkbox" class="checkbox" value=""> Custom</label>
+                    </div>
+                    <div class="row">
+                    	<input type="submit" class="submit-btn buttoncolor" value="Submit">
+                    	<span class="left">Your Data is Secured.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="textbox">
+        	<h3>How Your Donations Are used</span></h3>
+            <p>After a while, finding that nothing more happened, she decided on going into the garden. Animal accusam eos in, cu vel tamquam probatus maluisset. Eleifend inimicus ad mel, sea et autem laudem eripuit. Est te omittam placerat repudiandae, dicta blandit assentior ut usu, solet commodo honestatis no pri. Duo aeterno percipitur in, vivendum senserit quo in, cu vel congue nullam. Ex atqui </p>
+        </div>
+    </div>
+</div>
+<div class="bottom-text">
+    <div class="textbox"><p>Ius corpora inimicus no, ne nobis cetero sententiae vel. Qui alienum nominati consectetuer ad, postea latine reprehendunt ei ius</p></div>
+</div>
+<div class="footer">
+	<div class="box">
+    	<div class="social">
+        	<ul>
+            	<li class="facebook"><a href="#">facebook</a></li>
+                <li class="twitter"><a href="#">twitter</a></li>
+                <li class="instagram"><a href="#">instagram</a></li>
+            </ul>
+        </div>
+    	<div class="footer-logo"><a href="#"><img src="images/main-logo.png"></a></div>
+        <div class="footer-menu">
+        	<ul>
+            	<li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Donate</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+

@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>landing page</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+
+<!--------------- style css ---------------->
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<!--------------- style css ---------------->
+
+<!--------------- google font Lato ---------------->
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700" rel="stylesheet">
+<!--------------- google font Lato ---------------->
+
+<!--------------- js ---------------->
+<script src="js/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("select.select").each(function() {
+        var e = $(this).attr("title");
+        if ($("option:selected", this).val() != "") e = $("option:selected", this).text();
+        $(this).css({
+            "z-index": 10,
+            opacity: 0,
+            "-khtml-appearance": "none"
+        }).after('<span class="select">' + e + "</span>").change(function() {
+            val = $("option:selected", this).text();
+            $(this).next().text(val)
+        })
+    })
+});
+</script>
+<!--------------- js ---------------->
+<style type="text/css">
+    .buttoncolor
+    {
+         background: #f62f5e !important;
+    }
+</style>
+</head>
+<body>
+
+<div class="main-header">
+
+<div class="header-top">
+	<div class="main-logo"><a href="#"><img src="images/main-logo.png"></a></div>
+    <div class="header-right">
+    	<div class="navigation">
+        	<ul>
+            	<li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#" class="donate">Donate</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="showcase">
+<img class="homebanner" src="images/1508675424_.jpg" alt="god">
+	<div class="showcase-text">
+    	<h3>         pawan dalal sdsfdsf</h3>
+        <p>Eum te percipit platonem gubergren, ne sea dolor possit. Ne homero partem nullam his, oratio populo in mel, in doming</p>
+        <!-- <a href="#">Google.Play</a> -->
+    </div>
+</div>
+
+<div class="container">
+	<div class="category">
+    	<div class="box">
+        	<div class="col1">
+            	<img src="images/img-god.jpg" alt="god">
+                <h2>pawan dalal</h2>
+                <p>Doctus temporibus ius no, nec tollit conceptam definiebas te. Alii appetere dissentias. Doctus temporibus</p>
+            </div>
+            <div class="col1">
+            	<img src="images/img-burn.jpg" alt="burn">
+                <h2>Burn Candles</h2>
+                <p>Vel et munere expetenda honestatis. Ex sonet audiam Vel et munere expetenda honestatis. Ex sonet audiam set amet</p>
+            </div>
+            <div class="col1">
+            	<img src="images/img-follow.jpg" alt="follow">
+                <h2>Follow the Path</h2>
+                <p>img-follow.jpg</p>
+            </div>
+        </div>
+    </div>
+    <div class="testimonial">
+    	<div class="textbox">
+        	<p>Et vivendo comprehensam eam, dicam impetus et  pertinax et vel, fugit set persius dissentiunt eum et. Sed summo</p>
+            <h5 class="client-name">John Old, Head Priest</h5>
+        </div>
+        <div class="imgbox"><img src="images/1508140054_.jpg" alt="god"></div>
+    </div>
+    <div class="newsletter">
+    <img class="homebottomimage" src="images/img-newslettwr.jpg" />
+    	<div class="newsletter-form">
+        	<h3>Get Our Newsletter</h3>
+            <div class="row">
+            	<div class="col">
+                	<label>First name</label>
+                    <input type="text" class="input">
+                </div>
+                <div class="col col2">
+                	<label>last name</label>
+                    <input type="text" class="input">
+                </div>
+            </div>
+            <div class="row">
+                <label>E-mail</label>
+                <input type="text" class="input">
+             </div>
+             <div class="row btn">
+                <input type="submit" class="signup-btn buttoncolor" value="Sign Up">
+             </div>
+             <div class="terms">By Sign Up, you agree to our Terms and Data Policy</div>
+        </div>
+    </div>
+    <div class="bottom-text">
+    	<div class="textbox"><p>Ius corpora inimicus no, ne nobis cetero sententiae vel. Qui alienum nominati consectetuer ad, postea latine reprehendunt ei ius</p></div>
+    </div>
+</div>
+
+<div class="footer">
+	<div class="box">
+    	<div class="social">
+        	<ul>
+            	<li class="facebook"><a href="#">facebook</a></li>
+                <li class="twitter"><a href="#">twitter</a></li>
+                <li class="instagram"><a href="#">instagram</a></li>
+            </ul>
+        </div>
+    	<div class="footer-logo"><a href="#"><img src="images/main-logo.png></a></div>
+        <div class="footer-menu">
+        	<ul>
+            	<li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Donate</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+
