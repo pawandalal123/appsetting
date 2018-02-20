@@ -13,7 +13,7 @@
 $urisegment = $this->uri->segment(2);
 $appid = $this->uri->segment(3);
 $addclss='';
-if($urisegment=='contact')
+if($urisegment=='contact' || @$pagename=='contact')
 {
   $addclss='logotext_inner';
 
@@ -23,7 +23,7 @@ if($urisegment=='contact')
 
 <div class="main-header">
 <?php
-if(!isset($inviewmode))
+if(!isset($inviewmode) && !isset($inopenmode))
 {
 ?>
 <style type="text/css">
@@ -97,7 +97,7 @@ if(!isset($inviewmode))
     }
 </style>
 <?php
-if(isset($inviewmode))
+if(isset($inviewmode) || isset($inopenmode))
 {
     ?>
     <style type="text/css">
@@ -165,6 +165,29 @@ if(isset($inviewmode))
                 <li><a href="<?php echo SITE_URL?>website/viewdemo/<?php echo $homedata->product_id?>/donate" class="donate">Donate</a></li>
                 <?php
                 }
+                elseif(isset($inopenmode))
+                {
+                  ?>
+
+              <li><a href="<?php echo SITE_URL?>openwebsite/<?php echo $viewform?>">Home</a></li>
+                <li><a href="<?php echo SITE_URL?>openwebsite/<?php echo $viewform?>/about">About</a></li>
+                
+                <li><a href="<?php echo SITE_URL?>user/eventlist/<?php echo $homedata->product_id?>">Event</a></li>
+               
+                <!-- <li><a href="#">Events</a></li> -->
+                <li><a href="<?php echo SITE_URL?>openwebsite/<?php echo $viewform?>/contact">Contact</a></li>
+                <!-- <li><a href="#">Login</a></li> -->
+                <li><a href="<?php echo SITE_URL?>openwebsite/<?php echo $viewform?>/donate" class="donate">Donate</a></li>
+                
+                <?php if($this->session->userdata('app_logged_in')) { ?>
+                <li><a href="<?php echo SITE_URL?>user/appdetails/<?php echo $homedata->product_id?>" class="">My Account</a></li>
+                <li><a href="<?php echo base_url(); ?>userlogin/logoutweb">Logout</a></li>
+                <?php } else { ?>
+                <li><a href="<?php echo base_url(); ?>userlogin/applogin/<?php echo $homedata->product_id?>">Login</a></li>
+                <?php
+                }
+              }
+                
                 else
                 {
                      ?>
@@ -176,7 +199,8 @@ if(isset($inviewmode))
                 <li><a href="#" class="donate">Donate</a></li>
                       <?php
 
-                } 
+    } 
+   
                 ?>
             </ul>
         </div>

@@ -76,11 +76,13 @@ $route['error'] = 'user/notfound';
 $route['services'] = 'user/services';
 
 $route['services/(:any)'] = 'user/services/$1';
-$route['aboutus'] = 'user/moreinfo';
+$route['aboutus'] = 'user/aboutus';
 
 ///////////// routes for admin/////
 
 $route['admin/'] = 'admin/login';
+$route['openwebsite/(:any)'] = 'website/viewwithoutlogin/$1';
+$route['openwebsite/(:any)/:any)'] = 'website/viewwithoutlogin/$1/$2';
 // $route['subscriptionlist'] = 'admin/subscriptionlist';
 
 

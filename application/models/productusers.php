@@ -4,7 +4,7 @@ class Productusers extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
-		$this->table='church_product_users';
+		$this->table='church_product__users';
 		parent::__construct();	
 		// $CI = &get_instance();
 		// $this->db1 = $CI->load->database('Churchapp', TRUE);

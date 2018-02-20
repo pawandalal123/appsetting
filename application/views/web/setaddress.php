@@ -63,12 +63,12 @@ $(document).ready(function(){
 		</div>
 		<div class="row">
 			<label>Address Line 1</label>
-			<input type="text" class="input-m" placeholder="Enter Address" name="address1" value="<?php echo  @$gettempData->address1 ? @$gettempData->address1 : set_value('address1');?>">
+			<input type="text" class="input-m" placeholder="Enter Address" name="address1" value="<?php echo  @$getcontactdata->address ? @$getcontactdata->address : set_value('address1');?>">
       <?php echo form_error('address1');?>
 		</div>
 		<div class="row">
 			<label>Address Line 2</label>
-			<input type="text" class="input-m" name="address2" value="<?php echo  @$gettempData->address2 ? @$gettempData->address2 : set_value('address2');?>">
+			<input type="text" class="input-m" name="address2" value="<?php echo  @$getcontactdata->address2 ? @$getcontactdata->address2 : set_value('address2');?>">
       <?php echo form_error('address2');?>
 		</div>
 		<div class="row">
@@ -80,7 +80,7 @@ $(document).ready(function(){
 					foreach($countrylist as $country)
 					{
 						$selected='';
-						if(@$gettempData->country==$country->name)
+						if(@$getcontactdata->country==$country->name)
 						{
 							$selected='selected';
 
@@ -100,7 +100,7 @@ $(document).ready(function(){
 					foreach($getstatelist as $getstatelist)
 					{
 						$selected='';
-						if(@$gettempData->state==$getstatelist->name)
+						if(@$getcontactdata->state==$getstatelist->name)
 						{
 							$selected='selected';
 
@@ -113,11 +113,11 @@ $(document).ready(function(){
 		</div>
 		<div class="row">
 			<label>City/Down</label>
-			<input type="text" class="input-m" name="city" value="<?php echo  @$gettempData->city ? @$gettempData->city : set_value('city');?>">
+			<input type="text" class="input-m" name="city" value="<?php echo  @$getcontactdata->city ? @$getcontactdata->city : set_value('city');?>">
 		</div>
 		<div class="row">
 			<label>Postal Code</label>
-			<input type="text" class="input-m" placeholder="Enter Postal Code" name="pin" value="<?php echo  @$gettempData->pin ? @$gettempData->pin : set_value('pin');?>">
+			<input type="text" class="input-m" placeholder="Enter Postal Code" name="pin" value="<?php echo  @$getcontactdata->pin ? @$getcontactdata->pin : set_value('pin');?>">
       <?php echo form_error('pin');?>
 		</div>
 	</div>

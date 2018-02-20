@@ -537,7 +537,18 @@ function getSizesweb(c)
               if(data.islogin=='yes')
               {
                   //alert();
-                  window.location.href=WEBROOT_PATH+'user/setcolor/'+data.temoleteid;
+                  if(data.message=='success')
+                  {
+                     window.location.href=WEBROOT_PATH+'user/setcolor/'+data.temoleteid;
+
+                  }
+                  else
+                  {
+                    alert(data.message);
+                    window.location.href=WEBROOT_PATH+'user/profile';
+
+                  }
+                  
 
               }
               else

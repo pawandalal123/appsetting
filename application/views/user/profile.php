@@ -6,6 +6,7 @@
 
 	<div class="box">
     	<?php echo $this->load->view('/user/commonsection');?>
+        
         <div class="profile-column">
         	<div class="your-detail">
             	<h3>Your Details</h3>

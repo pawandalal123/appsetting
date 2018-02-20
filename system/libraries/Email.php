@@ -28,7 +28,7 @@
  */
 class CI_Email {
 
-	var	$useragent		= "IndiaBizTrade";
+	var	$useragent		= "Apptest";
 	var	$mailpath		= "/usr/sbin/sendmail";	// Sendmail path
 	var	$protocol		= "mail";	// mail/sendmail/smtp
 	var	$smtp_host		= "";		// SMTP Server.  Example: mail.earthlink.net

@@ -51,7 +51,7 @@ $active_record = TRUE;
 $db['default']['hostname'] = '127.0.0.1';
 $db['default']['username'] = 'root';
 $db['default']['password'] = '';
-$db['default']['database'] = 'appseeting';
+$db['default']['database'] = 'appseeting_new_updated';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
@@ -63,6 +63,22 @@ $db['default']['dbcollat'] = 'utf8_unicode_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = false;
+
+$db['Churchapp']['hostname'] = '127.0.0.1';
+$db['Churchapp']['username'] = 'root';
+$db['Churchapp']['password'] = '';
+$db['Churchapp']['database'] = 'church_app';
+$db['Churchapp']['dbdriver'] = 'mysql';
+$db['Churchapp']['dbprefix'] = '';
+$db['Churchapp']['pconnect'] = TRUE;
+$db['Churchapp']['db_debug'] = TRUE;
+$db['Churchapp']['cache_on'] = FALSE;
+$db['Churchapp']['cachedir'] = '';
+$db['Churchapp']['char_set'] = 'utf8';
+$db['Churchapp']['dbcollat'] = 'utf8_unicode_ci';
+$db['Churchapp']['swap_pre'] = '';
+$db['Churchapp']['autoinit'] = TRUE;
+$db['Churchapp']['stricton'] = false;
 
 
 /* End of file database.php */

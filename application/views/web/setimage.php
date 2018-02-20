@@ -92,11 +92,12 @@ $(document).ready(function()
                 formerr++;
                 return false;
             }
-            else if(imgheight > 800)
-            {
-              alert('Please select smaller size image,the best size 232*400 dimensions.');
+            // else if(imgheight > 800)
+            // {
+            //   $('#page_hide').hide()
+            //   alert('Please select smaller size image,the best size 232*400 dimensions.');
 
-            }
+            // }
             else
             {
               var form_data = new FormData();
@@ -126,8 +127,14 @@ $(document).ready(function()
                                //      onSelectEnd: getSizes
                                //  });
                                 $('img#photo').Jcrop({
-                                  maxWidth: 300, maxHeight: 600, handles: true,
-                                    onSelect: getSizes
+                                      minSize: [232,400],
+                                      maxSize: [232,400],
+                                      handles: true,
+                                      // boxWidth: imgwidth, 
+                                      // boxHeight: imgheight,
+                                      trueSize: [imgwidth,imgheight],
+                                      onSelect: getSizes,
+                                      //setSelect:   [ 100, 100, 50, 50 ],
                                   });
                             }
 

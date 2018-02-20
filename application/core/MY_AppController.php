@@ -15,7 +15,7 @@ class MY_AppController extends CI_Controller {
 				mkdir($config['upload_path']);
 			}
 			$config['allowed_types'] = 'gif|jpg|png|JPG';
-			$config['max_size']    = '1000000';
+			$config['max_size']    = '2000';
 			$config['file_name'] = time().'_'.$img_name;
 			$this->load->library('upload', $config);
 			$this->upload->initialize($config);
@@ -38,16 +38,20 @@ class MY_AppController extends CI_Controller {
 	 public function upload_image($path,$feild_name,$img_name)
 	{
 		$config['upload_path'] = 'upload/'.$path.'/';
+		if(!is_dir($config['upload_path']))
+			{
+				mkdir($config['upload_path']);
+			}
 		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']    = '1000000';
+		$config['max_size']    = '2000';
 		$config['file_name'] = time().'_'.$img_name;
 		$this->load->library('upload', $config);
   		$this->upload->initialize($config);
 		
      	if ( ! $this->upload->do_upload($feild_name))
 	   {
-		$error = array('error' => $this->upload->display_errors());
-		 echo  $msg=$error['error'];
+		   $error = array('error' => $this->upload->display_errors());
+		  echo  $msg=$error['error'];
 	   }
 	   else
 	   {

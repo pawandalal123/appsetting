@@ -2,6 +2,7 @@
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "http://" : "http://";
     $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? true : false;
     define('HTTP_HOST', $protocol. $_SERVER['HTTP_HOST'].'/appset/appsetting/');
+    define('HTTP_HOST2', $protocol. $_SERVER['HTTP_HOST'].'/church/');
     define('SITE_URL', HTTP_HOST);
     define('isSecure', $isSecure);
     define('HTTP_HOST_LINK',SITE_URL.'index.php');
@@ -17,6 +18,11 @@
 	define('WEBROOT_PATH_ADMIN_JS', SITE_URL.'assets/admin/js/');
     define('WEBROOT_PATH_IMAGES_admin', SITE_URL.'assets/img/');
     define('WEBROOT_PATH_JS', SITE_URL.'assets/js/');
+    define('WEBROOT_PATH_UPLODE_IMAGES', SITE_URL.'upload/profileimages/');
+
+     define('WEBROOT_PATH_IMAGES_CHURCH', SITE_URL.'assets/church/images/');
+     define('WEBROOT_PATH_CSS_CHURCH', SITE_URL.'assets/church/css/');
+     define('WEBROOT_PATH_JS_CHURCH', SITE_URL.'assets/church/js/');
     
 	define('WEBROOT_PATH_sell', SITE_URL.'upload/Document/');
 	define('WEBROOT_PATH_UPLOAD_IMAGES', SITE_URL.'upload/');

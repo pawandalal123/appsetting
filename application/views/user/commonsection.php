@@ -2,6 +2,9 @@
             <div class="welcome-msg">
                 <h4>Welcome <samp><?php echo $getuserdata->name?>!</samp> <span>CustomerID <?php echo $getuserdata->id?></span></h4>
             </div>
+            <?php  if( $this->session->userdata('msg') ) {?>
+<span class="<?php echo $this->session->userdata('class');?>"> <?php echo $this->session->userdata('msg');?></span>
+ <?php $this->session->unset_userdata('msg');}?>
             <div class="profile-menu">
                 <ul>
                     <li><a href="<?php echo SITE_URL.'user/productlist'; ?>">Your Products</a></li>

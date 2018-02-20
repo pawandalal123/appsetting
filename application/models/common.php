@@ -55,15 +55,6 @@ public function cleanURL($string) {
 }
 
 
-
-	
-
-
-
-		  
-
-
-
 		  public function sendemail($to,$from,$subject,$body)
 		  {
 		   $this->email->from($from, 'App test');
@@ -77,15 +68,6 @@ public function cleanURL($string) {
 
 		  }
 
-
-
-		  
-
-
-
-		  
-
-				
 
 			   }
 

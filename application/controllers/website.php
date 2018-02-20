@@ -25,6 +25,7 @@ class Website extends MY_AppController {
 			redirect(SITE_URL.'website/about/'.$id);
 		}
 		$this->load->model("Webindex");
+		$this->load->model("Website__product_home");
 		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
 		$this->load->model("templetes");
@@ -49,7 +50,7 @@ class Website extends MY_AppController {
 		else
 		{
 			//////// insert values for app id//////
-			
+			$datecreated=date('Y-m-d H:i:s');
 			$condition = array('is_default'=>0);
 			$getdefaulttemp = $this->Webindex->getBy($condition);
 			$insertArray  = array('product_id'=>$id,
@@ -88,13 +89,16 @@ class Website extends MY_AppController {
 				                  'donate_right_heading'=>$getdefaulttemp->donate_right_heading,
 				                  'donate_right_text'=>$getdefaulttemp->donate_right_text,
 				                  'home_bootom_image'=>$getdefaulttemp->home_bootom_image,
-				                  'created_at'=>date('Y-m-d H:i:s'));
+				                  'created_at'=>$datecreated);
 			$insert =  $this->Webindex->AdduserData($insertArray);
+			$insertArray['id'] =$insert;
+			$insertwebhome =  $this->Website__product_home->AdduserData($insertArray);
 			$getdefaulttemp->button_color=$gettempData->color_code;
 			$getdefaulttemp->logo_text=$gettempData->temlete_name;
 
 			/////////// insert about///////
 			$this->load->model("wesite_about");
+			$this->load->model("website__product_about");
 			$condition = array('is_default'=>0);
 			$getdefaulttempabout = $this->wesite_about->getBy($condition);
 			$insertArrayabout = array('product_id'=>$id,
@@ -116,8 +120,10 @@ class Website extends MY_AppController {
 				                  'bootom_second_heading'=>$getdefaulttempabout->bootom_second_heading,
 				                  'bootom_first_text'=>$getdefaulttempabout->bootom_first_text,
 				                  'bootom_second_text'=>$getdefaulttempabout->bootom_second_text,
-				                  'created_at'=>date('Y-m-d H:i:s'));
+				                  'created_at'=>$datecreated);
 			$insertabout =  $this->wesite_about->AdduserData($insertArrayabout);
+			$insertArrayabout['id'] =$insertabout;
+			$insertwebabout =  $this->website__product_about->AdduserData($insertArrayabout);
 			$this->data['homedata'] = $getdefaulttemp;
 		}
 	
@@ -132,8 +138,18 @@ class Website extends MY_AppController {
 	public function saveindex($id)
 	{
 		//ob_start();
-		$maindir='user_website/'.$this->session->userdata('UserId').$id;
+		if($this->session->userdata('app_logged_in'))
+		{
+			$maindir='user_website/'.$this->session->userdata('app_loginuserid').$id;
+
+		}
+		else
+		{
+			$maindir='user_website/'.$this->session->userdata('UserId').$id;
+		}
+		
 		$this->load->model("Webindex");
+		$this->load->model("Website__product_home");
 		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
 		if($chechhometemp)
@@ -369,6 +385,9 @@ class Website extends MY_AppController {
 					                  'bootom_second_text'=>$getdefaulttemp->bootom_second_text,
 					                  'created_at'=>date('Y-m-d H:i:s'));
 				$insert =  $this->wesite_about->AdduserData($insertArray);
+				$this->load->model("website__product_about");
+				$insert['id'] =$insertabout;
+			    $insertwebabout =  $this->website__product_about->AdduserData($insert);
 				$this->data['aboutdata'] = $getdefaulttemp;
 			}
 
@@ -391,7 +410,16 @@ class Website extends MY_AppController {
 	public function saveabout($id)
 	{
 		//ob_start();
-		$maindir='user_website/'.$this->session->userdata('UserId').$id;
+		//$maindir='user_website/'.$this->session->userdata('UserId').$id;
+		if($this->session->userdata('app_logged_in'))
+		{
+			$maindir='user_website/'.$this->session->userdata('app_loginuserid').$id;
+
+		}
+		else
+		{
+			$maindir='user_website/'.$this->session->userdata('UserId').$id;
+		}
 		$this->load->model("wesite_about");
 		$this->load->model("Webindex");
 		$condition = array('product_id'=>$id);
@@ -640,7 +668,16 @@ class Website extends MY_AppController {
 	{
 		//ob_start();
 		//$maindir=$this->session->userdata('UserId').$id;
-		$maindir='user_website/'.$this->session->userdata('UserId').$id;
+		//$maindir='user_website/'.$this->session->userdata('UserId').$id;
+		if($this->session->userdata('app_logged_in'))
+		{
+			$maindir='user_website/'.$this->session->userdata('app_loginuserid').$id;
+
+		}
+		else
+		{
+			$maindir='user_website/'.$this->session->userdata('UserId').$id;
+		}
 		$this->load->model("Webindex");
 		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
@@ -710,7 +747,16 @@ class Website extends MY_AppController {
 	{
 		//ob_start();
 		//$maindir=$this->session->userdata('UserId').$id;
-		$maindir='user_website/'.$this->session->userdata('UserId').$id;
+		//$maindir='user_website/'.$this->session->userdata('UserId').$id;
+		if($this->session->userdata('app_logged_in'))
+		{
+			$maindir='user_website/'.$this->session->userdata('app_loginuserid').$id;
+
+		}
+		else
+		{
+			$maindir='user_website/'.$this->session->userdata('UserId').$id;
+		}
 		$this->load->model("Webindex");
 		$condition = array('product_id'=>$id);
 		$chechhometemp = $this->Webindex->getBy($condition);
@@ -931,6 +977,93 @@ class Website extends MY_AppController {
 		}
 		else
 		{
+			
+		}
+	
+        // print_r($productArray);
+        
+	}
+
+	//       opend user website/////
+	// $id folder name///////
+	public function viewwithoutlogin($id,$pagename=false)
+	{
+		$this->data['pagename']=$pagename;
+		// if(!$this->session->userdata('logged_in'))
+		// {
+		// 	redirect(SITE_URL);
+		// }
+		$this->load->model("Webindex");
+		
+		$this->load->model("templetes");
+		if(is_numeric($id))
+		{
+			$conditiontemp = array('id'=>$id);
+
+		}
+		else
+		{
+			$conditiontemp = array('domain_name'=>$id);
+		}
+		$gettempData= $this->templetes->getBy($conditiontemp);
+		if($gettempData)
+		{
+			$colorcode=$gettempData->color_code;
+		    $condition = array('product_id'=>$gettempData->id);
+		    $chechhometemp = $this->Webindex->getBy($condition);
+		    if($chechhometemp)
+		    {
+				if($chechhometemp->button_color!='')
+				{
+					$colorcode=$chechhometemp->button_color;
+				}
+				if($chechhometemp->button_color!='')
+				{
+					$colorcode=$chechhometemp->button_color;
+
+				}
+				switch ($pagename) 
+				{
+					case 'about':
+					$this->load->model("wesite_about");
+			        $condition = array('product_id'=>$id);
+					$checkabout = $this->wesite_about->getBy($condition);
+					$this->data['aboutdata'] = $checkabout;
+						$view_file='website/about';
+						break;
+						case 'contact':
+						$view_file='website/contact';
+						break;
+						case 'contact':
+						$view_file='website/donate';
+						break;
+
+					
+					default:
+						$view_file='website/index';
+						break;
+				}
+				
+				$this->data['homedata'] = $chechhometemp;
+				$this->data['pagename'] = $pagename;
+				$this->data['colorcode'] =$colorcode;
+				$this->data['titlehome']='Landing Page Home';
+				$this->data['inopenmode']=1;
+				$this->data['templete_id'] = $gettempData->id;
+				$this->data['viewform'] = $id;
+				$this->data['view_file'] = $view_file;
+				$this->load->view('layouts/seconddefault', $this->data); 
+			}
+			else
+			{
+				echo 'not found';
+				
+			}
+
+		}
+		else
+		{
+			echo 'not found';
 			
 		}
 	
@@ -1359,7 +1492,10 @@ class Website extends MY_AppController {
 				{
 					$updatedata=array('contact_main_heading'=>$feildname);
 				}
+				
 				$update = $this->Webindex->updateDetails($condition,$updatedata);
+				$this->load->model("Website__product_home");
+				$updatehome = $this->Website__product_home->updateDetails($condition,$updatedata);
 				$status['status']='success';
 			}
 		}
@@ -1429,6 +1565,8 @@ class Website extends MY_AppController {
 				}
 				
 				$update = $this->wesite_about->updateDetails($condition,$updatedata);
+				$this->load->model("website__product_about");
+				$upadte = $this->website__product_about->updateDetails($condition,$updatedata);
 				$status['status']='success';
 
 		}
@@ -1482,6 +1620,8 @@ class Website extends MY_AppController {
 				//echo $this->db->last_query();
 				if($upadte)
 				{
+					$this->load->model("website__product_about");
+					$upadte = $this->website__product_about->updateDetails($condition,$updateArray);
 					$status['imagename']=$imagename;
 					$status['imagelink']=WEBROOT_PATH_SITE_UPLODE.$imagename;
 					$status['status']='success';
@@ -1547,6 +1687,8 @@ class Website extends MY_AppController {
 
 				}
 				$upadte = $this->Webindex->updateDetails($condition,$updateArray);
+				$this->load->model("Website__product_home");
+				$updatehome = $this->Website__product_home->updateDetails($condition,$updateArray);
 				//echo $this->db->last_query();
 				if($upadte)
 				{
@@ -1634,6 +1776,8 @@ class Website extends MY_AppController {
 
 		}
 		$upadte = $this->Webindex->updateDetails($condition,$updateArray);
+		$this->load->model("Website__product_home");
+		$updatehome = $this->Website__product_home->updateDetails($condition,$updateArray);
 		//echo $this->db->last_query();
 		if($upadte)
 		{
@@ -1727,8 +1871,120 @@ class Website extends MY_AppController {
 		if($chechhometemp)
 		{
 		   $update = $this->Webindex->updateDetails($condition,array('button_color'=>$this->input->post('button_color')));
+		   $this->load->model("Website__product_home");
+		   $updatehome = $this->Website__product_home->updateDetails($condition,array('button_color'=>$this->input->post('button_color')));
 
 	    }
+	}
+
+
+	public function editwebsite($id,$pagename=false)
+	{
+		$this->data['pagename']='home';
+		if(!$this->session->userdata('app_logged_in'))
+		{
+			redirect(SITE_URL);
+		}
+	
+		$this->load->model("Webindex");
+		$condition = array('product_id'=>$id);
+		$chechhometemp = $this->Webindex->getBy($condition);
+		$colorcode=$chechhometemp->button_color;
+
+		if($chechhometemp)
+		{
+			
+				if($this->input->post('savehome'))
+				{
+					if($pagename=='' || $pagename=='index')
+			        {
+					  $this->saveindex($id);
+			    	}
+			    	if($pagename=='contact')
+			        {
+					  $this->savecontact($id);
+			    	}
+			    	if($pagename=='donate')
+			        {
+					  $this->savedonate($id);
+			    	}
+			    	if($pagename=='about')
+			        {
+					  $this->saveabout($id);
+			    	}
+				}
+
+				if($this->input->post('nextpage'))
+				{
+					
+					if($pagename=='' || $pagename=='index')
+			        {
+					  $this->saveindex($id);
+					  redirect(SITE_URL.'website/editwebsite/'.$id.'/about');
+			    	}
+			    	if($pagename=='contact')
+			        {
+					  $this->savecontact($id);
+					  redirect(SITE_URL.'website/editwebsite/'.$id.'/donate');
+			    	}
+			    	if($pagename=='donate')
+			        {
+					  $this->savedonate($id);
+					  redirect(SITE_URL.'website/editwebsite/'.$id);
+			    	}
+			    	if($pagename=='about')
+			        {
+					  $this->saveabout($id);
+					  redirect(SITE_URL.'website/editwebsite/'.$id.'/contact');
+			    	}
+				}
+			
+			if($chechhometemp->button_color!='')
+			{
+				$colorcode=$chechhometemp->button_color;
+
+			}
+			switch ($pagename) 
+			{
+				case 'about':
+				$this->load->model("wesite_about");
+		        $condition = array('product_id'=>$id);
+				$checkabout = $this->wesite_about->getBy($condition);
+				$this->data['aboutdata'] = $checkabout;
+					$view_file='website/edit/about';
+					break;
+					case 'contact':
+					$view_file='website/edit/contact';
+					break;
+					case 'donate':
+					$view_file='website/edit/donate';
+					break;
+
+				default:
+				//$this->saveindex($id);
+				
+					$view_file='website/edit/index';
+					break;
+			}
+			
+			$this->data['homedata'] = $chechhometemp;
+			$this->data['pagename'] = $pagename;
+			$this->data['colorcode'] =$colorcode;
+			$this->data['titlehome']='Landing Page Home';
+			//$this->data['inviewmode']=0;
+			$this->data['templete_id'] = $chechhometemp->product_id;
+			$this->data['product_id'] = $chechhometemp->product_id;
+			$this->data['view_file'] = $view_file;
+			$this->load->view('layouts/editdefault', $this->data); 
+
+		}
+		else
+		{
+			
+		}
+	
+        // print_r($productArray);
+        
 	}
 			
 

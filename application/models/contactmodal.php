@@ -4,7 +4,7 @@ class Contactmodal extends CI_Model {
 	// public $table;
 	public function __construct()
 	 {
-		$this->table='church_product_contact_details';
+		$this->table='church_product__contact_details';
 		parent::__construct();	
 		
 	}

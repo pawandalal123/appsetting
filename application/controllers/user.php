@@ -443,24 +443,46 @@ $(document).ready(function(){
 		if($this->session->userdata('logged_in') && $this->session->userdata('logged_in')!='')
 		{
 			$this->load->model("templetes");
-			$this->load->model("template__default");
-			$condition = array('id'=>$templeteid);
-			$gettempData = $this->template__default->getBy($condition);
-			if($gettempData)
+			//////// first check maxinstalltion //////////
+			$this->load->model("user_modal");
+			$getuserdata = $this->user_modal->getBy($condition);
+
+			$gettempletdata = $this->templetes->select_data('*',array('user_id'=>$this->session->userdata('UserId')));
+			if(count($gettempletdata)<$getuserdata->max_products)
 			{
-				$insertData = array('temlete_name'=>$gettempData->temlete_name,
-					                'background_image'=>$gettempData->background_image,
-					                'color_code'=>$gettempData->color_code,
-					                'text_color'=>$gettempData->text_color,
-					                'color_code_hover'=>$gettempData->color_code_hover,
-					                'tag_line'=>$gettempData->tag_line,
-					                'user_id'=>$this->session->userdata('UserId'),
-					                'cat_id'=>$gettempData->cat_id,
-					                'sub_cat_id'=>$gettempData->sub_cat_id,
-					                'created_at'=>date('Y-m-d H:i:s'));
-				$tempid = $this->templetes->AdduserData($insertData);
-				$status['temoleteid']=$tempid;
+				$this->load->model("customers_built_templates");
+				$this->load->model("template__default");
+				$condition = array('id'=>$templeteid);
+				$gettempData = $this->template__default->getBy($condition);
+				if($gettempData)
+				{
+					$insertData = array('temlete_name'=>$gettempData->temlete_name,
+						                'background_image'=>$gettempData->background_image,
+						                'color_code'=>$gettempData->color_code,
+						                'text_color'=>$gettempData->text_color,
+						                'color_code_hover'=>$gettempData->color_code_hover,
+						                'tag_line'=>$gettempData->tag_line,
+						                'user_id'=>$this->session->userdata('UserId'),
+						                'cat_id'=>$gettempData->cat_id,
+						                'sub_cat_id'=>$gettempData->sub_cat_id,
+						                'created_at'=>date('Y-m-d H:i:s'));
+					$tempid = $this->templetes->AdduserData($insertData);
+					if($tempid)
+					{
+						$insertData['id']=$tempid;
+						$buildtempid = $this->customers_built_templates->AdduserData($insertData);
+
+					}
+					$status['temoleteid']=$tempid;
+				}
+				$status['message']='success';
 			}
+			else
+			{
+				$status['message']='Your maximum product custamization limit reached.';
+
+			}
+			
 				
 			    $status['islogin']='yes';
 		}
@@ -501,6 +523,13 @@ $(document).ready(function(){
 							                'sub_cat_id'=>$gettempData->sub_cat_id,
 							                'created_at'=>date('Y-m-d H:i:s'));
 						$tempid = $this->templetes->AdduserData($insertData);
+						if($tempid)
+						{
+							$this->load->model("customers_built_templates");
+							$insertData['id']=$tempid;
+							$buildtempid = $this->customers_built_templates->AdduserData($insertData);
+
+						}
 						$status['temoleteid']=$tempid;
 					    $status['islogin']='yes';
 				}
@@ -541,6 +570,8 @@ $(document).ready(function(){
 					$upadte = $this->templetes->updateDetails($condition,$upadteData);
 					if($upadte)
 					{
+						$this->load->model("customers_built_templates");
+						$upadtebulit = $this->customers_built_templates->updateDetails($condition,$upadteData);
 						redirect('user/settags/'.$value);
 
 					}
@@ -579,6 +610,8 @@ $(document).ready(function(){
 		if($chechhometemp)
 		{
 		   $update = $this->templetes->updateDetails($condition,array('color_code'=>$this->input->post('button_color')));
+		   $this->load->model("customers_built_templates");
+			$upadtebulit = $this->customers_built_templates->updateDetails($condition,array('color_code'=>$this->input->post('button_color')));
 
 	    }
 	}
@@ -627,6 +660,8 @@ $(document).ready(function(){
 						$upadte = $this->templetes->updateDetails($condition,$upadteData);
 						if($upadte)
 						{
+							 $this->load->model("customers_built_templates");
+							 $upadtebulit = $this->customers_built_templates->updateDetails($condition,$upadteData);
 							if($this->input->post('savenext'))
 							{
 								redirect('userlogin/logout/');
@@ -671,9 +706,11 @@ $(document).ready(function(){
 		if($value)
 		{
 			$this->load->model("templetes");
-			
+			// $this->load->model("Googlehelper");
 			$this->load->model("country");
+			$this->load->model("contactmodal");
 			$condition = array('id'=>$value);
+			$conditionC=array('ChurchId'=>$value);
 			$gettempData = $this->templetes->getBy($condition);
 			if($gettempData)
 			{
@@ -689,11 +726,26 @@ $(document).ready(function(){
 					{
 						
 						
-						
-						// if($upadte)
-						// {
-							$this->load->model("contactmodal");
-							$conditionC=array('ChurchId'=>$value);
+							$address = $city.', '.$state.', '.$country;
+							$url = "https://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false&key=AIzaSyD6dA5hFIkxCiybqRNgoMhJGjFJDCQ9NLI";
+							$ch = curl_init();
+							curl_setopt($ch, CURLOPT_URL, $url);
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+							curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
+							curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+							curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+							$response = curl_exec($ch);
+							curl_close($ch);
+							$response_a = json_decode($response);
+							// print_r($response_a);
+							// die;
+							$dataArray = array('lat'=>$response_a->results[0]->geometry->location->lat,
+								               'long'=>$response_a->results[0]->geometry->location->lng);
+							// $getcordinates= $this->Googlehelper->getcordinates($address);
+							$latitude=$response_a->results[0]->geometry->location->lat;
+							$langitude =$response_a->results[0]->geometry->location->lng;
+							
+							
 							$checkcontact = $this->contactmodal->getBy($conditionC);
 							if($checkcontact)
 							{
@@ -703,6 +755,8 @@ $(document).ready(function(){
 									                'address2'=>$address2,
 									                'city'=>$city,
 									                'state'=>$state,
+									                'latitude'=>$latitude,
+									                'longitude'=>$langitude,
 									                'country'=>$country);
 								$upadte = $this->contactmodal->updateDetails($conditionC,$upadteData);
 							}
@@ -714,6 +768,8 @@ $(document).ready(function(){
 									               'ChurchId'=>$value,
 									               'address'=>$address1,
 									               'address2'=>$address2,
+									               'latitude'=>$latitude,
+									               'longitude'=>$langitude,
 									               'city'=>$city,
 									               'state'=>$state,
 								                   'country'=>$country);
@@ -725,6 +781,8 @@ $(document).ready(function(){
 							$upadteData['last_updated'] = date('Y-m-d H:i:s');
 						    $upadteData['last_updated_page'] ='setaddress';
 						    $upadte = $this->templetes->updateDetails($condition,$upadteData);
+						    $this->load->model("customers_built_templates");
+							 $upadtebulit = $this->customers_built_templates->updateDetails($condition,$upadteData);
 
 
 								redirect('userlogin/logout/');
@@ -739,18 +797,19 @@ $(document).ready(function(){
 					}
 				}
 				$getstatelist=array();
-                if($gettempData->country!='')
+				$contectdata = $this->contactmodal->getBy($conditionC);
+                if($contectdata->country!='')
                 {
                 	$this->load->model("state");
 					//$posdata = $this->input->post();
-					$condition = "name ='".$gettempData->country."'";
+					$condition = "name ='".$contectdata->country."'";
 					$countryid = $this->country->getBy($condition);
-
 					$condition = array('country_id'=>$countryid->id);
 					$getstatelist = $this->state->select_data($condition);
 					//echo $this->db->last_query();
                 }
 				$this->data['gettempData'] = $gettempData;
+				$this->data['getcontactdata'] = $contectdata;
 				$this->data['countrylist'] = $this->country->select_data(array());
 				$this->data['getstatelist'] = $getstatelist;
 				$this->data['templete_id'] = $value;
@@ -790,6 +849,8 @@ $(document).ready(function(){
 					   $upadte = $this->templetes->updateDetails($condition,$upadteData);
 						if($upadte)
 						{
+							$this->load->model("customers_built_templates");
+							 $upadtebulit = $this->customers_built_templates->updateDetails($condition,$upadteData);
 							redirect('userlogin/logout/');
 						}
 						else
@@ -908,6 +969,8 @@ $(document).ready(function(){
 				$upadte = $this->templetes->updateDetails($condition,$updateArray);
 				if($upadte)
 				{
+					$this->load->model("customers_built_templates");
+				    $upadtebulit = $this->customers_built_templates->updateDetails($condition,$updateArray);
 					$status['imagename']=$imagename;
 					$status['imagelink']=WEBROOT_PATH_UPLOAD_IMAGES.$imagename;
 					$status['status']='success';
@@ -931,6 +994,8 @@ $(document).ready(function(){
 				$upadte = $this->templetes->updateDetails($condition,$updateArray);
 				if($upadte)
 				{
+					$this->load->model("customers_built_templates");
+				    $upadtebulit = $this->customers_built_templates->updateDetails($condition,$updateArray);
 						//echo 'pawan dalal';
 					    $maindir='upload';
 						if (!file_exists($maindir.'/'.$imagename)) 
@@ -1053,6 +1118,8 @@ $(document).ready(function(){
 		$result= array('background_image' =>$new_name);
 		$condition = $this->db->where('id', $templeteid);
 		$insertstatus=$this->templetes->updateDetails($condition,$result);
+		$this->load->model("customers_built_templates");
+		$upadtebulit = $this->customers_built_templates->updateDetails($condition,$result);
 		echo WEBROOT_PATH_UPLOAD_IMAGES.$new_name;
       }
 
@@ -1075,97 +1142,33 @@ $(document).ready(function(){
 				$userloginid= $this->session->userdata('UserId');
 				$conditioncheck = array('id'=>$userloginid);
 				$checkuser = $this->user_modal->getBy($conditioncheck);
-				// if($checkuser)
-				// {
-					//$upadteData = array('template_id'=>$value,'admin_id'=>$userloginid,);
-					//$upadte = $this->user_modal->updateDetails($conditioncheck,$upadteData);
+				$this->load->model('product_templates');
+				$checktemlateinproduct = $this->product_templates->getby(array('customer_built_template_id'=>$gettempData->id));
+				if(!$checktemlateinproduct)
+				{
+				 	$inseradata = array('temlete_name'=>$gettempData->temlete_name,
+		        	                    'template_sub_category'=>$gettempData->sub_cat_id,
+		        	                    'customer_built_template_id'=>$gettempData->id);
+			        $inserttepmlate = $this->product_templates->AdduserData($inseradata);
+				}
+				 /////////////// in prduct user table////////
+				$this->load->model('productusers');
+				$checkproductusers = $this->productusers->getBy(array('template_id'=>$value,
+					                                                  'admin_id'=>$userloginid));
+				if(!$checkproductusers)
+				{
+					$userData = array('email'=>$checkuser->email,
+						              'product_id'=>$this->session->userdata('templete_id'),
+								      'name'=>$checkuser->name,
+								      'token'=>md5(time().''.$checkuser->email),
+								      'admin_id'=>$userloginid,
+								      'password'=>$checkuser->password,
+								      'template_id'=>$gettempData->id,
+								      'sign_up_date'=>date('Y-m-d'));
+					$insertproduct = $this->productusers->AdduserData($userData);
 
-					 /////////////// insert 3app_customers__product_templates /////////
-					 $this->load->model('product_templates');
-					 $checktemlateinproduct = $this->product_templates->getby(array('customer_built_template_id'=>$gettempData->id));
-					 if(!$checktemlateinproduct)
-					 {
-					 	$inseradata = array('temlete_name'=>$gettempData->temlete_name,
-			        	                    'template_sub_category'=>$gettempData->sub_cat_id,
-			        	                    'customer_built_template_id'=>$gettempData->id);
-				        $inserttepmlate = $this->product_templates->AdduserData($inseradata);
-					 }
-					 /////////////// in prduct user table////////
-						$this->load->model('productusers');
-						$checkproductusers = $this->productusers->getBy(array('template_id'=>$value,
-							                                                  'admin_id'=>$userloginid));
-						if(!$checkproductusers)
-						{
-							$userData = array('email'=>$checkuser->email,
-								              'product_id'=>$this->session->userdata('templete_id'),
-										      'name'=>$checkuser->name,
-										      'token'=>md5(time().''.$checkuser->email),
-										      'admin_id'=>$userloginid,
-										      'password'=>$checkuser->password,
-										      'template_id'=>$gettempData->id,
-										      'sign_up_date'=>date('Y-m-d'));
-							$insertproduct = $this->productusers->AdduserData($userData);
-
-					    }
-				// }
-				// else
-				// {
-				// 	$conditioncheck = array('id'=>$userloginid);
-				// 	$userdetails = $this->user_modal->getBy($conditioncheck);
-
-				// 	//////////// check with template id////////
-				// 	$conditioncheck = array('admin_id'=>$userloginid,'template_id'=>$value);
-				// 	$checktemplate = $this->user_modal->getBy($conditioncheck);
-				// 	if(!$checktemplate)
-				// 	{
-				// 		$userData = array('email'=>$userdetails->email,
-				// 					      'name'=>$userdetails->name,
-				// 					      'template_id'=>$value,
-				// 					      'admin_id'=>$userloginid,
-				// 					      'token'=>md5(time().''.$checkuser->email),
-				// 					      'mobile'=>$userdetails->mobile,
-				// 					      'password'=>$userdetails->password,
-				// 					      'first_login'=>0,
-				// 					      'created_at'=>date('Y-m-d H:i:s'));
-				// 	    $insert = $this->user_modal->AdduserData($userData );
-
-					    
-				// 	}
-
-				// 	 /////////////// insert 3app_customers__product_templates /////////
-				// 	  $this->load->model('product_templates');
-				// 	 $checktemlateinproduct = $this->product_templates->getBy(array('customer_built_template_id'=>$gettempData->id));
-				// 	 if(!$checktemlateinproduct)
-				// 	 {
-				// 	 	$inseradata = array('temlete_name'=>$gettempData->temlete_name,
-			 //        	                    'template_sub_category'=>$gettempData->sub_cat_id,
-			 //        	                    'customer_built_template_id'=>$gettempData->id);
-				//         $inserttepmlate = $this->product_templates->AdduserData($inseradata);
-				// 	 }
-
-				// 	    /////////////// in prduct user table////////
-				// 		$this->load->model('productusers');
-				// 		$checkproductusers = $this->productusers->getBy(array('template_id'=>$value,
-				// 			                                                  'admin_id'=>$userloginid));
-				// 		if(!$checkproductusers)
-				// 		{
-				// 			$userData = array('email'=>$userdetails->email,
-				// 				              'product_id'=>$this->session->userdata('templete_id'),
-				// 						      'name'=>$userdetails->name,
-				// 						      'token'=>md5(time().''.$userdetails->email),
-				// 						      'admin_id'=>$userloginid,
-				// 						      'password'=>$userdetails->password,
-				// 						      'template_id'=>$gettempData->id,
-				// 						      'sign_up_date'=>date('Y-m-d'));
-				// 			$insertproduct = $this->productusers->AdduserData($userData);
-
-				// 	    }
-
-
-					
-					
-					 
-				// }
+			    }
+				
 				$this->data['gettempData'] = $gettempData;
 				$this->data['view_file'] = 'web/checkpreview';
 				$this->data['templete_id'] = $value;
@@ -1230,7 +1233,7 @@ $(document).ready(function(){
 			}
 			else
 			{
-				echo 'pawan';
+				//echo 'pawan';
 
 		    }
 		}
@@ -1740,6 +1743,9 @@ $(document).ready(function(){
 					//echo $this->db->last_query();
 					if($upadte)
 					{
+						$this->load->model('productusers');
+						$condition = array('admin_id'=>$id);
+						$updateimage = $this->productusers->updateDetails($condition,$updateArray);
 						$status['imagename']=$imagename;
 						$status['imagelink']=WEBROOT_PATH_UPLOAD_IMAGES.'profileimages/'.$imagename;
 						$status['status']='success';
@@ -1838,6 +1844,653 @@ $(document).ready(function(){
 		echo json_encode($data);
 
 	}
+
+	////////////////////////////
+	////////// specific to app product//////
+	public function appdetails($id,$pagetype=false)
+	{
+		if(!$this->session->userdata('app_logged_in'))
+		{
+			redirect(SITE_URL);
+		}
+		if($id)
+		{   ////////// get all events of this church id/////
+			$userloginid= $this->session->userdata('app_loginuserid');
+			$condition = array('id'=>$userloginid);
+			// $getuserdata = $this->user->getBy($condition,'*');
+			$this->load->model("User_modal");
+		    $getuserdata = $this->User_modal->getBy($condition);
+
+
+			$condition=array('ChurchId'=>$id);
+			$conditionevent=array('ChurchId'=>$id);
+			$this->load->model("events");
+			if($pagetype=='pastevent')
+			{
+				$this->db->where("enddate < '".date('Y-m-d')."'",null);
+
+			}
+			else
+			{
+				$this->db->where("date(enddate) >='".date('Y-m-d')."'");
+
+			}
+			
+			$geteventalllist = $this->events->select_data('*',$conditionevent);
+			$this->data['geteventalllist'] = $geteventalllist;
+			////////////// get all annoucments/////
+
+			$this->load->model("announcements");
+			$announcementslist = $this->announcements->select_data('*',$condition);
+			$this->data['announcementslist'] = $announcementslist;
+
+			/////////// get all donation details/////
+			$paymentarary=array();
+			$this->load->model("Payment_summary");
+			$config = array();
+			$limit_per_page = 2;
+            $page = ($this->uri->segment(4)) ? ($this->uri->segment(4) - 1) : 0;
+            if($pagetype)
+            {
+            	$page = ($this->uri->segment(5)) ? ($this->uri->segment(5) - 1) : 0;
+
+            }
+			$config["base_url"] = SITE_URL.'user/appdetails/'.$id;
+			$total_row = $this->Payment_summary->record_count($condition);
+			$config["total_rows"] = $total_row;
+			//$config["full_tag_open"] = "<li>";
+			//$config["full_tag_close"] = "</li>";
+			$config["per_page"] = 2;
+			$config['use_page_numbers'] = false;
+			$config['num_links'] = $total_row;
+			// Open tag for CURRENT link.
+			$config['cur_tag_open'] = '&nbsp;<li><a class="current">';
+
+			// Close tag for CURRENT link.
+			$config['cur_tag_close'] = '</a></li>';
+
+			// By clicking on performing NEXT pagination.
+			$config['next_link'] = 'Next';
+
+			// By clicking on performing PREVIOUS pagination.
+			$config['prev_link'] = 'Previous';
+
+			$this->pagination->initialize($config);
+                 
+            // build paging links
+            $this->data["links"] = $this->pagination->create_links();
+            // $str_links = $this->pagination->create_links();
+            // $this->data["links"] = explode('&nbsp;',$str_links );
+			$paymentslist = $this->Payment_summary->fetch_data($condition,$limit_per_page,$page*$limit_per_page);
+			//echo $this->db->last_query();
+
+			if(count($paymentslist)>0)
+			{
+				foreach($paymentslist as $payments)
+				{
+					$where = array('token'=>$payments->token) ;
+					$this->load->model("User_modal");
+					$userdetails  = $this->User_modal->getBy($where);
+		 		    $name='';
+		 		    if($userdetails)
+		 		    {
+		 		    	$name=$userdetails->name;
+
+		 		    }
+		 		    $paymentarary[]=array('name'=>$name,
+		 		    	                  'amount'=>$payments->payment,
+		 		    	                  'paydate'=>$payments->date);
+
+				}
+
+			}
+			//print_r($paymentarary);
+			// $this->data['paymentslist'] = $paymentslist;
+            $this->data['getuserdata'] = $getuserdata;
+            $this->data['paymentarary']=$paymentarary;
+            $this->data['pagetype']=$pagetype;
+            $this->load->model("templetes");
+            $domanname=$id;
+            $gettempData= $this->templetes->getBy(array('id'=>$id));
+            if($gettempData->domain_name!='')
+            {
+            	$domanname=$gettempData->domain_name;
+
+            }
+			$this->data['domanname'] = $domanname;
+			$this->load->model("Webindex");
+			$condition = array('product_id'=>$id);
+		    $chechhometemp = $this->Webindex->getBy($condition);
+		    $this->data['homedata'] = $chechhometemp;
+
+			$this->data['app_id'] = $id;
+			$this->data['inopenmode']=1;
+			$this->data['templete_id'] = $id;
+			$this->data['viewform'] = $id;
+            $this->data['view_file'] = 'user/appalldetails';
+	        $this->load->view('layouts/seconddefault', $this->data);
+
+		}
+		else
+		{
+			return redirect(SITE_URL);
+		}
+        
+	}
+	public function eventlist($id)
+	{
+		// if(!$this->session->userdata('app_logged_in'))
+		// {
+		// 	redirect(SITE_URL);
+		// }
+		if($id)
+		{   ////////// get all events of this church id/////
+			//$userloginid= $this->session->userdata('app_loginuserid');
+			//$condition = array('id'=>$userloginid);
+			// $getuserdata = $this->user->getBy($condition,'*');
+			// $this->load->model("User_modal");
+		 //    $getuserdata = $this->User_modal->getBy($condition);
+
+
+			$condition=array('ChurchId'=>$id);
+			$this->load->model("events");
+			$geteventalllist = $this->events->select_data('*',$condition);
+			$this->data['geteventalllist'] = $geteventalllist;
+			////////////// get all annoucments/////
+
+			
+            $this->load->model("templetes");
+            $domanname=$id;
+            $gettempData= $this->templetes->getBy(array('id'=>$id));
+            if($gettempData->domain_name!='')
+            {
+            	$domanname=$gettempData->domain_name;
+
+            }
+			$this->data['domanname'] = $domanname;
+			$this->data['app_id'] = $id;
+			$this->data['inopenmode']=1;
+			$this->load->model("Webindex");
+			$condition = array('product_id'=>$id);
+		    $chechhometemp = $this->Webindex->getBy($condition);
+		    $this->data['homedata'] = $chechhometemp;
+		    $this->data['templete_id'] = $id;
+			$this->data['viewform'] = $id;
+            $this->data['view_file'] = 'user/eventlist';
+	        $this->load->view('layouts/seconddefault', $this->data);
+
+		}
+		else
+		{
+			return redirect(SITE_URL);
+		}
+        
+	}
+	public function calenederlist($id)
+	{
+		// if(!$this->session->userdata('app_logged_in'))
+		// {
+		// 	redirect(SITE_URL);
+		// }
+		if($id)
+		{   ////////// get all events of this church id/////
+			//$userloginid= $this->session->userdata('app_loginuserid');
+			//$condition = array('id'=>$userloginid);
+			// $getuserdata = $this->user->getBy($condition,'*');
+			// $this->load->model("User_modal");
+		 //    $getuserdata = $this->User_modal->getBy($condition);
+
+
+			$condition=array('ChurchId'=>$id);
+			$this->load->model("events");
+			$this->db->where("date(startdate)='".date('Y-m-d')."'");
+			$geteventalllist = $this->events->select_data('*',$condition);
+			// echo $this->db->last_query();
+			// die;
+			$this->data['geteventalllist'] = $geteventalllist;
+			// print_r($geteventalllist);
+			// die;
+			////////////// get all annoucments/////
+
+			
+            $this->load->model("templetes");
+            $domanname=$id;
+            $gettempData= $this->templetes->getBy(array('id'=>$id));
+            if($gettempData->domain_name!='')
+            {
+            	$domanname=$gettempData->domain_name;
+
+            }
+			$this->data['domanname'] = $domanname;
+			$this->data['app_id'] = $id;
+			$this->data['inopenmode']=1;
+			$this->load->model("Webindex");
+			$condition = array('product_id'=>$id);
+		    $chechhometemp = $this->Webindex->getBy($condition);
+		    $this->data['homedata'] = $chechhometemp;
+		    $this->data['templete_id'] = $id;
+			$this->data['viewform'] = $id;
+            $this->data['view_file'] = 'user/calenderevent';
+	        $this->load->view('layouts/seconddefault', $this->data);
+
+		}
+		else
+		{
+			return redirect(SITE_URL);
+		}
+        
+	}
+
+	////////// specific to event//////
+	public function addevent()
+	{
+		$this->load->model("events");
+		$userloginid= $this->session->userdata('app_loginuserid');
+		$postdata = @extract($this->input->post());
+		$insertdata = array('title'=> $title,
+			                'admin_id'=> $userloginid,
+			                'ChurchId'=> $appid,
+			                'sub_title'=>@$subtitle,
+		                    'description'=> $description,
+							'location'=> @$location,
+							'startdate'=>$startdate,
+							'enddate'=>$enddate
+                             );
+		
+		
+		if(!empty($_FILES['eventimage']['name']))
+		{
+			$up_path='upload/profileimages/';
+	        $name =$_FILES['eventimage']['name'];
+			$input_name ='eventimage';
+			$image_name = $this->uploadimage($up_path,$input_name,$name);
+			if($image_name['error']==true)
+			{
+				$msg['status']=$image_name['error_type'];
+			}
+			else
+			{
+				$insertdata['attachements']=$image_name['file_name'];
+			}
+		}
+	
+		$makeannoucment = $this->events->AdduserData($insertdata);
+		if($makeannoucment)
+		{
+			$msg['status']='success';
+		}
+		else
+		{
+			$msg['status']='Some technical issue';
+			
+		}
+		echo json_encode($msg);
+	            
+                
+        
+	}
+
+	////////// specific to edit all announcement//////
+	public function updateevent()
+	{
+	   $userloginid= $this->session->userdata('app_loginuserid');
+	   $postdata = @extract($this->input->post());
+	   $this->load->model("events");
+		
+	   $updatedata = array('title'=> $title,
+			                
+			                'sub_title'=>@$subtitle,
+		                    'description'=> $description,
+							'location'=> @$location,
+							'startdate'=>$startdate,
+							'enddate'=>$enddate
+                             );
+	   // echo $_FILES['eventimage']['name'];
+	   // die;
+		
+		if(!empty($_FILES['eventimage']['name']))
+		{
+			$up_path='upload/profileimages/';
+	        $name =$_FILES['eventimage']['name'];
+			$input_name ='eventimage';
+			$image_name = $this->uploadimage($up_path,$input_name,$name);
+			if($image_name['error']==true)
+			{
+				$msg['status']=$image_name['error_type'];
+			}
+			else
+			{
+				$updatedata['attachements']=$image_name['file_name'];
+			}
+		}
+		// print_r($updatedata);
+		// die;
+	    $condition  =array('id'=>$eventid);
+		$makeannoucment = $this->events->updateDetails($condition,$updatedata);
+		if($makeannoucment)
+		{
+			$msg['status']='success';
+	        
+		}
+		else
+		{
+			$msg['status']='Some technical issue';
+			
+		}
+		echo json_encode($msg);
+        
+	}
+
+	////////// specific to addannouncement//////
+	public function addannouncement()
+	{
+		$postdata = @extract($this->input->post());
+		// print_r($postdata);
+		// die;
+		$this->load->model("announcements");
+		$userloginid= $this->session->userdata('app_loginuserid');
+		$calltoactionval='';
+		if(@$calltoaction=='Email')
+		{
+			$calltoactionval=$callemail;
+		}
+		if(@$calltoaction=='Phone')
+		{
+			$calltoactionval=$callphone;
+		}
+		if(@$calltoaction=='Web')
+		{
+			$calltoactionval=$callweb;
+		}
+		if(@$calltoaction=='Payment')
+		{
+			$calltoactionval=$callpay;
+		}
+		$insertdata = array('title'=> $title,
+				                'admin_id'=> $userloginid,
+				                 'ChurchId'=> $appid,
+			                    'description'=> $description,
+								'action_type'=> @$calltoaction,
+								'call_to_action'=>$calltoactionval,
+								'date'=>date('Y-m-d')
+	                             );
+			
+			
+			if(!empty($_FILES['announcementfile']['name']))
+			{
+				$up_path='upload/profileimages/';
+		        $name =$_FILES['announcementfile']['name'];
+				$input_name ='announcementfile';
+				$image_name = $this->uploadimage($up_path,$input_name,$name);
+				if($image_name['error']==true)
+				{
+					$msg['status']=$image_name['error_type'];
+				}
+				else
+				{
+					$insertdata['file']=$image_name['file_name'];
+				}
+			}
+		// print_r($insertdata);
+		// die;
+			$makeannoucment = $this->announcements->AdduserData($insertdata);
+			if($makeannoucment)
+			{
+				$msg['status']='success';
+		        
+			}
+			else
+			{
+				$msg['status']='Some technical issue';
+				
+			}
+
+			echo json_encode($msg);
+		
+        
+	}
+	////////// specific to edit all announcement//////
+	public function editannouncement($id,$annocmentid=false)
+	{
+		if(!$this->session->userdata('app_logged_in'))
+		{
+			redirect(SITE_URL);
+		}
+		if($id)
+		{   $userloginid= $this->session->userdata('app_loginuserid');
+			$this->load->model("announcements");
+			if($this->input->post('saveform'))
+	     	{
+				$postdata = @extract($this->input->post());
+				$this->form_validation->set_rules('title', 'title', 'trim|required');
+				$this->form_validation->set_rules('description', 'description', 'trim|required');
+				// $this->form_validation->set_rules('ngo_focus_geo', 'Focus Geographies', 'trim|required');
+				$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
+				if($this->form_validation->run())
+				{
+					$calltoactionval='';
+					if(@$calltoaction=='Email')
+					{
+						$calltoactionval=$callemail;
+					}
+					if(@$calltoaction=='Phone')
+					{
+						$calltoactionval=$callphone;
+					}
+					if(@$calltoaction=='Web')
+					{
+						$calltoactionval=$callweb;
+					}
+					if(@$calltoaction=='Payment')
+					{
+						$calltoactionval=$callpay;
+					}
+					$updatedata = array('title'=> $title,
+						                'admin_id'=> $userloginid,
+						                 'ChurchId'=> $id,
+					                    'description'=> $description,
+										'action_type'=> @$calltoaction,
+										'call_to_action'=>$calltoactionval,
+										'date'=>date('Y-m-d')
+		                                 );
+					
+					
+					if(!empty($_FILES['announcementfile']['name']))
+					{
+						$up_path='upload/profileimages/';
+				        $name =$_FILES['announcementfile']['name'];
+						$input_name ='announcementfile';
+						$image_name = $this->uploadimage($up_path,$input_name,$name);
+						if($image_name['error']==true)
+						{
+							$msg=$image_name['error_type'];
+						    $this->session->set_userdata( array('msg'=>$msg,'class' => 'req'));
+						    redirect(SITE_URL.'user/addannouncement/'.$id);
+						}
+						else
+						{
+							$insertdata['file']=$image_name['file_name'];
+						}
+					}
+				    $condition  =array('ChurchId'=> $id,'id'=>$annocmentid);
+					$makeannoucment = $this->announcements->updateDetails($condition,$updatedata);
+					if($makeannoucment)
+					{
+						$msg='Details Update';
+				        $this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
+						redirect(SITE_URL.'user/editannouncement/'.$id);
+					}
+					else
+					{
+						$msg='Some technical issue';
+						$this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
+						redirect(SITE_URL.'user/editannouncement/'.$id);
+					}
+               }
+		    }
+		    ////////// get all events of this church id/////
+			$this->data['login_type'] = $this->session->userdata('login_type');
+			$this->data['app_id'] = $id;
+			if($annocmentid)/////// if annocmentid is present
+			{
+				///////// check annocmentid///////
+				$condition = array('admin_id'=> $userloginid,'ChurchId'=> $id);
+				$checkannocmentid= $this->announcements->getBy($condition);
+				if($checkannocmentid)
+				{
+					$this->data['details']=$checkannocmentid;
+					$this->data['view_file'] = 'user/editannoucment';
+				}
+				else
+				{
+				    $msg='Some technical issue';
+				    $this->session->set_userdata( array('msg'=>$msg,'class' => 'suc'));
+					redirect(SITE_URL.'user/editannouncement/'.$id);
+				}
+			}
+			else
+			{
+				$condition = array('admin_id'=> $userloginid,'ChurchId'=> $id,);
+				$this->data['allannoucment'] = $this->announcements->select_data('*',$condition);
+				$this->data['view_file'] = 'user/allannouncement';
+			}
+	        $this->load->view('layouts/admin/admin_default', $this->data);
+
+		}
+		else
+		{
+			return redirect(SITE_URL);
+		}
+        
+	}
+
+	////////// specific to edit all announcement//////
+	public function updateannouncement($id,$annocmentid=false)
+	{
+	   $userloginid= $this->session->userdata('app_loginuserid');
+	   $postdata = @extract($this->input->post());
+	   $this->load->model("announcements");
+		$calltoactionval='';
+		if(@$calltoaction=='Email')
+		{
+			$calltoactionval=$callemail;
+		}
+		if(@$calltoaction=='Phone')
+		{
+			$calltoactionval=$callphone;
+		}
+		if(@$calltoaction=='Web')
+		{
+			$calltoactionval=$callweb;
+		}
+		if(@$calltoaction=='Payment')
+		{
+			$calltoactionval=$callpay;
+		}
+		$updatedata = array('title'=> $title,
+		                    'description'=> $description,
+							'action_type'=> @$calltoaction,
+							'call_to_action'=>$calltoactionval
+	                         );
+		
+		
+		if(!empty($_FILES['announcementfile']['name']))
+		{
+			$up_path='upload/profileimages/';
+	        $name =$_FILES['announcementfile']['name'];
+			$input_name ='announcementfile';
+			$image_name = $this->uploadimage($up_path,$input_name,$name);
+			if($image_name['error']==true)
+			{
+				$msg=$image_name['error_type'];
+			    
+			}
+			else
+			{
+				$updatedata['file']=$image_name['file_name'];
+			}
+		}
+	    $condition  =array('id'=>$annoucmentid);
+		$makeannoucment = $this->announcements->updateDetails($condition,$updatedata);
+		if($makeannoucment)
+		{
+			$msg['status']='success';
+	        
+		}
+		else
+		{
+			$msg['status']='Some technical issue';
+			
+		}
+		echo json_encode($msg);
+        
+	}
+
+	public function popuupbox()
+    {
+    	if (!$this->input->is_ajax_request()) 
+		{
+
+		   exit('No direct script access allowed');
+		}
+		if($this->input->post('popupfor')=='addanoucment')
+		{
+			$this->load->view('user/addannouncement');
+
+		}
+		if($this->input->post('popupfor')=='editanoucment')
+		{
+			$this->load->model("announcements");
+			$this->data['annoucmentid']=$this->input->post('annoucmentid');
+			$condition = array('id'=> $this->input->post('annoucmentid'));
+			$checkannocmentid= $this->announcements->getBy($condition);
+		    $this->data['details']=$checkannocmentid;
+			$this->load->view('user/editanoucmentbox',$this->data);
+
+		}
+
+		////////// add and update event/////
+		if($this->input->post('popupfor')=='addevent')
+		{
+			$this->load->view('user/addevent');
+
+		}
+
+		if($this->input->post('popupfor')=='editevent')
+		{
+			$this->load->model("events");
+			$this->data['id']=$this->input->post('eventid');
+			$condition = array('id'=> $this->input->post('eventid'));
+			$checkevent= $this->events->getBy($condition);
+		    $this->data['details']=$checkevent;
+			$this->load->view('user/editevent',$this->data);
+
+		}
+
+    }
+
+    public function getevents()
+    {
+
+    	if (!$this->input->is_ajax_request()) 
+		{
+
+		   exit('No direct script access allowed');
+
+		}
+		$postdata = $this->input->post();
+		extract($postdata);
+		$time = strtotime($selected);
+		$newformat = date('Y-m-d',$time);
+		$newformat= date('Y-m-d', strtotime($newformat. ' + 1 days'));
+		
+	    $condition=array('ChurchId'=>$id);
+		$this->load->model("events");
+		$this->db->where("date(startdate)='".$newformat."'");
+		$geteventalllist = $this->events->select_data('*',$condition);
+		$this->data['geteventalllist']=$geteventalllist;
+		return $this->load->view('elements/eventcrousel',$this->data);
+    }
 
 	
 }

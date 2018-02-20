@@ -89,29 +89,41 @@ class UserLogin extends MY_AppController {
                             if($this->session->userdata('templete_id'))
 							{
 								$this->load->model("templetes");
-								$this->load->model("template__default");
-								$condition = array('id'=>$this->session->userdata('templete_id'));
-								$gettempData = $this->template__default->getBy($condition);
-								if($gettempData)
+								$gettempletdata = $this->templetes->select_data('*',array('user_id'=>$CheckLoginData->id));
+								if(count($gettempletdata)<$CheckLoginData->max_products)
 								{
-									$insertData = array('temlete_name'=>$gettempData->temlete_name,
-									                    'background_image'=>$gettempData->background_image,
-										                'color_code'=>$gettempData->color_code,
-										                'tag_line'=>$gettempData->tag_line,
-										                'user_id'=>$CheckLoginData->id,
-										                'cat_id'=>$gettempData->cat_id,
-										                'sub_cat_id'=>$gettempData->sub_cat_id,
-										                'created_at'=>date('Y-m-d H:i:s'));
-									$tempid = $this->templetes->AdduserData($insertData);
-									if($tempid)
+									$this->load->model("template__default");
+									$condition = array('id'=>$this->session->userdata('templete_id'));
+									$gettempData = $this->template__default->getBy($condition);
+									if($gettempData)
 									{
-									 redirect(SITE_URL.'user/setcolor/'.$tempid);
+										$insertData = array('temlete_name'=>$gettempData->temlete_name,
+										                    'background_image'=>$gettempData->background_image,
+											                'color_code'=>$gettempData->color_code,
+											                'tag_line'=>$gettempData->tag_line,
+											                'user_id'=>$CheckLoginData->id,
+											                'cat_id'=>$gettempData->cat_id,
+											                'sub_cat_id'=>$gettempData->sub_cat_id,
+											                'created_at'=>date('Y-m-d H:i:s'));
+										$tempid = $this->templetes->AdduserData($insertData);
+										if($tempid)
+										{
+											$insertData['id']=$tempid;
+											$this->load->model("customers_built_templates");
+		                                	$makeiosdefault = $this->customers_built_templates->AdduserData($insertData);
+										    redirect(SITE_URL.'user/setcolor/'.$tempid);
+
+										}
 
 									}
-
+									
 								}
-								
-
+								else
+								{
+									$msg="Your maximum product custamization limit reached";
+					                $this->session->set_userdata( array('msg'=>$msg,'class' => 'error'));
+					                redirect(SITE_URL.'user/profile');
+								}
 							}
 							else
 							{
@@ -136,6 +148,7 @@ class UserLogin extends MY_AppController {
 				$this->form_validation->set_rules('useremail', 'Email ', 'required|is_unique[3app_customers__main_info.email]');
 				$this->form_validation->set_rules('usermobile', 'Mobile', 'required|callback_numeric_dash');
 				$this->form_validation->set_rules('password', 'Password', 'required');
+				$this->form_validation->set_message('is_unique', 'Email id alredy exist.');
 				//echo $this->db->last_query();
 				$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
 				if ($this->form_validation->run())
@@ -219,6 +232,9 @@ class UserLogin extends MY_AppController {
 							$tempid = $this->templetes->AdduserData($insertData);
 							if($tempid)
 							{
+								$insertData['id']=$tempid;
+								$this->load->model("customers_built_templates");
+                            	$makeiosdefault = $this->customers_built_templates->AdduserData($insertData);
 								$userData['admin_id']=$userLoginId;
 								$userData['template_id']=$tempid;
 								$this->load->model('productusers');
@@ -241,6 +257,79 @@ class UserLogin extends MY_AppController {
 		// 	function numeric_dash ($num) {
   //   return ( ! preg_match("/^([0-9-\s])+$/D", $num)) ? FALSE : TRUE;
   // }
+
+			public function applogin($productid)
+			{
+				if($productid)
+				{
+					if($this->session->userdata('app_logged_in'))
+					{
+						redirect(SITE_URL.'user/appdetails/'.$this->session->userdata('login_productid'));
+					}
+					if($this->input->post('userlogin'))
+					{
+						$this->CheckappUserLogin();
+					}
+					
+			        $this->data['productid']=$productid;
+			        $this->data['app_id'] = $productid;
+					$this->data['inopenmode']=1;
+					$this->load->model("Webindex");
+					$condition = array('product_id'=>$productid);
+				    $chechhometemp = $this->Webindex->getBy($condition);
+				    $this->data['homedata'] = $chechhometemp;
+				    $this->data['templete_id'] = $productid;
+					$this->data['viewform'] = $productid;
+					$this->data['view_file'] = 'login';
+					$this->load->view('layouts/seconddefault', $this->data); 
+
+				}
+				
+			}
+
+			public function CheckappUserLogin()
+		     {
+
+                $userLoginDetails = $this->input->post();
+				$where="email = '".$userLoginDetails['useremail']."' and password='".md5($userLoginDetails['password'])."' and template_id = '".$userLoginDetails['productid']."' ";
+				$this->form_validation->set_rules('useremail', 'email', 'required');
+                $this->form_validation->set_rules('password', 'password', 'required');
+                $CheckLoginQuery = $this->db->where($where)
+		 		                     ->get('church_product__users');	
+				//echo $this->db->last_query();
+				$this->form_validation->set_error_delimiters('<p class="req">', '</p>');
+                if ($this->form_validation->run())
+                 {
+					 if($CheckLoginQuery->num_rows() > 0)
+					 {
+						   $CheckLoginData = $CheckLoginQuery->row();
+					       $newdata = array(
+                         //  'username'  => 'johndoe',
+									   'app_loginuserid'     => $CheckLoginData->admin_id,
+			                           'app_email'     => $CheckLoginData->email,
+			                           'app_login_type'     => $CheckLoginData->user_type,
+			                           'login_productid'=>$userLoginDetails['productid'],
+			                           'app_logged_in' => TRUE
+                                 );
+                            $this->session->set_userdata($newdata);
+                            if(!empty($userLoginDetails['productid']))
+                            {
+                            	redirect(SITE_URL.'user/appdetails/'.$userLoginDetails['productid']);
+                            	//die;
+
+                            }
+                            else
+                            {
+                            	redirect(SITE_URL);
+
+                            }
+					 }
+					 else
+					 {
+						$this->data['err_msg'] = 'Login Details Do Not Match.';  
+					  }
+			     }
+		     }
 public function numeric_dash($string) 
     {
         if ( !preg_match('/^[0-9 .,\-]+$/i',$string) )
@@ -270,5 +359,29 @@ public function numeric_dash($string)
 							  
 										 
 			}	
+			public function logoutweb()
+			 {
+			 	$domanname=$this->session->userdata('login_productid');
+			 	$this->load->model("templetes");
+	            $gettempData= $this->templetes->getBy(array('id'=>$domanname));
+	            if($gettempData->domain_name!='')
+	            {
+	            	$domanname=$gettempData->domain_name;
+
+                }
+							   $newdata = array(
+								 //  'username'  => 'johndoe',
+								   'app_loginuserid'     => $this->session->userdata('app_loginuserid'),
+								   'app_email'     =>$this->session->userdata('app_email'),
+								   'app_login_type'     =>$this->session->userdata('app_login_type'),
+								   'login_productid'     =>$this->session->userdata('login_productid'),
+								   'app_logged_in' => TRUE
+										 );
+							  
+				
+			  $this->session->unset_userdata($newdata);
+			  redirect(SITE_URL.'openwebsite/'.$domanname);
+										 
+			}
 	}
 ?>

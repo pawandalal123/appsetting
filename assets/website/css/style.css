@@ -490,3 +490,30 @@ body {
 .logo-ch input[type=radio]:checked ~ label {
 	color: #0DFF92;
 }	
+
+.showcase2 .show-text{position:absolute;left:50%;top:50%;transform: translate(-50%,-50%);-webkit-transform: translate(-50%,-50%);-moz-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);-o-transform: translate(-50%,-50%);text-align:center;}
+.showcase2 .show-text h2{font-size:40px;color:#fff;margin-bottom:25px;font-weight:normal;}
+.showcase2 .show-text p{font-size:16px;line-height:24px; color:#fff;}
+.showcase2 .show-text p span{display:block;}
+.get-involve{width:100%;float:left;}
+.get-involve h2{font-size:40px; color:#000;font-weight:normal;text-align:center;margin-bottom:80px;} 
+.list-tab,
+.list-tabnav,
+.list-tabcontent,.list-view,.calender-v{width:100%; float:left;}
+.list-tabnav{margin-bottom:50px;}
+.list-tabnav ul{width:100%;float:left;text-align:center;}
+.list-tabnav li{ display:inline-block;margin:0 20px;}
+.list-tabnav li a{font-size:30px;color:#9b9b9b;}
+.list-tabnav li a:hover,.list-tabnav li.active a{color:#e8008a;text-decoration:underline;}
+.list-view ul{border-bottom:1px solid #ccc;width:100%;float:left;}
+.list-view li{float:left;width:30%;margin:0px 1.6% 60px 1.6%;}
+.list-view li:nth-child(3n){margin-right:0px;}
+.list-view li img{margin-bottom:20px;}
+.list-view li h4{font-size:20px; font-weight:normal;color:#000;margin-bottom:15px;}
+.list-view li p{font-size:14px;line-height:22px;}
+.list-view li span{font-size:14px;color:#e8008a;font-weight:bold;}
+.list-view li .textbox{width:100%; float:left;padding-right:30%;}
+.calender-v .col1{width:50%; float:left;}
+#list-view{width:350px;float:left;overflow:hidden;}
+#list-view .owl-item{float:left;}
+#list-view .owl-item .text-box{width:100%;float:left;padding-right:30%;}
